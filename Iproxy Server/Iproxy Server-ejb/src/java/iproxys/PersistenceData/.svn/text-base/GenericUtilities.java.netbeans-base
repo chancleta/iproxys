@@ -1,0 +1,45 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package iproxys.PersistenceData;
+
+import java.util.Objects;
+import org.hibernate.Session;
+import org.hibernate.cfg.AnnotationConfiguration;
+;
+
+/**
+ *
+ * @author root
+ */
+public class GenericUtilities {
+    public void Save()
+    {
+        org.hibernate.SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(this);
+        session.getTransaction().commit();
+
+
+        session.disconnect();
+        session.close();
+
+
+        sessionFactory.close();
+
+
+    }
+    
+    public Session getSession(){ 
+        org.hibernate.SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+        return  sessionFactory.openSession();
+    }
+    public Object getbyPK(long id){
+        
+        Session ss = getSession();
+        return (Object)ss.get(this.getClass(),id);
+    
+    }
+}

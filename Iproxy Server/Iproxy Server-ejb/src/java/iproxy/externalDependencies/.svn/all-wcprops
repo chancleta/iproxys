@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/iproxyserver/!svn/ver/14/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxy/externalDependencies
+END
+SquidController.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/iproxyserver/!svn/ver/30/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxy/externalDependencies/SquidController.java
+END
+EjecutarComando.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/iproxyserver/!svn/ver/30/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxy/externalDependencies/EjecutarComando.java
+END
+ConfiguracionGeneralInteface.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/iproxyserver/!svn/ver/14/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxy/externalDependencies/ConfiguracionGeneralInteface.java
+END
+EjecutarIPtable.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/iproxyserver/!svn/ver/30/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxy/externalDependencies/EjecutarIPtable.java
+END
+ConfiguracionGeneral.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/iproxyserver/!svn/ver/26/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxy/externalDependencies/ConfiguracionGeneral.java
+END

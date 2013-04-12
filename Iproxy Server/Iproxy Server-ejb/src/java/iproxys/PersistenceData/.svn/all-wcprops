@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/iproxyserver/!svn/ver/20/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxys/PersistenceData
+END
+SummaryIPPort_BandWidth.java
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/iproxyserver/!svn/ver/9/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxys/PersistenceData/SummaryIPPort_BandWidth.java
+END
+SummaryIP_BandWidth.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/iproxyserver/!svn/ver/26/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxys/PersistenceData/SummaryIP_BandWidth.java
+END
+proba.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/iproxyserver/!svn/ver/26/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxys/PersistenceData/proba.java
+END
+IPtablesDb.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/iproxyserver/!svn/ver/30/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxys/PersistenceData/IPtablesDb.java
+END
+SummaryPort_BandWidth.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/iproxyserver/!svn/ver/20/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxys/PersistenceData/SummaryPort_BandWidth.java
+END
+UnBlockableIP.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/iproxyserver/!svn/ver/26/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxys/PersistenceData/UnBlockableIP.java
+END
+UserTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/iproxyserver/!svn/ver/26/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxys/PersistenceData/UserTable.java
+END
+GenericUtilities.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/iproxyserver/!svn/ver/20/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxys/PersistenceData/GenericUtilities.java
+END
+HttpBlockDb.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/iproxyserver/!svn/ver/30/trunk/Iproxy%20Server/Iproxy%20Server-ejb/src/java/iproxys/PersistenceData/HttpBlockDb.java
+END

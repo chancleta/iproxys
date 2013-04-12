@@ -1,0 +1,34 @@
+10
+
+dir
+21
+https://199.19.117.35/svn/iproxyserver/trunk/Iproxy%20Server/Iproxy%20Server-war/src
+https://199.19.117.35/svn/iproxyserver
+
+
+
+2012-04-07T06:37:44.177262Z
+7
+chancleta
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+e81cb7f0-ff5b-44a3-8769-8ae2a7a4f307
+
+conf
+dir
+
+java
+dir
+

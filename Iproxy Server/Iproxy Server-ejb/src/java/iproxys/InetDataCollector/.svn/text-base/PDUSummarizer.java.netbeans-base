@@ -1,0 +1,226 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package iproxys.InetDataCollector;
+
+import iproxy.externalDependencies.ConfiguracionGeneral;
+import iproxys.PersistenceData.Layer4PDU;
+import iproxys.PersistenceData.SummaryIPPort_BandWidth;
+import iproxys.PersistenceData.SummaryIP_BandWidth;
+import iproxys.PersistenceData.SummaryPort_BandWidth;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+
+/**
+ *
+ * @author root
+ */
+@Stateless
+@Local
+public class PDUSummarizer implements PDUSummarizerLocal{
+
+    
+    
+    @Override
+    public List<SummaryIP_BandWidth> IPSummary(List<Layer4PDU> l4pdu,Date time){
+        
+        
+        
+        List<SummaryIP_BandWidth> IP = new ArrayList<SummaryIP_BandWidth> ();
+        List<Layer4PDU> copiedList = CloneList(l4pdu);
+       // Collections.sort(copiedList);
+      //  Collections.sort(copiedList);
+        SummaryIP_BandWidth newip = new SummaryIP_BandWidth();
+        newip.setBdusage(0);
+        for(int i = 1; i < copiedList.size() ; i++)
+        {
+            if(copiedList.get(i).getDstIP().equals(copiedList.get(i-1).getDstIP()) )
+            {
+                newip.setBdusage(newip.getBdusage()+copiedList.get(i-1).getDataSize());
+            }else{
+                newip.setBdusage(newip.getBdusage()+copiedList.get(i-1).getDataSize());
+                newip.setIp(copiedList.get(i-1).getDstIP());
+                newip.setTimeref(time);
+                if(i != (copiedList.size() -1)){
+                    IP.add(newip);
+                    newip = new SummaryIP_BandWidth();
+                    newip.setBdusage(0);
+                }
+                
+            }
+            if(i == (copiedList.size() -1)){
+                
+                if(copiedList.get(i).getDstIP().equals(copiedList.get(i-1).getDstIP())){
+                    newip.setBdusage(newip.getBdusage()+copiedList.get(i-1).getDataSize());
+                    newip.setIp(copiedList.get(i).getDstIP());
+                    newip.setTimeref(time);
+                    IP.add(newip);
+                }else{
+                    IP.add(newip);
+                    newip = new SummaryIP_BandWidth();
+                    newip.setBdusage(copiedList.get(i).getDataSize());
+                    newip.setIp(copiedList.get(i).getDstIP());
+                    newip.setTimeref(time);
+                    IP.add(newip);
+                }
+            }
+        
+        }
+        for(SummaryIP_BandWidth ip:IP){
+            ip.setBdusage((ip.getBdusage()/1024/10));
+            ConfiguracionGeneral instance = ConfiguracionGeneral.getInstance();
+            
+            ip.setBdusage((ip.getBdusage()/instance.getAnchoBanda())*100);
+        }
+        return IP;
+       
+       
+
+    }
+    
+    @Override
+    public List<SummaryPort_BandWidth> PortSummary(List<Layer4PDU> l4pdu,Date time){
+        
+        
+        
+        List<SummaryPort_BandWidth> IP = new ArrayList<SummaryPort_BandWidth> ();
+        List<Layer4PDU> copiedList = CloneList(l4pdu);
+      //  Collections.sort(copiedList);
+     //   Collections.sort(copiedList);
+        SummaryPort_BandWidth newip = new SummaryPort_BandWidth();
+        newip.setBdusage(0);
+        for(int i = 1; i < copiedList.size() ; i++)
+        {
+            if((copiedList.get(i).getSrctPort() == copiedList.get(i-1).getSrctPort()) && (copiedList.get(i).getProtocol() == copiedList.get(i-1).getProtocol()))
+            {
+                newip.setBdusage(newip.getBdusage()+copiedList.get(i-1).getDataSize());
+            }else{
+                newip.setBdusage(newip.getBdusage()+copiedList.get(i-1).getDataSize());
+                newip.setPort(copiedList.get(i-1).getSrctPort());
+                newip.setProtocol(copiedList.get(i-1).getProtocol());
+                newip.setTimeref(time);
+                
+                if(i != (copiedList.size() -1)){
+                    IP.add(newip);
+                    newip = new SummaryPort_BandWidth();
+                    newip.setBdusage(0);
+                }
+                
+            }
+            if(i == (copiedList.size() -1)){
+                
+                if((copiedList.get(i).getSrctPort() == copiedList.get(i-1).getSrctPort()) && (copiedList.get(i).getProtocol() == copiedList.get(i-1).getProtocol())){
+                    newip.setBdusage(newip.getBdusage()+copiedList.get(i-1).getDataSize());
+                    newip.setPort(copiedList.get(i-1).getSrctPort());
+                    newip.setProtocol(copiedList.get(i-1).getProtocol());
+                    newip.setTimeref(time);
+                    IP.add(newip);
+                }else{
+                    IP.add(newip);
+                    newip = new SummaryPort_BandWidth();
+                    newip.setBdusage(copiedList.get(i).getDataSize());
+                    newip.setPort(copiedList.get(i).getSrctPort());
+                    newip.setProtocol(copiedList.get(i).getProtocol());
+                    newip.setTimeref(time);
+                    IP.add(newip);
+                }
+            }
+        
+        }
+        for(SummaryPort_BandWidth ip:IP){
+            ip.setBdusage((ip.getBdusage()/1024/10));
+            ConfiguracionGeneral instance = ConfiguracionGeneral.getInstance();
+            
+            ip.setBdusage((ip.getBdusage()/instance.getAnchoBanda())*100);
+        }
+        return IP;
+       
+       
+
+    }
+    @Override
+    public List<SummaryIPPort_BandWidth> IPPortSummary(List<Layer4PDU> l4pdu,Date time){
+        
+        
+        
+        List<SummaryIPPort_BandWidth> IP = new ArrayList<SummaryIPPort_BandWidth> ();
+        List<Layer4PDU> copiedList = CloneList(l4pdu);
+       // Collections.sort(copiedList);
+       // Collections.sort(copiedList);
+        SummaryIPPort_BandWidth newip = new SummaryIPPort_BandWidth();
+        newip.setBdusage(0);
+        for(int i = 1; i < copiedList.size() ; i++)
+        {
+            if((copiedList.get(i).getSrctPort() == copiedList.get(i-1).getSrctPort()) && (copiedList.get(i).getDstIP().equals(copiedList.get(i-1).getDstIP()) ) && (copiedList.get(i).getProtocol() == copiedList.get(i-1).getProtocol()))
+            {
+                newip.setBdusage(newip.getBdusage()+copiedList.get(i-1).getDataSize());
+            }else{
+                newip.setBdusage(newip.getBdusage()+copiedList.get(i-1).getDataSize());
+                newip.setPort(copiedList.get(i-1).getSrctPort());
+                newip.setProtocol(copiedList.get(i-1).getProtocol());
+                newip.setIp_Dst(copiedList.get(i-1).getDstIP());
+                newip.setIp_Src(copiedList.get(i-1).getSrcIP());
+                newip.setTimeref(time);
+                
+                if(i != (copiedList.size() -1)){
+                    IP.add(newip);
+                    newip = new SummaryIPPort_BandWidth();
+                    newip.setBdusage(0);
+                }
+                
+            }
+            if(i == (copiedList.size() -1)){
+                
+                if((copiedList.get(i).getSrctPort() == copiedList.get(i-1).getSrctPort()) && (copiedList.get(i).getDstIP().equals(copiedList.get(i-1).getDstIP()) ) && (copiedList.get(i).getProtocol() == copiedList.get(i-1).getProtocol())){
+                    newip.setBdusage(newip.getBdusage()+copiedList.get(i-1).getDataSize());
+                    newip.setPort(copiedList.get(i-1).getSrctPort());
+                    newip.setProtocol(copiedList.get(i-1).getProtocol());
+                    newip.setIp_Dst(copiedList.get(i-1).getDstIP());
+                    newip.setIp_Src(copiedList.get(i-1).getSrcIP());
+                    newip.setTimeref(time);
+                    IP.add(newip);
+                }else{
+                    IP.add(newip);
+                    newip = new SummaryIPPort_BandWidth();
+                    newip.setBdusage(copiedList.get(i).getDataSize());
+                    newip.setPort(copiedList.get(i).getSrctPort());
+                    newip.setProtocol(copiedList.get(i).getProtocol());
+                    newip.setIp_Dst(copiedList.get(i).getDstIP());
+                    newip.setIp_Src(copiedList.get(i).getSrcIP());
+                    newip.setTimeref(time);
+                    IP.add(newip);
+                }
+            }
+        
+        }
+        for(SummaryIPPort_BandWidth ip:IP){
+            ip.setBdusage((ip.getBdusage()/1024/10));
+            ConfiguracionGeneral instance = ConfiguracionGeneral.getInstance();
+            
+            ip.setBdusage((ip.getBdusage()/instance.getAnchoBanda())*100);
+        }
+        return IP;
+       
+       
+
+    }
+    
+    
+    
+    
+    private  List<Layer4PDU> CloneList(List<Layer4PDU> tocopyList){
+        
+        List<Layer4PDU> copiedList = new ArrayList<Layer4PDU>();
+        for(Layer4PDU tobeACopied:tocopyList)
+        {
+            copiedList.add(tobeACopied);
+        }
+        return copiedList;
+    }
+    
+    
+}

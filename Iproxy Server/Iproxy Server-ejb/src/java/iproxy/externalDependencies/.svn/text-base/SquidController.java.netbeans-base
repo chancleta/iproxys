@@ -1,0 +1,81 @@
+package iproxy.externalDependencies;
+
+
+
+
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author LuisjPena
+ */
+public class SquidController {
+    
+    private static SquidController squidcontroller = null;
+    private static final String filename = "bad_sites.squid";
+    private static RandomAccessFile raf;
+    
+    private SquidController(){
+       
+    }
+    
+            
+    public static SquidController getInstance(){
+        if(squidcontroller == null && isAccessable())
+            squidcontroller = new SquidController();
+        return squidcontroller;
+    
+    }
+    
+    private static boolean isAccessable(){
+        
+        try{
+            raf = new RandomAccessFile(filename, "rw");
+            return true;
+        }catch(Exception ex){
+            System.err.println(ex.getMessage());
+            return false;
+        }
+    
+    }
+    
+    public boolean addDomain(String line){
+        try {
+            raf.seek(raf.length());
+            raf.write(("\n"+line).getBytes());
+        } catch (IOException ex) {
+            //Logger.getLogger(SquidController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
+            return false;
+        }
+        return true;
+    
+    }
+    
+    public boolean removeDomain(String line){
+        try{
+            String read = raf.readLine();
+            while(read !=  null)
+            {
+                if(read.contains((line))){
+                   raf.seek(raf.getFilePointer()-read.getBytes().length);
+                   String spacio = " ";
+                   for(int i = 0; i < read.length() ; i++)
+                    raf.write(spacio.getBytes());
+                                      
+                }
+                read = raf.readLine();
+            }
+        }catch(Exception ex){
+        
+        }
+        return true;
+    
+    }
+}

@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/iproxyclient/!svn/ver/8/trunk/Iproxy%20Client
+END
+build.xml
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/iproxyclient/!svn/ver/3/trunk/Iproxy%20Client/build.xml
+END
+manifest.mf
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/iproxyclient/!svn/ver/3/trunk/Iproxy%20Client/manifest.mf
+END
