@@ -16,3 +16,6 @@
 *.ear
 *.class
 
+/Iproxy Server/Iproxys/nbproject/private/
+/Iproxy Server/Iproxys/build/
+/Iproxy Server/Iproxys/dist/
