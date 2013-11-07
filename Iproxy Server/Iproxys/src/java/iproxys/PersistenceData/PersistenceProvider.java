@@ -28,7 +28,7 @@ public abstract class  PersistenceProvider {
             currentTransaction.commit();
             return true;
         }catch(Exception err){
-           // System.err.println(err.getMessage());
+            System.err.println(err.getMessage());
             return false;
         }
     }

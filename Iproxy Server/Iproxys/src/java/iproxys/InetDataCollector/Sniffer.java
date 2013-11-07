@@ -55,10 +55,9 @@ public class Sniffer extends Thread {
     @EJB
     UnBlockableIPFacade unblockables = UnBlockableIPFacade.getInstance();
     private static TimerTask netMonTask = new TimerTask() {
-
         @Override
         public void run() {
-            networkMonitorLastSeg = networkMonitor/1024;
+            networkMonitorLastSeg = networkMonitor / 1024;
             Sniffer.networkMonitor = 0;
         }
     };
@@ -134,7 +133,7 @@ public class Sniffer extends Thread {
             //Capturar paquetes hasta que pasen TimeTemp Milisegundos    
             capture.processPacket(-1, new RecievePackets());
 
-            
+
             if ((new Date().getTime() - TimeTempRef.getTime()) >= TimeTemp) {
                 Sniffer.TimeTempRef = new Date();
                 iproxys.jess.ServiceCore jess = ServiceCore.getInstance();
@@ -144,22 +143,44 @@ public class Sniffer extends Thread {
                 jess.addList(TempPortPDUs.toArray());
                 for (JessSuggestions sug : jess.GetAllSuggestions()) {
                     TemporaryBlockedEntity temporaryBlockedEntity = new TemporaryBlockedEntity();
+                    System.out.println(sug.getAction() + "  tipo:" + sug.getTipo() + "  ipdst:" + sug.getIp_Dst() + "  ipsrc:" + sug.getIp_Src());
                     if (sug.getTipo() == 1) {
                         //IP SOLO
-                      temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
-                      temporaryBlockedEntity.setIdentifier(sug.getTipo());
-                        
-                        
+                        temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
+                        temporaryBlockedEntity.setIdentifier(sug.getTipo());
+                        temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
+                        temporaryBlockedEntity.save();
                     } else if (sug.getTipo() == 2) {
                         //IP PUERTO QUE NO SEAN EL 80
+                        temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
+                        temporaryBlockedEntity.setIdentifier(sug.getTipo());
+                        temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
+                        temporaryBlockedEntity.setBlockedPort(sug.getPort());
+                        temporaryBlockedEntity.setProtocol(sug.getProtocol());
+                        temporaryBlockedEntity.save();
+
                     } else if (sug.getTipo() == 3) {
                         //PUERTO
+                        temporaryBlockedEntity.setIdentifier(sug.getTipo());
+                        temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
+                        temporaryBlockedEntity.setBlockedPort(sug.getPort());
+                        temporaryBlockedEntity.setProtocol(sug.getProtocol());
+                        temporaryBlockedEntity.save();
+
                     } else if (sug.getTipo() == 4) {
                         //PUERTO IP SOLO PARA 80
+                        temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
+                        temporaryBlockedEntity.setIdentifier(sug.getTipo());
+                        temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
+                        temporaryBlockedEntity.setBlockedPort(sug.getPort());
+                        // ARREGLAR DOMINIO
+                        temporaryBlockedEntity.setBlockedDomain(sug.getIp_Src());
+                        temporaryBlockedEntity.save();
                     }
 
-               }
-                
+
+                }
+
                 jess.eraseData();
                 Sniffer.TempPortPDUs.clear();
                 Sniffer.TempIPPDUs.clear();
@@ -217,11 +238,11 @@ public class Sniffer extends Thread {
 
         for (SummaryIP_BandWidth sug : relativo) {
             // Convirtiendo de Bytes a KiloBytes
-            sug.setBdusage(sug.getBdusage() / ConfiguracionGeneral.Kilobit );
+            sug.setBdusage(sug.getBdusage() / ConfiguracionGeneral.Kilobit);
             // Dividiendo entre la cantidad de segundos que duro el muestreo
-            sug.setBdusage(sug.getBdusage() / (TimeTemp/1000) );
+            sug.setBdusage(sug.getBdusage() / (TimeTemp / 1000));
             // Obteniendo el porcentaje de utilizacion de ancho 
-            sug.setBdusage((sug.getBdusage() / confgral.getAnchoBanda()) * 100); 
+            sug.setBdusage((sug.getBdusage() / confgral.getAnchoBanda()) * 100);
 
         }
 
@@ -231,9 +252,9 @@ public class Sniffer extends Thread {
 
         for (SummaryPort_BandWidth sug : relativo) {
             // Convirtiendo de Bytes a KiloBytes
-            sug.setBdusage(sug.getBdusage() / ConfiguracionGeneral.Kilobit );
+            sug.setBdusage(sug.getBdusage() / ConfiguracionGeneral.Kilobit);
             // Dividiendo entre la cantidad de segundos que duro el muestreo
-            sug.setBdusage(sug.getBdusage() / (TimeTemp/1000) );
+            sug.setBdusage(sug.getBdusage() / (TimeTemp / 1000));
             // Obteniendo el porcentaje de utilizacion de ancho 
             sug.setBdusage((sug.getBdusage() / confgral.getAnchoBanda()) * 100);
         }
@@ -245,9 +266,9 @@ public class Sniffer extends Thread {
 
         for (SummaryIPPort_BandWidth sug : relativo) {
             // Convirtiendo de Bytes a KiloBytes
-            sug.setBdusage(sug.getBdusage() / ConfiguracionGeneral.Kilobit );
+            sug.setBdusage(sug.getBdusage() / ConfiguracionGeneral.Kilobit);
             // Dividiendo entre la cantidad de segundos que duro el muestreo
-            sug.setBdusage(sug.getBdusage() / (TimeTemp/1000) );
+            sug.setBdusage(sug.getBdusage() / (TimeTemp / 1000));
             // Obteniendo el porcentaje de utilizacion de ancho 
             sug.setBdusage((sug.getBdusage() / confgral.getAnchoBanda()) * 100);
         }
