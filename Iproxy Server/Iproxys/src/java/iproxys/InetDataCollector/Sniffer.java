@@ -131,99 +131,40 @@ public class Sniffer extends Thread {
         confgral.setAnchoBanda(ConfiguracionGeneral.Megabit * 3.2);
 
         while (true) {
-
+            //Capturar paquetes hasta que pasen TimeTemp Milisegundos    
             capture.processPacket(-1, new RecievePackets());
 
+            
             if ((new Date().getTime() - TimeTempRef.getTime()) >= TimeTemp) {
-                    System.out.println("asdasdasdasdas");
                 Sniffer.TimeTempRef = new Date();
                 iproxys.jess.ServiceCore jess = ServiceCore.getInstance();
-                //List<UnBlockableIP> fin = unblockables.findAll();
-
-
                 doCalculateDB_Temp();
-                double networkMonitor2 = 0;
-                for(SummaryIP_BandWidth summary:TempIPPDUs){
-                    System.out.println(summary.getIp_Dst()+" |"+summary.getBdusage());
-                   networkMonitor2+= summary.getBdusage();
-                
-                
-                }
-                System.out.println(networkMonitor2);
                 jess.addList(TempIPPDUs.toArray());
                 jess.addList(TempIPPortPDUs.toArray());
                 jess.addList(TempPortPDUs.toArray());
-                
-                control = true;
                 for (JessSuggestions sug : jess.GetAllSuggestions()) {
+                    TemporaryBlockedEntity temporaryBlockedEntity = new TemporaryBlockedEntity();
                     if (sug.getTipo() == 1) {
                         //IP SOLO
+                      temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
+                      temporaryBlockedEntity.setIdentifier(sug.getTipo());
                         
-//                                ipTableIns.controlIP(sug.getAction(), sug.getIp_Dst(), sug.getTimeref());
-//                                System.err.println(sug.getAction() + " IP:" + sug.getIp_Dst() + " time: " + sug.getTimeref());
+                        
                     } else if (sug.getTipo() == 2) {
                         //IP PUERTO QUE NO SEAN EL 80
-                                ipTableIns.controlIPPort(sug.getAction(), sug.getIp_Dst(), sug.getPort(), sug.getProtocol(), sug.getTimeref());
-                                System.err.println(sug.getAction() + " IP:" + sug.getIp_Dst() + " Port:" + sug.getPort() + " time: " + sug.getTimeref());
                     } else if (sug.getTipo() == 3) {
                         //PUERTO
-                        ipTableIns.controlPuertos(EjecutarIPtable.block, sug.getPort(), sug.getProtocol(), sug.getTimeref());
-                        System.err.println(sug.getAction() + " Port:" + sug.getPort() + " Proto:" + sug.getProtocol() + " time: " + sug.getTimeref());
-
                     } else if (sug.getTipo() == 4) {
                         //PUERTO IP SOLO PARA 80
-                        List<HttpBlockDb> findAll = httpBlockIns.findAll();
-                        
-                        for (HttpBlockDb httpBlock : findAll) {
-                            String doDns = dnsLookIns.doDns(sug.getIp_Src());
-                            if (doDns != null && httpBlock.getDomain().equals(doDns)) {
-                                //REFRESH SQUID
-                                domain = doDns;
-                                if (!httpBlock.getIp().equals(sug.getIp_Dst())) {
-                                    squidControllerInst.addtoExistingDomain(sug.getIp_Dst(), httpBlock.getDomain());
-
-                                }
-                                control = false;
-                            }
-                        }
-                        HttpBlockDb blockDb = new HttpBlockDb();
-                        blockDb.setIp(sug.getIp_Dst());
-                        blockDb.setTimeref(sug.getTimeref());
-
-                        if (control) {
-                            String Dns = dnsLookIns.doDns(sug.getIp_Src());
-                            if (Dns != null) {
-                                blockDb.setDomain(Dns);
-
-                            } else {
-                                blockDb.setDomain(sug.getIp_Src());
-                                Dns = sug.getIp_Src();
-                            }
-                            
-                            squidControllerInst.addNuevoDomain(sug.getIp_Dst(), Dns);
-                        } else {
-                            blockDb.setDomain(domain);
-                        }
-                        httpBlockIns.create(blockDb);
-                        System.err.println("from www: " + sug.getAction() + " IP:" + sug.getIp_Dst() + " Port:" + sug.getPort() + " time: " + sug.getTimeref());
-                        control = true;
-                   }
+                    }
 
                }
-                //HACER LO DE SQUID.
-                //LO DE PERMITIR DE NUEVO LOS TIGUERES BLOKEADOS
-                System.err.println("____________________________________________");
+                
                 jess.eraseData();
                 Sniffer.TempPortPDUs.clear();
                 Sniffer.TempIPPDUs.clear();
                 Sniffer.TempIPPortPDUs.clear();
 
-
-                if ((new Date().getTime() - TimepRef.getTime()) >= (TimeTemp * 6)) {
-
-                    doCalculateDB();
-
-                }
             }
         }
     }

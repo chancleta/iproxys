@@ -43,7 +43,6 @@ public abstract class  PersistenceProvider {
     }
     
     public List<Object> findAll(){
-        System.err.println(this.getClass().getSimpleName()+".findAll");
         Query findAllNamedQuery = PersistenceProvider.entityManger.createNamedQuery(this.getClass().getSimpleName()+".findAll");
         return findAllNamedQuery.getResultList();
     }
