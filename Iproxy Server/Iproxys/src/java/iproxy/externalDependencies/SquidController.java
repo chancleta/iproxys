@@ -14,7 +14,7 @@ import java.io.RandomAccessFile;
 public class SquidController {
 
     private static SquidController squidcontroller = null;
-    private static final String filename = "/etc/squid/squid.conf";
+    private static final String filename = "squid_float.conf";
     private static RandomAccessFile raf;
     private static EjecutarComando ejecutar = EjecutarComando.getInstance();
     private SquidController() {
@@ -29,8 +29,8 @@ public class SquidController {
     }
     private void reiniciarSquid(){
         
-        ejecutar.Ejecutar_Comando("service squid stop");
-        ejecutar.Ejecutar_Comando("service squid start");
+        ejecutar.Ejecutar_Comando("service squid3 stop");
+        ejecutar.Ejecutar_Comando("service squid3 start");
     
     }
     private static boolean isAccessable() {

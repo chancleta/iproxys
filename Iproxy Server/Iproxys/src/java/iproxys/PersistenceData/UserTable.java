@@ -12,12 +12,12 @@ import javax.persistence.*;
  * @author ljpena
  */
 @Entity
-@Table(name = "UserTable")
 @NamedQueries({
     @NamedQuery(name = UserTable.findAllUsers, query = "select u from UserTable u"),
-    @NamedQuery(name = UserTable.findbyUsername, query = "select u from UserTable u where u.username = :username")
+    @NamedQuery(name = UserTable.findbyUsername, query = "select u from UserTable u where u.username = :username"),
+    @NamedQuery(name="UserTable.findAll",query="SELECT u FROM UserTable u")
 })
-public class UserTable extends GenericUtilities implements Serializable {
+public class UserTable extends PersistenceProvider implements Serializable {
 
     public static final String findAllUsers = "findAllUsers";
     public static final String findbyUsername = "findbyUsername";
@@ -118,5 +118,26 @@ public class UserTable extends GenericUtilities implements Serializable {
      */
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+    
+    public UserTable findbyUsername(String username){
+        Query createNamedQuery = entityManger.createNamedQuery(UserTable.findbyUsername);
+        createNamedQuery.setParameter("username", username);
+        UserTable  user = null;
+        try{
+            Object o = createNamedQuery.getSingleResult();
+           UserTable users = (UserTable) o;
+                      System.out.println(users.getUsername()+"  "+users.getPassword());
+
+           user = users;
+        }catch(Exception err){
+            System.out.println(err.getMessage());
+        }finally{
+            return user;
+        }
+        
+        // createNamedQuery.setParameter("username", username);
+      
+            
     }
 }

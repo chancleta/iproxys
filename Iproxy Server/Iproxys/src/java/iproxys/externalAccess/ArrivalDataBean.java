@@ -20,7 +20,7 @@ public class ArrivalDataBean implements ArrivalDataBeanRemote{
     @Override
     public double NetworkMonitor(){
         
-       return (Sniffer.networkMonitorLastSeg/1024);
+       return (Sniffer.networkMonitorLastSeg);
     }
     
     

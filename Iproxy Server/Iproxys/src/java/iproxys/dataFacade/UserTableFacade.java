@@ -32,11 +32,17 @@ public class UserTableFacade  implements UserTableFacadeLocal {
     @Override
     public UserTable findbyUsername(String username){
         
-        Query createNamedQuery = isl.getEntityManager().createNamedQuery(UserTable.findbyUsername);
-        createNamedQuery.setParameter("username", username);
+        Query createNamedQuery = isl.getEntityManager().createNamedQuery(UserTable.findAllUsers);
+       // createNamedQuery.setParameter("username", username);
         UserTable user = null;
         try{
-            user = (UserTable) createNamedQuery.getSingleResult();
+           //  System.out.println(createNamedQuery.getSingleResult());
+            List<UserTable> resultList = createNamedQuery.getResultList();
+            for(Object o: resultList){
+               
+                user = (UserTable) o;
+            }
+            
         }catch(Exception ex){
             System.err.println(ex.getMessage());
         }finally{

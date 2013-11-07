@@ -34,16 +34,15 @@ public class Sniffer extends Thread {
     public static Date TimepRef = new Date();
     private static Thread loop = null;
     public static String interfaceMask = "";
-    public static List<SummaryIPPort_BandWidth> IPPortPDUs = new ArrayList<SummaryIPPort_BandWidth>();
-    public static List<SummaryIPPort_BandWidth> TempIPPortPDUs = new ArrayList<SummaryIPPort_BandWidth>();
-    public static List<SummaryPort_BandWidth> PortPDUs = new ArrayList<SummaryPort_BandWidth>();
-    public static List<SummaryPort_BandWidth> TempPortPDUs = new ArrayList<SummaryPort_BandWidth>();
-    public static List<SummaryIP_BandWidth> IPPDUs = new ArrayList<SummaryIP_BandWidth>();
-    public static List<SummaryIP_BandWidth> TempIPPDUs = new ArrayList<SummaryIP_BandWidth>();
-    private final int TimeTemp = 10000;
+    public static List<SummaryIPPort_BandWidth> IPPortPDUs = new ArrayList<>();
+    public static List<SummaryIPPort_BandWidth> TempIPPortPDUs = new ArrayList<>();
+    public static List<SummaryPort_BandWidth> PortPDUs = new ArrayList<>();
+    public static List<SummaryPort_BandWidth> TempPortPDUs = new ArrayList<>();
+    public static List<SummaryIP_BandWidth> IPPDUs = new ArrayList<>();
+    public static List<SummaryIP_BandWidth> TempIPPDUs = new ArrayList<>();
+    private final int TimeTemp = 60000;
     private static Sniffer sniffer = null;
     private static ConfiguracionGeneral confgral;
-    private static double time = 0.001;
     public static double networkMonitor = 0;
     public static double networkMonitorLastSeg = 0;
     private static Timer networkMonTimer = null;
@@ -59,7 +58,7 @@ public class Sniffer extends Thread {
 
         @Override
         public void run() {
-            networkMonitorLastSeg = networkMonitor;
+            networkMonitorLastSeg = networkMonitor/1024;
             Sniffer.networkMonitor = 0;
         }
     };
@@ -129,31 +128,39 @@ public class Sniffer extends Thread {
     public void run() {
 
         confgral = ConfiguracionGeneral.getInstance();
-        confgral.setAnchoBanda(ConfiguracionGeneral.Megabit * 0.82);
+        confgral.setAnchoBanda(ConfiguracionGeneral.Megabit * 3.2);
 
         while (true) {
 
             capture.processPacket(-1, new RecievePackets());
 
             if ((new Date().getTime() - TimeTempRef.getTime()) >= TimeTemp) {
-
+                    System.out.println("asdasdasdasdas");
                 Sniffer.TimeTempRef = new Date();
                 iproxys.jess.ServiceCore jess = ServiceCore.getInstance();
-                List<UnBlockableIP> fin = unblockables.findAll();
+                //List<UnBlockableIP> fin = unblockables.findAll();
 
 
                 doCalculateDB_Temp();
+                double networkMonitor2 = 0;
+                for(SummaryIP_BandWidth summary:TempIPPDUs){
+                    System.out.println(summary.getIp_Dst()+" |"+summary.getBdusage());
+                   networkMonitor2+= summary.getBdusage();
+                
+                
+                }
+                System.out.println(networkMonitor2);
                 jess.addList(TempIPPDUs.toArray());
                 jess.addList(TempIPPortPDUs.toArray());
                 jess.addList(TempPortPDUs.toArray());
-
-                List<UnBlockableIP> listaNoblockear = unblockables.findAll();
+                
                 control = true;
                 for (JessSuggestions sug : jess.GetAllSuggestions()) {
                     if (sug.getTipo() == 1) {
                         //IP SOLO
-                                ipTableIns.controlIP(sug.getAction(), sug.getIp_Dst(), sug.getTimeref());
-                                System.err.println(sug.getAction() + " IP:" + sug.getIp_Dst() + " time: " + sug.getTimeref());
+                        
+//                                ipTableIns.controlIP(sug.getAction(), sug.getIp_Dst(), sug.getTimeref());
+//                                System.err.println(sug.getAction() + " IP:" + sug.getIp_Dst() + " time: " + sug.getTimeref());
                     } else if (sug.getTipo() == 2) {
                         //IP PUERTO QUE NO SEAN EL 80
                                 ipTableIns.controlIPPort(sug.getAction(), sug.getIp_Dst(), sug.getPort(), sug.getProtocol(), sug.getTimeref());
@@ -165,7 +172,6 @@ public class Sniffer extends Thread {
 
                     } else if (sug.getTipo() == 4) {
                         //PUERTO IP SOLO PARA 80
-
                         List<HttpBlockDb> findAll = httpBlockIns.findAll();
                         
                         for (HttpBlockDb httpBlock : findAll) {
@@ -201,10 +207,9 @@ public class Sniffer extends Thread {
                         httpBlockIns.create(blockDb);
                         System.err.println("from www: " + sug.getAction() + " IP:" + sug.getIp_Dst() + " Port:" + sug.getPort() + " time: " + sug.getTimeref());
                         control = true;
+                   }
 
-                    }
-
-                }
+               }
                 //HACER LO DE SQUID.
                 //LO DE PERMITIR DE NUEVO LOS TIGUERES BLOKEADOS
                 System.err.println("____________________________________________");
@@ -270,9 +275,12 @@ public class Sniffer extends Thread {
     private void BDCalculator_IP(List<SummaryIP_BandWidth> relativo) {
 
         for (SummaryIP_BandWidth sug : relativo) {
-            sug.setBdusage(sug.getBdusage() / 10);
-            sug.setBdusage(sug.getBdusage() / 1024);
-            sug.setBdusage((sug.getBdusage() / confgral.getAnchoBanda()) * 100);
+            // Convirtiendo de Bytes a KiloBytes
+            sug.setBdusage(sug.getBdusage() / ConfiguracionGeneral.Kilobit );
+            // Dividiendo entre la cantidad de segundos que duro el muestreo
+            sug.setBdusage(sug.getBdusage() / (TimeTemp/1000) );
+            // Obteniendo el porcentaje de utilizacion de ancho 
+            sug.setBdusage((sug.getBdusage() / confgral.getAnchoBanda()) * 100); 
 
         }
 
@@ -281,8 +289,11 @@ public class Sniffer extends Thread {
     private void BDCalculator_Port(List<SummaryPort_BandWidth> relativo) {
 
         for (SummaryPort_BandWidth sug : relativo) {
-            sug.setBdusage(sug.getBdusage() / 1024);
-            sug.setBdusage(sug.getBdusage() / 10);
+            // Convirtiendo de Bytes a KiloBytes
+            sug.setBdusage(sug.getBdusage() / ConfiguracionGeneral.Kilobit );
+            // Dividiendo entre la cantidad de segundos que duro el muestreo
+            sug.setBdusage(sug.getBdusage() / (TimeTemp/1000) );
+            // Obteniendo el porcentaje de utilizacion de ancho 
             sug.setBdusage((sug.getBdusage() / confgral.getAnchoBanda()) * 100);
         }
 
@@ -292,8 +303,11 @@ public class Sniffer extends Thread {
 
 
         for (SummaryIPPort_BandWidth sug : relativo) {
-            sug.setBdusage(sug.getBdusage() / 1024);
-            sug.setBdusage(sug.getBdusage() / 10);
+            // Convirtiendo de Bytes a KiloBytes
+            sug.setBdusage(sug.getBdusage() / ConfiguracionGeneral.Kilobit );
+            // Dividiendo entre la cantidad de segundos que duro el muestreo
+            sug.setBdusage(sug.getBdusage() / (TimeTemp/1000) );
+            // Obteniendo el porcentaje de utilizacion de ancho 
             sug.setBdusage((sug.getBdusage() / confgral.getAnchoBanda()) * 100);
         }
 

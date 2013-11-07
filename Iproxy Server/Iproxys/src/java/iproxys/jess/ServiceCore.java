@@ -37,6 +37,7 @@ public class ServiceCore {
         {
             try{
                 servicecore = new ServiceCore();
+                System.out.println("creating jess instance");
             }catch(Exception ex){
                 System.err.println(ex);
             }
@@ -45,11 +46,19 @@ public class ServiceCore {
     
     }
     private void Configure() throws JessException, FileNotFoundException, IOException {
+        System.out.println("configuring jess_START");
         engine = new Rete();
+                System.out.println("configuring jess_START");
+
 	//engine.reset();
-        engine.batch("/home/ljpena/NetBeansProjects/Iproxy Server/jess_rules.clp"); 
+        engine.batch("/home/luis/iproxys/Iproxy Server/Iproxys/jess_rules.clp"); 
+                System.out.println("configuring jess_START");
+
         marker = engine.mark();//para volver a este punto facilmente check point
+                System.out.println("configuring jess_START");
+
         //eraseData = engine.mark();
+        System.out.println("configuring jess_END");
     }
 
     public void addList(Object[] o) {

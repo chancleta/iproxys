@@ -130,10 +130,10 @@ public class EjecutarIPtable {
 
         System.err.println("Desde Iptables: ejecutar" + ejecutar.toString());
         if (ejecutar != null) {
-            List<IPtablesDb> findAll = iptableFacade.findAll();
-            for (IPtablesDb iptable : findAll) {
-                ejecutar.Ejecutar_Comando(iptable.getComando());
-            }
+//            List<IPtablesDb> findAll = iptableFacade.findAll();
+//            for (IPtablesDb iptable : findAll) {
+//                ejecutar.Ejecutar_Comando(iptable.getComando());
+//            }
         }
 
         natIPtables();

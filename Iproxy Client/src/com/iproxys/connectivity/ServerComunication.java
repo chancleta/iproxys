@@ -21,10 +21,10 @@ public class ServerComunication {
     private static Properties props;
     private static ServerComunication sc = null;
     
-    private static final String loginservice = "java:global/Iproxy_Server/Iproxy_Server-ejb/LoginServiceBean!com.iproxys.interfaces.LoginServiceBeanRemote";
-    private static final String arrivaldata = "java:global/Iproxy_Server/Iproxy_Server-ejb/ArrivalDataBean!com.iproxys.interfaces.ArrivalDataBeanRemote";
-    private static final String unblockableip = "java:global/Iproxy_Server/Iproxy_Server-ejb/UnblockableManageBean!com.iproxys.interfaces.UnblockableManageBeanRemote";
-    private static final String usermanagebean = "java:global/Iproxy_Server/Iproxy_Server-ejb/UserManageBean!com.iproxys.interfaces.UserManageBeanRemote";
+    private static final String loginservice = "com.iproxys.interfaces.LoginServiceBeanRemote#com.iproxys.interfaces.LoginServiceBeanRemote";
+    private static final String arrivaldata = "com.iproxys.interfaces.ArrivalDataBeanRemote#com.iproxys.interfaces.ArrivalDataBeanRemote";
+    private static final String unblockableip = "com.iproxys.interfaces.UnblockableManageBeanRemote#com.iproxys.interfaces.UnblockableManageBeanRemote";
+    private static final String usermanagebean = "com.iproxys.interfaces.UserManageBeanRemote#com.iproxys.interfaces.UserManageBeanRemote";
 
     private static ArrivalDataBeanRemote arrivalData = null;
     private static LoginServiceBeanRemote loginService = null;
@@ -34,8 +34,11 @@ public class ServerComunication {
     public static ServerComunication getInstance(){
         if(sc == null)
         {
-            if(doConfigure())
-                return sc = new ServerComunication();
+            if(doConfigure()){
+               sc = new ServerComunication();
+                System.out.println("im here");
+               return sc; 
+            }
         }
         return sc;
     }
@@ -49,7 +52,7 @@ public class ServerComunication {
         props.setProperty("java.naming.factory.initial","com.sun.enterprise.naming.SerialInitContextFactory");
         props.setProperty("java.naming.factory.url.pkgs","com.sun.enterprise.naming");
         props.setProperty("java.naming.factory.state","com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl");
-        props.setProperty("org.omg.CORBA.ORBInitialHost", "10.0.0.8");
+        props.setProperty("org.omg.CORBA.ORBInitialHost", "127.0.0.1");
         
         try {
              ic = new InitialContext(props);
@@ -66,7 +69,7 @@ public class ServerComunication {
             try {
                 loginService = (LoginServiceBeanRemote)ic.lookup(loginservice);
             } catch (Exception ex) {
-              //  System.err.println(ex.getMessage());
+                System.err.println(ex.getMessage());
             }
             finally{
                 return loginService;
