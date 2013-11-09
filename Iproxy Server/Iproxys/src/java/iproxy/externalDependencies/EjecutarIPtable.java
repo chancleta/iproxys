@@ -17,7 +17,7 @@ public class EjecutarIPtable {
 
     private static EjecutarIPtable ejecutarIPtable = null;
     public static final String[] flushIPtables = {"iptables -F", "iptables -X", "iptables -Z", "iptables -t nat -F"};
-    public static final String[] natIPtables = {"echo 1 > /proc/sys/net/ipv4/ip_forward", "/sbin/iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE", "iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3128", "/sbin/iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT", "/sbin/iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT"};
+    public static final String[] natIPtables = {"echo 1 > /proc/sys/net/ipv4/ip_forward", " iptables -t nat -A POSTROUTING -s 0.0.0.0/0 -o eth0 -j MASQUERADE", "iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3128", "iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT", "iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT"};
     public static final String allow = "allow";
     public static final String block = "block";
     public static final String tcp = "tcp";

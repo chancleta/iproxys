@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jess.Filter;
 import jess.JessException;
 import jess.Rete;
@@ -38,7 +36,7 @@ public class ServiceCore {
             try{
                 servicecore = new ServiceCore();
                 System.out.println("creating jess instance");
-            }catch(Exception ex){
+            }catch(JessException | IOException ex){
                 System.err.println(ex);
             }
         }
@@ -46,19 +44,11 @@ public class ServiceCore {
     
     }
     private void Configure() throws JessException, FileNotFoundException, IOException {
-        System.out.println("configuring jess_START");
         engine = new Rete();
-                System.out.println("configuring jess_START");
-
 	//engine.reset();
         engine.batch("/home/luis/iproxys/Iproxy Server/Iproxys/jess_rules.clp"); 
-                System.out.println("configuring jess_START");
-
         marker = engine.mark();//para volver a este punto facilmente check point
-                System.out.println("configuring jess_START");
-
         //eraseData = engine.mark();
-        System.out.println("configuring jess_END");
     }
 
     public void addList(Object[] o) {
@@ -92,7 +82,7 @@ public class ServiceCore {
         //marker2 = engine.mark();
     }
     public List<JessSuggestions> GetAllSuggestions(){
-	List<JessSuggestions> sugestionList = new ArrayList<JessSuggestions>();
+	List<JessSuggestions> sugestionList = new ArrayList<>();
         try{	
             engine.run();
             Iterator sugestions = engine.getObjects(new Filter.ByClass(JessSuggestions.class));//saca del buffer puntero al buffer de ese tipo

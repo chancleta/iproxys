@@ -144,43 +144,40 @@ public class Sniffer extends Thread {
                 for (JessSuggestions sug : jess.GetAllSuggestions()) {
                     TemporaryBlockedEntity temporaryBlockedEntity = new TemporaryBlockedEntity();
                     System.out.println(sug.getAction() + "  tipo:" + sug.getTipo() + "  ipdst:" + sug.getIp_Dst() + "  ipsrc:" + sug.getIp_Src());
-                    if (sug.getTipo() == 1) {
-                        //IP SOLO
-                        temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
-                        temporaryBlockedEntity.setIdentifier(sug.getTipo());
-                        temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
-                        temporaryBlockedEntity.save();
-                    } else if (sug.getTipo() == 2) {
-                        //IP PUERTO QUE NO SEAN EL 80
-                        temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
-                        temporaryBlockedEntity.setIdentifier(sug.getTipo());
-                        temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
-                        temporaryBlockedEntity.setBlockedPort(sug.getPort());
-                        temporaryBlockedEntity.setProtocol(sug.getProtocol());
-                        temporaryBlockedEntity.save();
-
-                    } else if (sug.getTipo() == 3) {
-                        //PUERTO
-                        temporaryBlockedEntity.setIdentifier(sug.getTipo());
-                        temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
-                        temporaryBlockedEntity.setBlockedPort(sug.getPort());
-                        temporaryBlockedEntity.setProtocol(sug.getProtocol());
-                        temporaryBlockedEntity.save();
-
-                    } else if (sug.getTipo() == 4) {
-                        //PUERTO IP SOLO PARA 80
-                        temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
-                        temporaryBlockedEntity.setIdentifier(sug.getTipo());
-                        temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
-                        temporaryBlockedEntity.setBlockedPort(sug.getPort());
-                        // ARREGLAR DOMINIO
-                        temporaryBlockedEntity.setBlockedDomain(sug.getIp_Src());
-                        temporaryBlockedEntity.save();
+                    
+                    switch (sug.getTipo()) {
+                        
+                        case TemporaryBlockedEntity.BLOCK_IP:
+                            temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
+                            
+                            
+                            
+                            break;
+                        case TemporaryBlockedEntity.BLOCK_IP_AND_PORT:
+                            temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
+                            temporaryBlockedEntity.setBlockedPort(sug.getPort());
+                            temporaryBlockedEntity.setProtocol(sug.getProtocol());
+                            
+                            
+                            break;
+                        case TemporaryBlockedEntity.BLOCK_PORT:
+                            temporaryBlockedEntity.setBlockedPort(sug.getPort());
+                            temporaryBlockedEntity.setProtocol(sug.getProtocol());
+                            
+                            
+                            break;
+                        case TemporaryBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP:
+                            temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
+                            // ARREGLAR DOMINIO
+                            temporaryBlockedEntity.setBlockedDomain(sug.getIp_Src());
+                            
+                            
+                            break;
                     }
-
-
+                    temporaryBlockedEntity.setIdentifier(sug.getTipo());
+                    temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
+                    temporaryBlockedEntity.save();
                 }
-
                 jess.eraseData();
                 Sniffer.TempPortPDUs.clear();
                 Sniffer.TempIPPDUs.clear();

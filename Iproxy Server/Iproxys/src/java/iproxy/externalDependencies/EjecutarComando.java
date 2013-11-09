@@ -14,7 +14,6 @@ import java.io.InputStreamReader;
 public class EjecutarComando {
 
     private static EjecutarComando ejecutarComando = null;
-    private static String[] comando = new String[3];
     
     private EjecutarComando(){}
     
@@ -23,26 +22,16 @@ public class EjecutarComando {
             ejecutarComando = new EjecutarComando();
         return ejecutarComando;
     }
-    public String Ejecutar_Comando(String argv) {
+    public String Ejecutar_Comando(String command) {
         Process p = null;
         try {
-            comando[0] = "/bin/bash";
-            comando[1] = "-c";
-            comando[2] = "echo 'elchulo' | sudo -S " + argv;
-            p = Runtime.getRuntime().exec(comando);
+            p = Runtime.getRuntime().exec(command);
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String s;
-            int count = 0;
-
-            String result = "";
-            
+            String result = "",s;
             while ((s = stdInput.readLine()) != null) {
-                count++;
                 result = result + s + "\n";
             }
-            
             stdInput.close();
-
             p.waitFor();
             return result;
         } catch (Exception ex) {
@@ -54,7 +43,6 @@ public class EjecutarComando {
     }
     @Override
     public String toString(){
-    
         if(ejecutarComando == null)
             return "Instancia no Creada";
         else

@@ -50,6 +50,11 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
     /**
      * @return the id
      */
+    public static final int BLOCK_IP = 1;
+    public static final int BLOCK_IP_AND_PORT = 2;
+    public static final int BLOCK_PORT = 3;
+    public static final int BLOCK_HTTP_DOMAIN_TO_IP = 4;
+
     public long getId() {
         return id;
     }
