@@ -13,6 +13,11 @@ import iproxys.dataFacade.UnBlockableIPFacade;
 import iproxys.dns.DnsLookupper;
 import iproxys.jess.JessSuggestions;
 import iproxys.jess.ServiceCore;
+import iproxys.performblock.PerformBlock;
+import iproxys.performblock.PerformHttpBlock;
+import iproxys.performblock.PerformIPPortBlock;
+import iproxys.performblock.PerformIpBlock;
+import iproxys.performblock.PerformPortBlock;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -144,38 +149,38 @@ public class Sniffer extends Thread {
                 for (JessSuggestions sug : jess.GetAllSuggestions()) {
                     TemporaryBlockedEntity temporaryBlockedEntity = new TemporaryBlockedEntity();
                     System.out.println(sug.getAction() + "  tipo:" + sug.getTipo() + "  ipdst:" + sug.getIp_Dst() + "  ipsrc:" + sug.getIp_Src());
-                    
+                    PerformBlock performBlock = null;
                     switch (sug.getTipo()) {
                         
                         case TemporaryBlockedEntity.BLOCK_IP:
                             temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
-                            
-                            
-                            
+                            PerformIpBlock performIpBlock = new PerformIpBlock(temporaryBlockedEntity);
+                            performBlock = (PerformBlock) performIpBlock;
                             break;
                         case TemporaryBlockedEntity.BLOCK_IP_AND_PORT:
                             temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
                             temporaryBlockedEntity.setBlockedPort(sug.getPort());
                             temporaryBlockedEntity.setProtocol(sug.getProtocol());
-                            
-                            
+                            PerformIPPortBlock performIPPortBlock = new PerformIPPortBlock(temporaryBlockedEntity);
+                            performBlock = (PerformBlock) performIPPortBlock;
                             break;
                         case TemporaryBlockedEntity.BLOCK_PORT:
                             temporaryBlockedEntity.setBlockedPort(sug.getPort());
                             temporaryBlockedEntity.setProtocol(sug.getProtocol());
-                            
-                            
+                            PerformPortBlock performPortBlock = new PerformPortBlock(temporaryBlockedEntity);
+                            performBlock = (PerformBlock) performPortBlock;
                             break;
                         case TemporaryBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP:
                             temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
                             // ARREGLAR DOMINIO
                             temporaryBlockedEntity.setBlockedDomain(sug.getIp_Src());
-                            
-                            
+                            PerformHttpBlock performHttpBlock = new PerformHttpBlock(temporaryBlockedEntity);
+                            performBlock = (PerformBlock) performHttpBlock;
                             break;
                     }
                     temporaryBlockedEntity.setIdentifier(sug.getTipo());
                     temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
+                    performBlock.block();
                     temporaryBlockedEntity.save();
                 }
                 jess.eraseData();

@@ -5,6 +5,7 @@
 package iproxys.PersistenceData;
 
 import iproxys.performblock.PerformIpBlock;
+import java.util.Date;
 
 /**
  *
@@ -13,7 +14,7 @@ import iproxys.performblock.PerformIpBlock;
 public class proba {
 
     public static void main(String[] as) {
-        PerformIpBlock ip = new PerformIpBlock(null);
-            ip.unBlock();
+      TemporaryBlockedEntity tem = new TemporaryBlockedEntity();
+      tem.setBlockedOnTimeDate(new Date());
     }
 }
