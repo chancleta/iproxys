@@ -1,0 +1,36 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package iproxys.performblock;
+
+import iproxy.externalDependencies.EjecutarComando;
+import iproxys.PersistenceData.TemporaryBlockedEntity;
+
+/**
+ *
+ * @author root
+ */
+public class PerformPortBlock implements PerformBlock {
+
+    private TemporaryBlockedEntity temporaryBlockedEntity;
+    private EjecutarComando ejecutarComando;
+    private String protocolName;
+    public PerformPortBlock(TemporaryBlockedEntity temporaryBlockedEntity) {
+        this.temporaryBlockedEntity = temporaryBlockedEntity;
+        ejecutarComando = EjecutarComando.getInstance();
+        protocolName = (temporaryBlockedEntity.getProtocol() == 6 )?"tcp":"udp";
+
+    }
+
+    @Override
+    public void block() {
+        ejecutarComando.Ejecutar_Comando("iptables -A FORWARD -p "+protocolName+" --dport "+temporaryBlockedEntity.getBlockedPort()+" -j DROP");
+    }
+
+    @Override
+    public void unBlock() {
+        ejecutarComando.Ejecutar_Comando("iptables -D FORWARD -p "+protocolName+" --dport "+temporaryBlockedEntity.getBlockedPort()+" -j DROP");
+    }
+    
+}
