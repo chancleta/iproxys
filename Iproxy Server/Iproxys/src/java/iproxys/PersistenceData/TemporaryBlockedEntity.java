@@ -4,6 +4,11 @@
  */
 package iproxys.PersistenceData;
 
+import iproxys.performblock.PerformBlock;
+import iproxys.performblock.PerformHttpBlock;
+import iproxys.performblock.PerformIPPortBlock;
+import iproxys.performblock.PerformIpBlock;
+import iproxys.performblock.PerformPortBlock;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -150,13 +155,69 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
         findEntityToUnblock.setParameter("allowTimeStart", new Date(System.currentTimeMillis() - (1 * HOUR_IN_MS)), TemporalType.TIMESTAMP);
         findEntityToUnblock.setParameter("allowTimeEnd", new Date(System.currentTimeMillis() - (1 * HOUR_IN_MS) - (10*MIN_IN_MS)), TemporalType.TIMESTAMP);
         List<Object> resultList = findEntityToUnblock.getResultList();
+        return converFromListObjectTo(resultList);
+
+    }
+    
+    public ArrayList<TemporaryBlockedEntity> findEntitiesToPermaBlock(){
+        
+        List<TemporaryBlockedEntity> allEntities = converFromListObjectTo(findAll());
+        
+        for(TemporaryBlockedEntity temporaryBlockedEntity: allEntities){
+            
+            Date parentDate = temporaryBlockedEntity.getBlockedOnTimeDate();
+            for(TemporaryBlockedEntity temporaryBlockedEntitySecond: allEntities){
+                
+                if(temporaryBlockedEntity.getId() !=  temporaryBlockedEntitySecond.getId()){
+                    
+                   if(areTheseEntitiesEquals(temporaryBlockedEntity,temporaryBlockedEntitySecond)){
+                   
+                        // VERIFICAR LA MIERDA DEL DIA ANTERIOR O DOS DIAS ANTERIORES 
+                   
+                   }
+                }
+           
+            }
+        }
+    
+        return new ArrayList<>();
+    
+    
+    }
+    
+    private ArrayList<TemporaryBlockedEntity> converFromListObjectTo(List<Object> inCommingList ){
         ArrayList<TemporaryBlockedEntity> castedList = new ArrayList<>();
-        for (Object o : resultList) {
+        for (Object o : inCommingList) {
             Object trans = o;
             TemporaryBlockedEntity temporaryBlockedEntity = (TemporaryBlockedEntity) trans;
             castedList.add(temporaryBlockedEntity);
         }
         return castedList;
-
     }
+    
+    
+    private boolean areTheseEntitiesEquals(TemporaryBlockedEntity givenEntityOne, TemporaryBlockedEntity givenEntityTwo){
+        boolean areTheyEquals = false;
+        if(givenEntityOne.getIdentifier() == givenEntityTwo.getIdentifier()){
+            
+            switch (givenEntityOne.getIdentifier()) {
+                case TemporaryBlockedEntity.BLOCK_IP:
+                    areTheyEquals = givenEntityOne.getBlockedIP().equals(givenEntityTwo.getBlockedIP()); 
+                    break;
+                case TemporaryBlockedEntity.BLOCK_IP_AND_PORT:
+                    areTheyEquals = givenEntityOne.getBlockedIP().equals(givenEntityTwo.getBlockedIP()) && givenEntityOne.getBlockedPort() == givenEntityTwo.getBlockedPort() &&  givenEntityOne.getProtocol()== givenEntityTwo.getProtocol();
+                    break;
+                case TemporaryBlockedEntity.BLOCK_PORT:
+                    areTheyEquals = givenEntityOne.getBlockedPort() == givenEntityTwo.getBlockedPort() &&  givenEntityOne.getProtocol()== givenEntityTwo.getProtocol();
+                    break;
+                case TemporaryBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP:
+                    areTheyEquals = givenEntityOne.getBlockedIP().equals(givenEntityTwo.getBlockedIP()) && givenEntityOne.getBlockedDomain().equals(givenEntityTwo.getBlockedDomain());
+                    break;
+            }
+        
+        }
+        return areTheyEquals;
+    }
+    
+    
 }
