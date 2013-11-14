@@ -52,4 +52,16 @@ public abstract class  PersistenceProvider {
          CurrentTransaction.begin();
          return CurrentTransaction;
     }
+    
+    public boolean update(){
+        try{
+            EntityTransaction currentTransaction = beginTransaction();
+            PersistenceProvider.entityManger.refresh(this);
+            currentTransaction.commit();
+            return true;
+        }catch(Exception err){
+            System.err.println(err.getMessage());
+            return false;
+        }
+    }
 }
