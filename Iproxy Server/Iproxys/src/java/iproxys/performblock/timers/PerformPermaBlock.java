@@ -14,34 +14,42 @@ import java.util.TimerTask;
 
 /**
  *
- * @author root
+ * @author Luis
  */
-public class PerformUnblockOnTemporaryEntities extends TimerTask {
+public class PerformPermaBlock extends TimerTask{
 
     @Override
     public void run() {
-        TemporaryBlockedEntity blockedEntities = new TemporaryBlockedEntity();
-        ArrayList<TemporaryBlockedEntity> unblockCandidates = blockedEntities.findEntityToUnblock();
-        for (TemporaryBlockedEntity blockedEntity : unblockCandidates) {
+        TemporaryBlockedEntity entitiesToPermaBlock = new TemporaryBlockedEntity();
+        ArrayList<TemporaryBlockedEntity> blockCandidates = entitiesToPermaBlock.findEntitiesToPermaBlock();
+        for (TemporaryBlockedEntity blockedEntity : blockCandidates) {
             switch (blockedEntity.getIdentifier()) {
 
                 case TemporaryBlockedEntity.BLOCK_IP:
                     PerformIpBlock performIpBlock = new PerformIpBlock(blockedEntity);
-                    performIpBlock.unBlock();
+                    performIpBlock.block();
+                    //crear una entrada en la tabla de bloqueados permanentemente
                     break;
                 case TemporaryBlockedEntity.BLOCK_IP_AND_PORT:
                     PerformIPPortBlock performIPPortBlock = new PerformIPPortBlock(blockedEntity);
-                    performIPPortBlock.unBlock();
+                    performIPPortBlock.block();
+                    //crear una entrada en la tabla de bloqueados permanentemente
+
                     break;
                 case TemporaryBlockedEntity.BLOCK_PORT:
                    PerformPortBlock performPortBlock = new PerformPortBlock(blockedEntity);
-                   performPortBlock.unBlock();
+                   performPortBlock.block();
+                    //crear una entrada en la tabla de bloqueados permanentemente
+
                     break;
                 case TemporaryBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP:
                     PerformHttpBlock performHttpBlock = new PerformHttpBlock(blockedEntity);
-                    performHttpBlock.unBlock();
+                    performHttpBlock.block();
+                    //crear una entrada en la tabla de bloqueados permanentemente
+
                     break;
             }
         }
     }
+    
 }
