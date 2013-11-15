@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "TemporaryBlockedEntity.findAll", query = "SELECT u FROM TemporaryBlockedEntity u"),
     @NamedQuery(name = "TemporaryBlockedEntity.findEntityToUnblock", query = "SELECT u FROM TemporaryBlockedEntity u where u.blockedOnTimeDate BETWEEN :allowTimeEnd AND :allowTimeStart"),
-    @NamedQuery(name = "TemporaryBlockedEntity.findEntityToUnblock", query = "SELECT u FROM TemporaryBlockedEntity u where u.permaBlocked = :findAllByPermaBlocked")
+    @NamedQuery(name = "TemporaryBlockedEntity.findAllByPermaBlocked", query = "SELECT u FROM TemporaryBlockedEntity u where u.permaBlocked = :permaBlockedValue")
 })
 public class TemporaryBlockedEntity extends PersistenceProvider implements Serializable {
 
@@ -56,6 +56,7 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
     public static final long HOUR_IN_MS = 60 * TemporaryBlockedEntity.MIN_IN_MS;
     public static final long MIN_IN_MS = 1000 * 60;
     public static final long DAY_IN_MS = 24 * TemporaryBlockedEntity.HOUR_IN_MS;
+
     /**
      * @return the id
      */
@@ -146,7 +147,7 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
     public void setProtocol(int protocol) {
         this.protocol = protocol;
     }
-        
+
     /**
      * @return the permaBlocked
      */
@@ -165,63 +166,75 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
 
         Query findEntityToUnblock = PersistenceProvider.entityManger.createNamedQuery("TemporaryBlockedEntity.findEntityToUnblock");
         findEntityToUnblock.setParameter("allowTimeStart", new Date(System.currentTimeMillis() - (1 * HOUR_IN_MS)), TemporalType.TIMESTAMP);
-        findEntityToUnblock.setParameter("allowTimeEnd", new Date(System.currentTimeMillis() - (1 * HOUR_IN_MS) - (10*MIN_IN_MS)), TemporalType.TIMESTAMP);
+        findEntityToUnblock.setParameter("allowTimeEnd", new Date(System.currentTimeMillis() - (1 * HOUR_IN_MS) - (10 * MIN_IN_MS)), TemporalType.TIMESTAMP);
         List<Object> resultList = findEntityToUnblock.getResultList();
         return converFromListObjectTo(resultList);
 
     }
-    
-    public ArrayList<TemporaryBlockedEntity> findEntitiesToPermaBlock(){
-        ArrayList<TemporaryBlockedEntity> entitiesToPermaBlock =   new ArrayList<>();
-        boolean firstDayHaveBeenFound = false;
-        boolean foundEntityToBlock = false; 
-        do{
-            List<TemporaryBlockedEntity> allEntities = findAllByPermaBlocked(false);
-            firstDayHaveBeenFound = false;
-            foundEntityToBlock = false; 
-            for(TemporaryBlockedEntity temporaryBlockedEntity: allEntities){
-                Date parentDate = temporaryBlockedEntity.getBlockedOnTimeDate();
-                ArrayList<TemporaryBlockedEntity> concurrentBlockedEntity = new ArrayList<>();
-                for(int index = 0; index < allEntities.size() ; index++){
-                    TemporaryBlockedEntity temporaryBlockedEntitySecond = allEntities.get(index);
-                   
-                    if(temporaryBlockedEntity.getId() !=  temporaryBlockedEntitySecond.getId()){
-                        
-                        if(areTheseEntitiesEquals(temporaryBlockedEntity,temporaryBlockedEntitySecond)){
-                            
-                            if(!firstDayHaveBeenFound && isThereADayBetweenTheseDates(parentDate,temporaryBlockedEntitySecond.getBlockedOnTimeDate())){
-                                firstDayHaveBeenFound = true;
-                                index = 0;
-                                concurrentBlockedEntity.add(temporaryBlockedEntitySecond);
-                            }else if(firstDayHaveBeenFound && isThereTwoDaysBetweenTheseDates(parentDate,temporaryBlockedEntitySecond.getBlockedOnTimeDate())){
-                                concurrentBlockedEntity.add(temporaryBlockedEntitySecond);
-                                foundEntityToBlock = true;
-                            }
-                       }
-                    }
 
-                }
-                if(foundEntityToBlock){
-                    for(TemporaryBlockedEntity temporaryBlockedEntityConcurrency : concurrentBlockedEntity){
-                        temporaryBlockedEntityConcurrency.setPermaBlocked(true);
-                        temporaryBlockedEntityConcurrency.update();
-                    }
-                    temporaryBlockedEntity.setPermaBlocked(true);
-                    temporaryBlockedEntity.update();
-                    entitiesToPermaBlock.add(temporaryBlockedEntity);
-                    break;
-                }
-                firstDayHaveBeenFound = false;
-                foundEntityToBlock = false;
-                concurrentBlockedEntity.clear();
+    public ArrayList<TemporaryBlockedEntity> findEntitiesToPermaBlock() {
+        ArrayList<TemporaryBlockedEntity> entitiesToPermaBlock = new ArrayList<>();
+        TemporaryBlockedEntity entityToPermaBlock;
+        do {
+             entityToPermaBlock = findNextEntityToPermaBlock();
+
+            if (entityToPermaBlock != null) {
+                entitiesToPermaBlock.add(entityToPermaBlock);
             }
-        }while(!foundEntityToBlock);
+
+        }while(entityToPermaBlock != null );
         return entitiesToPermaBlock;
-    
-    
     }
     
-    private ArrayList<TemporaryBlockedEntity> converFromListObjectTo(List<Object> inCommingList ){
+    /*
+     Returns true if finds an entity to perma block
+     */
+
+    private TemporaryBlockedEntity findNextEntityToPermaBlock() {
+        boolean firstDayHaveBeenFound = false;
+        boolean foundEntityToBlock = false;
+        List<TemporaryBlockedEntity> allEntities = findAllByPermaBlocked(false);
+        TemporaryBlockedEntity entityToPermaBlock = null;
+        for (TemporaryBlockedEntity temporaryBlockedEntity : allEntities) {
+            Date parentDate = temporaryBlockedEntity.getBlockedOnTimeDate();
+            ArrayList<TemporaryBlockedEntity> concurrentBlockedEntity = new ArrayList<>();
+            for (int index = 0; index < allEntities.size(); index++) {
+                TemporaryBlockedEntity temporaryBlockedEntitySecond = allEntities.get(index);
+
+                if (temporaryBlockedEntity.getId() != temporaryBlockedEntitySecond.getId()) {
+
+                    if (areTheseEntitiesEquals(temporaryBlockedEntity, temporaryBlockedEntitySecond)) {
+
+                        if (!firstDayHaveBeenFound && isThereADayBetweenTheseDates(parentDate, temporaryBlockedEntitySecond.getBlockedOnTimeDate())) {
+                            firstDayHaveBeenFound = true;
+                            index = 0;
+                            concurrentBlockedEntity.add(temporaryBlockedEntitySecond);
+                        } else if (firstDayHaveBeenFound && isThereTwoDaysBetweenTheseDates(parentDate, temporaryBlockedEntitySecond.getBlockedOnTimeDate())) {
+                            concurrentBlockedEntity.add(temporaryBlockedEntitySecond);
+                            foundEntityToBlock = true;
+                        }
+                    }
+                }
+
+            }
+            if (foundEntityToBlock) {
+                for (TemporaryBlockedEntity temporaryBlockedEntityConcurrency : concurrentBlockedEntity) {
+                    temporaryBlockedEntityConcurrency.setPermaBlocked(true);
+                    temporaryBlockedEntityConcurrency.update();
+                }
+                temporaryBlockedEntity.setPermaBlocked(true);
+                temporaryBlockedEntity.update();
+                entityToPermaBlock = temporaryBlockedEntity;
+                break;
+            }
+            firstDayHaveBeenFound = false;
+            foundEntityToBlock = false;
+            concurrentBlockedEntity.clear();
+        }
+        return entityToPermaBlock;
+    }
+
+    private ArrayList<TemporaryBlockedEntity> converFromListObjectTo(List<Object> inCommingList) {
         ArrayList<TemporaryBlockedEntity> castedList = new ArrayList<>();
         for (Object o : inCommingList) {
             Object trans = o;
@@ -230,48 +243,46 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
         }
         return castedList;
     }
-    
-    
-    private boolean areTheseEntitiesEquals(TemporaryBlockedEntity givenEntityOne, TemporaryBlockedEntity givenEntityTwo){
+
+    private boolean areTheseEntitiesEquals(TemporaryBlockedEntity givenEntityOne, TemporaryBlockedEntity givenEntityTwo) {
         boolean areTheyEquals = false;
-        if(givenEntityOne.getIdentifier() == givenEntityTwo.getIdentifier()){
-            
+        if (givenEntityOne.getIdentifier() == givenEntityTwo.getIdentifier()) {
+
             switch (givenEntityOne.getIdentifier()) {
                 case TemporaryBlockedEntity.BLOCK_IP:
-                    areTheyEquals = givenEntityOne.getBlockedIP().equals(givenEntityTwo.getBlockedIP()); 
+                    areTheyEquals = givenEntityOne.getBlockedIP().equals(givenEntityTwo.getBlockedIP());
                     break;
                 case TemporaryBlockedEntity.BLOCK_IP_AND_PORT:
-                    areTheyEquals = givenEntityOne.getBlockedIP().equals(givenEntityTwo.getBlockedIP()) && givenEntityOne.getBlockedPort() == givenEntityTwo.getBlockedPort() &&  givenEntityOne.getProtocol()== givenEntityTwo.getProtocol();
+                    areTheyEquals = givenEntityOne.getBlockedIP().equals(givenEntityTwo.getBlockedIP()) && givenEntityOne.getBlockedPort() == givenEntityTwo.getBlockedPort() && givenEntityOne.getProtocol() == givenEntityTwo.getProtocol();
                     break;
                 case TemporaryBlockedEntity.BLOCK_PORT:
-                    areTheyEquals = givenEntityOne.getBlockedPort() == givenEntityTwo.getBlockedPort() &&  givenEntityOne.getProtocol()== givenEntityTwo.getProtocol();
+                    areTheyEquals = givenEntityOne.getBlockedPort() == givenEntityTwo.getBlockedPort() && givenEntityOne.getProtocol() == givenEntityTwo.getProtocol();
                     break;
                 case TemporaryBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP:
                     areTheyEquals = givenEntityOne.getBlockedIP().equals(givenEntityTwo.getBlockedIP()) && givenEntityOne.getBlockedDomain().equals(givenEntityTwo.getBlockedDomain());
                     break;
             }
-        
+
         }
         return areTheyEquals;
     }
-    
-    private boolean isThereADayBetweenTheseDates(Date dateOne, Date dateTwo){
+
+    private boolean isThereADayBetweenTheseDates(Date dateOne, Date dateTwo) {
         long dateSubstraction = dateOne.getTime() - dateTwo.getTime();
-        dateSubstraction = (dateSubstraction < 0)?dateSubstraction*-1:dateSubstraction;
-        return ( (TemporaryBlockedEntity.DAY_IN_MS - (30 * TemporaryBlockedEntity.MIN_IN_MS) ) <= dateSubstraction &&  dateSubstraction <= ((TemporaryBlockedEntity.DAY_IN_MS + 30 * TemporaryBlockedEntity.MIN_IN_MS ))  );
+        dateSubstraction = (dateSubstraction < 0) ? dateSubstraction * -1 : dateSubstraction;
+        return ((TemporaryBlockedEntity.DAY_IN_MS - (30 * TemporaryBlockedEntity.MIN_IN_MS)) <= dateSubstraction && dateSubstraction <= ((TemporaryBlockedEntity.DAY_IN_MS + 30 * TemporaryBlockedEntity.MIN_IN_MS)));
     }
-    
-    private boolean isThereTwoDaysBetweenTheseDates(Date dateOne, Date dateTwo){
+
+    private boolean isThereTwoDaysBetweenTheseDates(Date dateOne, Date dateTwo) {
         long dateSubstraction = dateOne.getTime() - dateTwo.getTime();
-        dateSubstraction = (dateSubstraction < 0)?dateSubstraction*-1:dateSubstraction;
-        return ( ((2*TemporaryBlockedEntity.DAY_IN_MS) - (30 * TemporaryBlockedEntity.MIN_IN_MS) ) <= dateSubstraction &&  dateSubstraction <= (( (2*TemporaryBlockedEntity.DAY_IN_MS) + 30 * TemporaryBlockedEntity.MIN_IN_MS ))  );
+        dateSubstraction = (dateSubstraction < 0) ? dateSubstraction * -1 : dateSubstraction;
+        return (((2 * TemporaryBlockedEntity.DAY_IN_MS) - (30 * TemporaryBlockedEntity.MIN_IN_MS)) <= dateSubstraction && dateSubstraction <= (((2 * TemporaryBlockedEntity.DAY_IN_MS) + 30 * TemporaryBlockedEntity.MIN_IN_MS)));
     }
-    
-     private ArrayList<TemporaryBlockedEntity> findAllByPermaBlocked(boolean permaBlockedValue){
-         Query findAllByPermaBlocked = PersistenceProvider.entityManger.createNamedQuery("TemporaryBlockedEntity.findAllByPermaBlocked");
-        findAllByPermaBlocked.setParameter("permaBlockedValue", permaBlockedValue );
+
+    private ArrayList<TemporaryBlockedEntity> findAllByPermaBlocked(boolean permaBlockedValue) {
+        Query findAllByPermaBlocked = PersistenceProvider.entityManger.createNamedQuery("TemporaryBlockedEntity.findAllByPermaBlocked");
+        findAllByPermaBlocked.setParameter("permaBlockedValue", permaBlockedValue);
         List<Object> resultList = findAllByPermaBlocked.getResultList();
         return converFromListObjectTo(resultList);
-     }
-    
+    }
 }
