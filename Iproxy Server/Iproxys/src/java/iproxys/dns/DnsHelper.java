@@ -6,7 +6,9 @@ package iproxys.dns;
 
 
 import com.google.common.net.InternetDomainName;
+import java.io.IOException;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.Properties;
@@ -27,9 +29,31 @@ import javax.naming.directory.InitialDirContext;
  */
 public class DnsHelper {
 
-   public static String getDomainNameFromIp(String ipAddress) {
+   public static boolean isDomainReachable(String domain) {
+        Socket socket = null;
+        boolean isDomainReachable = false;
+        try {
+            socket = new Socket(domain, 80);
+            isDomainReachable = true;
+        } catch (IOException ex) {
+        } finally {
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+        return isDomainReachable;
+    }
+
+    public static String getDomainNameFromIp(String ipAddress) {
         String ipHostName = getHostName(ipAddress);
-        return (ipHostName.equals(ipAddress))?ipAddress:getTopLevelDomain(ipHostName);
+        if(ipHostName.equals(ipAddress)){
+            return ipAddress;
+        }
+        String domainName = getTopLevelDomain(ipHostName);
+        return isDomainReachable(domainName)?domainName:ipAddress;
     }
 
     public static String getTopLevelDomain(String uri) {
