@@ -7,10 +7,8 @@ package iproxys.externalAccess;
 import com.iproxys.interfaces.UserManageBeanRemote;
 import iproxy.client.Beans.User;
 import iproxys.PersistenceData.UserTable;
-import iproxys.dataFacade.UserTableFacadeLocal;
 import java.util.ArrayList;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
@@ -22,9 +20,6 @@ import javax.ejb.Stateless;
 @Remote
 public class UserManageBean implements UserManageBeanRemote {
 
-    @EJB
-    UserTableFacadeLocal userBean;
-
     @Override
     public boolean Insert(User user) {
 
@@ -34,32 +29,35 @@ public class UserManageBean implements UserManageBeanRemote {
         newuser.setNombre(user.getNombre());
         newuser.setPassword(user.getPassword());
         newuser.setUsername(user.getUsername());
-        return userBean.create(newuser);
+        return newuser.save();
 
     }
 
     @Override
     public List<User> getAllUsers() {
-        List<UserTable> findAll = userBean.findAll();
-
-        List<User> listUser = new ArrayList<User>();
-        for (UserTable user : findAll) {
+        UserTable userProvider = new UserTable();
+        List<User> userList = new ArrayList<>();
+        for (Object userObject : userProvider.findAll()) {
+            UserTable user = (UserTable) userObject;
             User newuser = new User();
             newuser.setApellido(user.getApellido());
             newuser.setCorreo(user.getCorreo());
             newuser.setNombre(user.getNombre());
             newuser.setPassword(user.getPassword());
             newuser.setUsername(user.getUsername());
-            listUser.add(newuser);
+            userList.add(newuser);
         }
-        return listUser;
+        return userList;
     }
 
     @Override
     public boolean remove(String username) {
-        UserTable findbyuser = userBean.findbyUsername(username);
-        if (findbyuser != null) {
-            return userBean.remove(findbyuser);
+        
+        UserTable userProvider = new UserTable();
+        userProvider= userProvider.findbyUsername(username);
+        if (userProvider != null) {
+            userProvider.delete();
+            return true;
         } else {
             return false;
         }

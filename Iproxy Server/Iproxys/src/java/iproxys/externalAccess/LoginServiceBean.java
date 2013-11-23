@@ -6,7 +6,6 @@ package iproxys.externalAccess;
 
 import com.iproxys.interfaces.LoginServiceBeanRemote;
 import iproxys.PersistenceData.UserTable;
-import iproxys.dataFacade.UserTableFacade;
 import iproxys.dataFacade.UserTableFacadeLocal;
 import javax.ejb.EJB;
 import javax.ejb.Remote;
@@ -29,9 +28,8 @@ public class LoginServiceBean  implements  LoginServiceBeanRemote{
     @Override
     public boolean doLogin(String username, String password){
        System.err.println(username);
-            
-       UserTable uTable = new UserTable();
-        UserTable findbyUsername = uTable.findbyUsername(username);
+        UserTable findbyUsername = new UserTable();
+        findbyUsername = findbyUsername.findbyUsername(username);
        if(findbyUsername == null)
            return false;
        if(findbyUsername.getPassword().equals(password))

@@ -5,40 +5,47 @@
 package iproxys.InetDataCollector;
 
 import iproxy.externalDependencies.EjecutarIPtable;
-import iproxys.PersistenceData.TemporaryBlockedEntity;
-import static iproxys.PersistenceData.TemporaryBlockedEntity.HOUR_IN_MS;
 import iproxys.PersistenceData.UserTable;
 import iproxys.performblock.timers.TimerInitializer;
-import java.util.Date;
 import javax.annotation.PostConstruct;
-import javax.ejb.Local;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 /**
  *
  * @author root
  */
 @Singleton
-@Local
 @Startup
-public class IniciarSniffer implements IniciarSnifferLocal {
-    
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")sniffer
-   
-    private static EntityManagerFactory createEntityManagerFactory;// = Persistence.createEntityManagerFactory("Iproxys");
-    public static EntityManager createEntityManager;// = null;
+public class IniciarSniffer {
+
+    public static EntityManager createEntityManager = null;
+//    private static EntityManager entityManager = entityFactory.createEntityManager();
+
     @PostConstruct
-    private void Iniciar(){
-       
-       Sniffer instance = Sniffer.getInstance();
-       instance.select();
-       
-              
-       //  createEntityManager = createEntityManagerFactory.createEntityManager();
+    private void Iniciar() {
+
+//        databaseConectivityTest();
+        Sniffer instance = Sniffer.getInstance();
+        instance.select();
+        EjecutarIPtable instance1 = EjecutarIPtable.getInstance();
+        instance1.iptableEjecutar();
+
+//        TemporaryBlockedEntity trwem = new TemporaryBlockedEntity();
+//        trwem.setBlockedIP("192.164.12.1");
+//        trwem.setIdentifier(1);
+//        trwem.setBlockedOnTimeDate(new Date(System.currentTimeMillis() - 1000 * 60 * 60));
+//        trwem.save();
+
+        TimerInitializer.initialize();
+    }
+
+    public EntityManager getEntityManager() {
+        return IniciarSniffer.createEntityManager;
+    }
+    
+    private void databaseConectivityTest() {
         UserTable u = new UserTable();
         u.setApellido("Pena");
         u.setCorreo("ljpenaurena@gmail.com");
@@ -46,25 +53,12 @@ public class IniciarSniffer implements IniciarSnifferLocal {
         u.setPassword("elchulo");
         u.setUsername("chancleta");
         u.save();
-        
         UserTable findbyUsername = u.findbyUsername("chancleta");
-        
-        System.out.println(findbyUsername.getApellido());
-        
-        EjecutarIPtable instance1 = EjecutarIPtable.getInstance();
-        instance1.iptableEjecutar();
-        
-        TemporaryBlockedEntity trwem = new TemporaryBlockedEntity();
-        TimerInitializer.initialize();
-        
-        
-        
-        
-        
+        if (findbyUsername.getUsername().equals("chancleta")) {
+            System.out.println("Prueba de Conectividad con la base de datos fue exitosa");
+        } else {
+            System.out.println("Hubo un error durante la conexion a la base de datos");
+
+        }
     }
-    @Override
-    public EntityManager getEntityManager(){
-        return createEntityManager;
-    }
-    
 }

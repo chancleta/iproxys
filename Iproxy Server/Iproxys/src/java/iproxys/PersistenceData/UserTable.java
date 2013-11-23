@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NamedQueries({
     @NamedQuery(name = UserTable.findAllUsers, query = "select u from UserTable u"),
     @NamedQuery(name = UserTable.findbyUsername, query = "select u from UserTable u where u.username = :username"),
-    @NamedQuery(name="UserTable.findAll",query="SELECT u FROM UserTable u")
+    @NamedQuery(name = "UserTable.findAll", query = "SELECT u FROM UserTable u")
 })
 public class UserTable extends PersistenceProvider implements Serializable {
 
@@ -36,6 +36,10 @@ public class UserTable extends PersistenceProvider implements Serializable {
     @Column(name = "correo", unique = true, length = 100, nullable = false)
     private String correo;
 
+    public UserTable() {
+        super();
+    }
+        
     /**
      * @return the id
      */
@@ -119,25 +123,23 @@ public class UserTable extends PersistenceProvider implements Serializable {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
-    
-    public UserTable findbyUsername(String username){
-        Query createNamedQuery = entityManger.createNamedQuery(UserTable.findbyUsername);
-        createNamedQuery.setParameter("username", username);
-        UserTable  user = null;
-        try{
-            Object o = createNamedQuery.getSingleResult();
-           UserTable users = (UserTable) o;
-                      System.out.println(users.getUsername()+"  "+users.getPassword());
 
-           user = users;
-        }catch(Exception err){
+    public UserTable findbyUsername(String username) {
+        Query createNamedQuery = entityManager.createNamedQuery(UserTable.findbyUsername, UserTable.class);
+        createNamedQuery.setParameter("username", username);
+        UserTable user = null;
+        try {
+            Object o = createNamedQuery.getSingleResult();
+            UserTable users = (UserTable) o;
+            user = users;
+        } catch (Exception err) {
             System.out.println(err.getMessage());
-        }finally{
+        } finally {
             return user;
         }
-        
+
         // createNamedQuery.setParameter("username", username);
-      
-            
+
+
     }
 }

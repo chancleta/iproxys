@@ -57,6 +57,10 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
     public static final long MIN_IN_MS = 1000 * 60;
     public static final long DAY_IN_MS = 24 * TemporaryBlockedEntity.HOUR_IN_MS;
 
+    public TemporaryBlockedEntity() {
+        super();
+    }
+    
     /**
      * @return the id
      */
@@ -164,7 +168,7 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
 
     public ArrayList<TemporaryBlockedEntity> findEntityToUnblock() {
 
-        Query findEntityToUnblock = PersistenceProvider.entityManger.createNamedQuery("TemporaryBlockedEntity.findEntityToUnblock");
+        Query findEntityToUnblock = entityManager.createNamedQuery("TemporaryBlockedEntity.findEntityToUnblock",TemporaryBlockedEntity.class);
         findEntityToUnblock.setParameter("allowTimeStart", new Date(System.currentTimeMillis() - (1 * HOUR_IN_MS)), TemporalType.TIMESTAMP);
         findEntityToUnblock.setParameter("allowTimeEnd", new Date(System.currentTimeMillis() - (1 * HOUR_IN_MS) - (10 * MIN_IN_MS)), TemporalType.TIMESTAMP);
         List<Object> resultList = findEntityToUnblock.getResultList();
@@ -212,6 +216,7 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
                         } else if (firstDayHaveBeenFound && isThereTwoDaysBetweenTheseDates(parentDate, temporaryBlockedEntitySecond.getBlockedOnTimeDate())) {
                             concurrentBlockedEntity.add(temporaryBlockedEntitySecond);
                             foundEntityToBlock = true;
+                            break;
                         }
                     }
                 }
@@ -280,7 +285,7 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
     }
 
     private ArrayList<TemporaryBlockedEntity> findAllByPermaBlocked(boolean permaBlockedValue) {
-        Query findAllByPermaBlocked = PersistenceProvider.entityManger.createNamedQuery("TemporaryBlockedEntity.findAllByPermaBlocked");
+        Query findAllByPermaBlocked = entityManager.createNamedQuery("TemporaryBlockedEntity.findAllByPermaBlocked",TemporaryBlockedEntity.class);
         findAllByPermaBlocked.setParameter("permaBlockedValue", permaBlockedValue);
         List<Object> resultList = findAllByPermaBlocked.getResultList();
         return converFromListObjectTo(resultList);

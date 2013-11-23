@@ -51,7 +51,9 @@ public class PermanentBlockedEntity extends PersistenceProvider implements Seria
     private static int BLOCK_IP_AND_PORT = 2;
     private static int BLOCK_PORT = 3;
     private static int BLOCK_HTTP_DOMAIN_TO_IP = 4;
-
+    public PermanentBlockedEntity(){
+        super();
+    }
     /**
      * @return the id
      */
@@ -158,7 +160,7 @@ public class PermanentBlockedEntity extends PersistenceProvider implements Seria
     }
 
     public ArrayList<PermanentBlockedEntity> findAllByAlreadyUnblocked(boolean alreadyUnblocked) {
-        Query findEntityToUnblock = PersistenceProvider.entityManger.createNamedQuery("PermanentBlockedEntity.findAllByAlreadyUnblocked");
+        Query findEntityToUnblock = entityManager.createNamedQuery("PermanentBlockedEntity.findAllByAlreadyUnblocked",PermanentBlockedEntity.class);
         findEntityToUnblock.setParameter("alreadyUnblocked", alreadyUnblocked);
         return converFromListObjectTo(findEntityToUnblock.getResultList());
 
