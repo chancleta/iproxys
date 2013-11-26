@@ -25,26 +25,16 @@ public class IniciarSniffer {
 
     @PostConstruct
     private void Iniciar() {
-
-//        databaseConectivityTest();
         Sniffer instance = Sniffer.getInstance();
         instance.select();
-        EjecutarIPtable instance1 = EjecutarIPtable.getInstance();
-        instance1.iptableEjecutar();
-
-//        TemporaryBlockedEntity trwem = new TemporaryBlockedEntity();
-//        trwem.setBlockedIP("192.164.12.1");
-//        trwem.setIdentifier(1);
-//        trwem.setBlockedOnTimeDate(new Date(System.currentTimeMillis() - 1000 * 60 * 60));
-//        trwem.save();
-
+        EjecutarIPtable.iptableEjecutar();
         TimerInitializer.initialize();
     }
 
     public EntityManager getEntityManager() {
         return IniciarSniffer.createEntityManager;
     }
-    
+
     private void databaseConectivityTest() {
         UserTable u = new UserTable();
         u.setApellido("Pena");

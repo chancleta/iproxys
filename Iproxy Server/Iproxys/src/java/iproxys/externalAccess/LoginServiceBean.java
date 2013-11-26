@@ -6,8 +6,6 @@ package iproxys.externalAccess;
 
 import com.iproxys.interfaces.LoginServiceBeanRemote;
 import iproxys.PersistenceData.UserTable;
-import iproxys.dataFacade.UserTableFacadeLocal;
-import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
@@ -20,11 +18,7 @@ import javax.ejb.Stateless;
 public class LoginServiceBean  implements  LoginServiceBeanRemote{
 
     // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-    
-    @EJB
-    UserTableFacadeLocal user;
-    
+ 
     @Override
     public boolean doLogin(String username, String password){
        System.err.println(username);

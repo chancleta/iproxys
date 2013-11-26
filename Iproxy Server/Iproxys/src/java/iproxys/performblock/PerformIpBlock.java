@@ -23,11 +23,11 @@ public class PerformIpBlock implements PerformBlock {
 
     @Override
     public void block() {
-        ejecutarComando.Ejecutar_Comando("iptables -A INPUT -s " + temporaryBlockedEntity.getBlockedIP() + " -j DROP");
+        ejecutarComando.Ejecutar_Comando("iptables -I FORWARD -s " + temporaryBlockedEntity.getBlockedIP() + " -j DROP");
     }
 
     @Override
     public void unBlock() {
-        ejecutarComando.Ejecutar_Comando("iptables -D INPUT -s " + temporaryBlockedEntity.getBlockedIP() + " -j DROP");
+        ejecutarComando.Ejecutar_Comando("iptables -D FORWARD -s " + temporaryBlockedEntity.getBlockedIP() + " -j DROP");
     }
 }

@@ -7,7 +7,6 @@ package iproxys.InetDataCollector;
 import iproxys.PersistenceData.SummaryIPPort_BandWidth;
 import iproxys.PersistenceData.SummaryIP_BandWidth;
 import iproxys.PersistenceData.SummaryPort_BandWidth;
-import java.util.Date;
 import java.util.List;
 import jpcap.PacketReceiver;
 import jpcap.packet.Packet;
