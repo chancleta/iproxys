@@ -139,6 +139,7 @@ public class UnblockableEntity extends PersistenceProvider implements Serializab
         unBean.setBlockedPort(blockedPort);
         unBean.setIdentifier(identifier);
         unBean.setId(id);
+        unBean.setProtocol(protocol);
         return unBean;
     }
 }

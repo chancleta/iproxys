@@ -14,6 +14,7 @@ public class UnblockableBean {
     private String blockedIP;
     private int blockedPort;
     private long id;
+     private int protocol;
 
     /**
      * @return the identifier
@@ -69,5 +70,19 @@ public class UnblockableBean {
      */
     public void setId(long id) {
         this.id = id;
+    }
+
+    /**
+     * @return the protocol
+     */
+    public int getProtocol() {
+        return protocol;
+    }
+
+    /**
+     * @param protocol the protocol to set
+     */
+    public void setProtocol(int protocol) {
+        this.protocol = protocol;
     }
 }

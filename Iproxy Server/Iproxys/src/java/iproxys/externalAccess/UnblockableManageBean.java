@@ -9,6 +9,7 @@ import iproxy.client.Beans.UnblockableBean;
 import iproxy.externalDependencies.EjecutarComando;
 import iproxys.PersistenceData.UnblockableEntity;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -23,6 +24,12 @@ public class UnblockableManageBean implements UnblockableManageBeanRemote {
 
     @Override
     public boolean Insert(String ip) {
+        UnblockableBean unblockableBean = null;
+        UnblockableEntity unblockableProvider = new UnblockableEntity();
+        unblockableProvider.setBlockedIP(unblockableBean.getBlockedIP());
+        unblockableProvider.setBlockedPort(unblockableBean.getBlockedPort());
+        unblockableProvider.setInsertedOnDatee(new Date());
+        unblockableProvider.setProtocol(unblockableBean.getProtocol());
         return true;
 
 
