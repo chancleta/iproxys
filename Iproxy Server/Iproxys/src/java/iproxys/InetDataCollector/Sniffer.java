@@ -7,7 +7,6 @@ package iproxys.InetDataCollector;
 import iproxy.externalDependencies.ConfiguracionGeneral;
 import iproxy.externalDependencies.SquidController;
 import iproxys.PersistenceData.*;
-import iproxys.dataFacade.UnBlockableIPFacade;
 import iproxys.dns.DnsLookupper;
 import iproxys.jess.JessSuggestions;
 import iproxys.jess.ServiceCore;
@@ -53,8 +52,6 @@ public class Sniffer extends Thread {
     private SquidController squidControllerInst = SquidController.getInstance();
     private boolean control = true;
     private String domain;
-    @EJB
-    UnBlockableIPFacade unblockables = UnBlockableIPFacade.getInstance();
     private static TimerTask netMonTask = new TimerTask() {
         @Override
         public void run() {
