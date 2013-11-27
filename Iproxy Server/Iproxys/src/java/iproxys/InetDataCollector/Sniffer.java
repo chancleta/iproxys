@@ -4,6 +4,7 @@
  */
 package iproxys.InetDataCollector;
 
+import iproxy.client.Beans.UnblockableBean;
 import iproxy.externalDependencies.ConfiguracionGeneral;
 import iproxy.externalDependencies.SquidController;
 import iproxys.PersistenceData.*;
@@ -19,7 +20,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
-import javax.ejb.EJB;
 import jpcap.NetworkInterface;
 import jpcap.NetworkInterfaceAddress;
 
@@ -48,10 +48,6 @@ public class Sniffer extends Thread {
     public static double networkMonitor = 0;
     public static double networkMonitorLastSeg = 0;
     private static Timer networkMonTimer = null;
-    private DnsLookupper dnsLookIns = DnsLookupper.getInstance();
-    private SquidController squidControllerInst = SquidController.getInstance();
-    private boolean control = true;
-    private String domain;
     private static TimerTask netMonTask = new TimerTask() {
         @Override
         public void run() {
@@ -136,42 +132,47 @@ public class Sniffer extends Thread {
                 jess.addList(TempIPPDUs.toArray());
                 jess.addList(TempIPPortPDUs.toArray());
                 jess.addList(TempPortPDUs.toArray());
+                UnblockableEntity unblockableEntityProvider = new UnblockableEntity();
+                List<Object> unblockableEntities = unblockableEntityProvider.findAll();
+
+
                 for (JessSuggestions sug : jess.GetAllSuggestions()) {
                     TemporaryBlockedEntity temporaryBlockedEntity = new TemporaryBlockedEntity();
-                    System.out.println(sug.getAction() + "  tipo:" + sug.getTipo() + "  ipdst:" + sug.getIp_Dst() + "  ipsrc:" + sug.getIp_Src());
-                    PerformBlock performBlock = null;
-                    switch (sug.getTipo()) {
-                        
-                        case TemporaryBlockedEntity.BLOCK_IP:
-                            temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
-                            PerformIpBlock performIpBlock = new PerformIpBlock(temporaryBlockedEntity);
-                            performBlock = (PerformBlock) performIpBlock;
-                            break;
-                        case TemporaryBlockedEntity.BLOCK_IP_AND_PORT:
-                            temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
-                            temporaryBlockedEntity.setBlockedPort(sug.getPort());
-                            temporaryBlockedEntity.setProtocol(sug.getProtocol());
-                            PerformIPPortBlock performIPPortBlock = new PerformIPPortBlock(temporaryBlockedEntity);
-                            performBlock = (PerformBlock) performIPPortBlock;
-                            break;
-                        case TemporaryBlockedEntity.BLOCK_PORT:
-                            temporaryBlockedEntity.setBlockedPort(sug.getPort());
-                            temporaryBlockedEntity.setProtocol(sug.getProtocol());
-                            PerformPortBlock performPortBlock = new PerformPortBlock(temporaryBlockedEntity);
-                            performBlock = (PerformBlock) performPortBlock;
-                            break;
-                        case TemporaryBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP:
-                            temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
-                            // ARREGLAR DOMINIO
-                            temporaryBlockedEntity.setBlockedDomain(sug.getIp_Src());
-                            PerformHttpBlock performHttpBlock = new PerformHttpBlock(temporaryBlockedEntity);
-                            performBlock = (PerformBlock) performHttpBlock;
-                            break;
+//                    System.out.println(sug.getAction() + "  tipo:" + sug.getTipo() + "  ipdst:" + sug.getIp_Dst() + "  ipsrc:" + sug.getIp_Src());
+                    if (!isThisEntityUnblockeable(unblockableEntities, temporaryBlockedEntity)) {
+                        switch (sug.getTipo()) {
+                            case TemporaryBlockedEntity.BLOCK_IP:
+                                temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
+                                PerformIpBlock performIpBlock = new PerformIpBlock(temporaryBlockedEntity);
+                                performIpBlock.block();
+                                break;
+                            case TemporaryBlockedEntity.BLOCK_IP_AND_PORT:
+                                temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
+                                temporaryBlockedEntity.setBlockedPort(sug.getPort());
+                                temporaryBlockedEntity.setProtocol(sug.getProtocol());
+                                PerformIPPortBlock performIPPortBlock = new PerformIPPortBlock(temporaryBlockedEntity);
+                                performIPPortBlock.block();
+                                break;
+                            case TemporaryBlockedEntity.BLOCK_PORT:
+                                temporaryBlockedEntity.setBlockedPort(sug.getPort());
+                                temporaryBlockedEntity.setProtocol(sug.getProtocol());
+                                PerformPortBlock performPortBlock = new PerformPortBlock(temporaryBlockedEntity);
+                                performPortBlock.block();
+                                break;
+                            case TemporaryBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP:
+                                temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
+                                // ARREGLAR DOMINIO
+                                temporaryBlockedEntity.setBlockedDomain(sug.getIp_Src());
+                                PerformHttpBlock performHttpBlock = new PerformHttpBlock(temporaryBlockedEntity);
+                                performHttpBlock.block();
+                                break;
+                        }
+                        temporaryBlockedEntity.setIdentifier(sug.getTipo());
+                        temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
+                        temporaryBlockedEntity.save();
+                    }else{
+                         System.out.println("Entidad no puede ser bloqueada ip:"+temporaryBlockedEntity.getBlockedIP()+" port:"+temporaryBlockedEntity.getBlockedPort() );
                     }
-                    temporaryBlockedEntity.setIdentifier(sug.getTipo());
-                    temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
-                    performBlock.block();
-                    temporaryBlockedEntity.save();
                 }
                 jess.eraseData();
                 Sniffer.TempPortPDUs.clear();
@@ -182,6 +183,32 @@ public class Sniffer extends Thread {
         }
     }
 
+    private boolean isThisEntityUnblockeable(List<Object> unblockableEntities, TemporaryBlockedEntity temporaryBlockedEntity) {
+        boolean isItUnblockable = false;
+        for (Object unblockeableObject : unblockableEntities) {
+
+            UnblockableEntity unblockableEntity = (UnblockableEntity) unblockeableObject;
+            if (unblockableEntity.getIdentifier() == temporaryBlockedEntity.getIdentifier()) {
+
+                switch (unblockableEntity.getIdentifier()) {
+                    case TemporaryBlockedEntity.BLOCK_IP:
+                        isItUnblockable = unblockableEntity.getBlockedIP().equals(temporaryBlockedEntity.getBlockedIP());
+                        break;
+                    case TemporaryBlockedEntity.BLOCK_IP_AND_PORT:
+                        isItUnblockable = unblockableEntity.getBlockedIP().equals(temporaryBlockedEntity.getBlockedIP()) && temporaryBlockedEntity.getBlockedPort() == temporaryBlockedEntity.getBlockedPort() && temporaryBlockedEntity.getProtocol() == temporaryBlockedEntity.getProtocol();
+                        break;
+                    case TemporaryBlockedEntity.BLOCK_PORT:
+                        isItUnblockable = unblockableEntity.getBlockedPort() == temporaryBlockedEntity.getBlockedPort() && temporaryBlockedEntity.getProtocol() == temporaryBlockedEntity.getProtocol();
+                        break;
+                }
+            }
+            if (isItUnblockable) {
+                return isItUnblockable;
+            }
+        }
+        return isItUnblockable;
+    }
+
     private void setFilter() throws IOException {
         NetworkInterfaceAddress[] IPaddr = InetInterfaces[1].addresses;
         Sniffer.InterfaceIP = IPaddr[0].address.getHostAddress();
@@ -190,12 +217,15 @@ public class Sniffer extends Thread {
         System.err.println("dst net " + getNetwork(InterfaceIP, interfaceMask) + " mask " + IPaddr[0].subnet.getHostAddress() + "");
 
     }
+
     public void select() {
         startSniff(1);
         System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[0].name);
     }
+
     private Sniffer() {
     }
+
     public static Sniffer getInstance() {
         if (sniffer == null) {
             sniffer = new Sniffer();

@@ -4,7 +4,6 @@
  */
 package iproxys.performblock;
 
-import iproxy.externalDependencies.EjecutarComando;
 import iproxys.PersistenceData.TemporaryBlockedEntity;
 
 /**
@@ -22,6 +21,13 @@ public class PerformHttpBlock implements PerformBlock {
 
     @Override
     public void block() {
+        
+        
+        
+        
+        
+        
+        
     }
 
     @Override
