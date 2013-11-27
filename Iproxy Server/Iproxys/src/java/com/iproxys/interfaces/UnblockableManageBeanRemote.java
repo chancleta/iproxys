@@ -4,6 +4,7 @@
  */
 package com.iproxys.interfaces;
 
+import iproxy.client.Beans.UnblockableBean;
 import javax.ejb.Remote;
 
 /**
@@ -13,11 +14,11 @@ import javax.ejb.Remote;
 @Remote
 public interface UnblockableManageBeanRemote {
 
-    public boolean Insert(java.lang.String ip);
+    public boolean Insert(UnblockableBean unblockableBean);
 
-    public java.util.List<java.lang.String> getAllIP();
+    public java.util.List<UnblockableBean> getAllUnblockableEntities();
 
-    public boolean remove(java.lang.String ip);
+    public boolean remove(UnblockableBean unblockableBean);
 
     public void setSystemPassword(java.lang.String password);
 

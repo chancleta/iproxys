@@ -4,6 +4,7 @@
  */
 package iproxy.client.gui;
 
+import iproxy.client.Beans.UnblockableBean;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
@@ -23,7 +24,8 @@ public class AddUnblockIP extends javax.swing.JDialog {
      */
     public static final int RET_OK = 1;
     public String ip = "";
-
+    private int protocol = 6; //Default TCP
+    public UnblockableBean unblockableBean;
     /**
      * Creates new form AddUnblockIP
      */
@@ -61,6 +63,7 @@ public class AddUnblockIP extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup2 = new javax.swing.ButtonGroup();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         IpInput1 = new javax.swing.JTextField();
@@ -72,6 +75,11 @@ public class AddUnblockIP extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         IpInput4 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        blockedPortLabel = new javax.swing.JTextField();
+        udpButton = new javax.swing.JRadioButton();
+        tcpButton = new javax.swing.JRadioButton();
+        jLabel7 = new javax.swing.JLabel();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -150,20 +158,50 @@ public class AddUnblockIP extends javax.swing.JDialog {
 
         jLabel2.setText("Agregar Nueva IP");
 
+        jLabel6.setText("Puerto:");
+
+        blockedPortLabel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blockedPortLabelActionPerformed(evt);
+            }
+        });
+        blockedPortLabel.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                blockedPortLabelKeyPressed(evt);
+            }
+        });
+
+        buttonGroup2.add(udpButton);
+        udpButton.setText("UDP");
+        udpButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                udpButtonActionPerformed(evt);
+            }
+        });
+
+        buttonGroup2.add(tcpButton);
+        tcpButton.setSelected(true);
+        tcpButton.setText("TCP");
+        tcpButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tcpButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Protocolo");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cancelButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -180,8 +218,19 @@ public class AddUnblockIP extends javax.swing.JDialog {
                                 .addGap(6, 6, 6)
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(IpInput4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(IpInput4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(udpButton)
+                                    .addComponent(blockedPortLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(tcpButton))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 180, Short.MAX_VALUE)
+                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cancelButton)))
+                .addContainerGap())
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelButton, okButton});
@@ -191,7 +240,7 @@ public class AddUnblockIP extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(IpInput1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
@@ -201,7 +250,16 @@ public class AddUnblockIP extends javax.swing.JDialog {
                     .addComponent(IpInput3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(IpInput4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(blockedPortLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(udpButton)
+                    .addComponent(tcpButton)
+                    .addComponent(jLabel7))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
                     .addComponent(okButton))
@@ -215,6 +273,13 @@ public class AddUnblockIP extends javax.swing.JDialog {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         ip = IpInput1.getText() + "." + IpInput2.getText() + "." + IpInput3.getText() + "." + IpInput4.getText();
+        unblockableBean = new UnblockableBean();
+        unblockableBean.setBlockedIP(ip);
+        int port = blockedPortLabel.getText().equals("")?-1:Integer.parseInt(blockedPortLabel.getText());
+        unblockableBean.setBlockedPort(port);
+        unblockableBean.setProtocol(protocol);
+        int identifier = (port == -1 && ip.equals("..."))?-1:(port == -1)?1:ip.equals("...")?3:2;
+        unblockableBean.setIdentifier(identifier);
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
@@ -309,6 +374,35 @@ public class AddUnblockIP extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_IpInput4KeyTyped
 
+    private void blockedPortLabelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockedPortLabelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_blockedPortLabelActionPerformed
+
+    private void tcpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tcpButtonActionPerformed
+        // TODO add your handling code here:
+        protocol = 6;
+    }//GEN-LAST:event_tcpButtonActionPerformed
+
+    private void udpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_udpButtonActionPerformed
+        // TODO add your handling code here:
+        protocol = 17;
+    }//GEN-LAST:event_udpButtonActionPerformed
+
+    private void blockedPortLabelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_blockedPortLabelKeyPressed
+        // TODO add your handling code here:
+           if (evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9') {
+            if (blockedPortLabel.getText().length() >= 3) {
+                if (blockedPortLabel.getText().length() >= 3) {
+                    evt.consume();
+                }
+                blockedPortLabel.requestFocusInWindow();
+            }
+
+        } else {
+            evt.consume();
+        }
+    }//GEN-LAST:event_blockedPortLabelKeyPressed
+
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
@@ -369,13 +463,19 @@ public class AddUnblockIP extends javax.swing.JDialog {
     private javax.swing.JTextField IpInput2;
     private javax.swing.JTextField IpInput3;
     private javax.swing.JTextField IpInput4;
+    private javax.swing.JTextField blockedPortLabel;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JButton okButton;
+    private javax.swing.JRadioButton tcpButton;
+    private javax.swing.JRadioButton udpButton;
     // End of variables declaration//GEN-END:variables
     private int returnStatus = RET_CANCEL;
 }

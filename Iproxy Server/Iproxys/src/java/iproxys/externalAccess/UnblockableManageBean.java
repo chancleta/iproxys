@@ -8,7 +8,6 @@ import com.iproxys.interfaces.UnblockableManageBeanRemote;
 import iproxy.client.Beans.UnblockableBean;
 import iproxy.externalDependencies.EjecutarComando;
 import iproxys.PersistenceData.UnblockableEntity;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Remote;
@@ -23,31 +22,27 @@ import javax.ejb.Stateless;
 public class UnblockableManageBean implements UnblockableManageBeanRemote {
 
     @Override
-    public boolean Insert(String ip) {
-        UnblockableBean unblockableBean = null;
+    public boolean Insert(UnblockableBean unblockableBean) {
         UnblockableEntity unblockableProvider = new UnblockableEntity();
         unblockableProvider.setBlockedIP(unblockableBean.getBlockedIP());
         unblockableProvider.setBlockedPort(unblockableBean.getBlockedPort());
         unblockableProvider.setInsertedOnDatee(new Date());
         unblockableProvider.setProtocol(unblockableBean.getProtocol());
-        return true;
-
-
+        unblockableProvider.setIdentifier(unblockableBean.getIdentifier());
+        return unblockableProvider.save();
     }
 
     @Override
-    public List<String> getAllIP() {
+    public List<UnblockableBean> getAllUnblockableEntities() {
         UnblockableEntity unblockableProvider = new UnblockableEntity();
         List<UnblockableBean> unblockableBeans = unblockableProvider.getAllUnblockableEntities();
-//        return UnblockableBeans;
-        return new ArrayList<>();
+        return unblockableBeans;
     }
 
     @Override
-    public boolean remove(String ip) {
-        UnblockableBean unblockableBeanEntity = null;
+    public boolean remove(UnblockableBean unblockableBean) {
         UnblockableEntity unblockableProvider = new UnblockableEntity();
-        UnblockableEntity unblockableEntity = (UnblockableEntity) unblockableProvider.finbByID(unblockableBeanEntity.getId());
+        UnblockableEntity unblockableEntity = (UnblockableEntity) unblockableProvider.finbByID(unblockableBean.getId());
         unblockableEntity.delete();
         return true;
     }

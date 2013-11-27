@@ -6,6 +6,7 @@ package iproxy.client.gui;
 
 import com.iproxys.connectivity.ServerComunication;
 import com.iproxys.interfaces.UnblockableManageBeanRemote;
+import iproxy.client.Beans.UnblockableBean;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.ListSelectionModel;
@@ -23,16 +24,15 @@ public class configGlobal extends javax.swing.JDialog {
 
     public configGlobal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        
+
         ipUnblockModel = new DefaultListModel();
         ServerComunication instance = ServerComunication.getInstance();
         if (instance != null) {
             UnblockableManageBeanRemote UnblockableManageBean = instance.UnblockableManageBean();
             if (UnblockableManageBean != null) {
-              //  systemPassword.setText(UnblockableManageBean.getSystemPassword());
-                List<String> allIP = UnblockableManageBean.getAllIP();
-                for (String ipnew : allIP) {
-                    ipUnblockModel.addElement(ipnew);
+                List<UnblockableBean> allIP = UnblockableManageBean.getAllUnblockableEntities();
+                for (UnblockableBean ipnew : allIP) {
+                    ipUnblockModel.addElement(getNiceDescriptionFromUnblockableBean(ipnew));
                 }
             } else {
                 ShowMessages.ShowErrorMessage("No se Pudo Contactar el servidor", "Iproxys : Mensaje de Notificacion", this);
@@ -177,22 +177,19 @@ public class configGlobal extends javax.swing.JDialog {
             if (instance != null) {
                 UnblockableManageBeanRemote UnblockableManageBean = instance.UnblockableManageBean();
                 if (UnblockableManageBean != null) {
-                    if (unblockDialog.ip.length() >= 8) {
-                        if (UnblockableManageBean.Insert(unblockDialog.ip)) {
-                            ShowMessages.ShowSucessMessage("Se ha agregado la ip con exito", "Iproxys : Mensaje de Notificacion", this);
-                            ipUnblockModel.removeAllElements();
-                            List<String> allIP = UnblockableManageBean.getAllIP();
-                            for (String ipnew : allIP) {
-                                ipUnblockModel.addElement(ipnew);
-                            }
-                        } else {
-                            ShowMessages.ShowErrorMessage("No se Pudo agregar la ip, Verifique que no se encuentre en la lista", "Iproxys : Mensaje de Notificacion", this);
 
+                    if (UnblockableManageBean.Insert(unblockDialog.unblockableBean)) {
+                        ShowMessages.ShowSucessMessage("Se ha agregado la ip con exito", "Iproxys : Mensaje de Notificacion", this);
+                        ipUnblockModel.removeAllElements();
+                        List<UnblockableBean> allIP = UnblockableManageBean.getAllUnblockableEntities();
+                        for (UnblockableBean ipnew : allIP) {
+                            ipUnblockModel.addElement(getNiceDescriptionFromUnblockableBean(ipnew));
                         }
                     } else {
-                        ShowMessages.ShowErrorMessage("No se Pudo agregar la ip, Verifique la sintaxis", "Iproxys : Mensaje de Notificacion", this);
+                        ShowMessages.ShowErrorMessage("No se Pudo agregar la ip, Verifique que no se encuentre en la lista", "Iproxys : Mensaje de Notificacion", this);
 
                     }
+
                 } else {
                     ShowMessages.ShowErrorMessage("No se Pudo Contactar el servidor", "Iproxys : Mensaje de Notificacion", this);
 
@@ -218,12 +215,14 @@ public class configGlobal extends javax.swing.JDialog {
             if (instance != null) {
                 UnblockableManageBeanRemote UnblockableManageBean = instance.UnblockableManageBean();
                 if (UnblockableManageBean != null) {
-                    if (UnblockableManageBean.remove((String) ipUnblockModel.get(ipList.getSelectedIndex()))) {
+                    List<UnblockableBean> allIP = UnblockableManageBean.getAllUnblockableEntities();
+
+                    if (UnblockableManageBean.remove(allIP.get(selectedIndex))) {
                         ShowMessages.ShowSucessMessage("Se ha eliminado la ip con exito", "Iproxys : Mensaje de Notificacion", this);
                         ipUnblockModel.removeAllElements();
-                        List<String> allIP = UnblockableManageBean.getAllIP();
-                        for (String ipnew : allIP) {
-                            ipUnblockModel.addElement(ipnew);
+                        allIP = UnblockableManageBean.getAllUnblockableEntities();
+                        for (UnblockableBean ipnew : allIP) {
+                            ipUnblockModel.addElement(getNiceDescriptionFromUnblockableBean(ipnew));
                         }
                     } else {
                         ShowMessages.ShowErrorMessage("No se Pudo eliminar la ip", "Iproxys : Mensaje de Notificacion", this);
@@ -241,6 +240,23 @@ public class configGlobal extends javax.swing.JDialog {
 
         }
     }//GEN-LAST:event_deleteIPActionPerformed
+
+    private String getNiceDescriptionFromUnblockableBean(UnblockableBean unblockableBean) {
+
+        String entidadBloqueada = "";
+        switch (unblockableBean.getIdentifier()) {
+            case 1:
+                entidadBloqueada += "IP " + unblockableBean.getBlockedIP();
+                break;
+            case 2:
+                entidadBloqueada += "IP " + unblockableBean.getBlockedIP() + " PORT:" + unblockableBean.getBlockedPort() + " PROTOCOL:" + unblockableBean.getProtocol();
+                break;
+            case 3:
+                entidadBloqueada += "PORT:" + unblockableBean.getBlockedPort() + " PROTOCOL:" + (unblockableBean.getProtocol() == 6 ? "TCP" : "UDP");
+                break;
+        }
+        return entidadBloqueada;
+    }
 
     /**
      * @param args the command line arguments
@@ -271,11 +287,9 @@ public class configGlobal extends javax.swing.JDialog {
          * Create and display the dialog
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
-
             public void run() {
                 configGlobal dialog = new configGlobal(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
