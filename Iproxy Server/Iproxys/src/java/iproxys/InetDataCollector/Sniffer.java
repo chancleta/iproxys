@@ -8,6 +8,7 @@ import iproxy.client.Beans.UnblockableBean;
 import iproxy.externalDependencies.ConfiguracionGeneral;
 import iproxy.externalDependencies.SquidController;
 import iproxys.PersistenceData.*;
+import iproxys.dns.DnsHelper;
 import iproxys.dns.DnsLookupper;
 import iproxys.jess.JessSuggestions;
 import iproxys.jess.ServiceCore;
@@ -121,7 +122,7 @@ public class Sniffer extends Thread {
     public void run() {
 
         confgral = ConfiguracionGeneral.getInstance();
-        confgral.setAnchoBanda(ConfiguracionGeneral.Megabit * 3.2);
+        confgral.setAnchoBanda(ConfiguracionGeneral.Megabit * 1.5);
         while (true) {
             //Capturar paquetes hasta que pasen TimeTemp Milisegundos    
             capture.processPacket(-1, new RecievePackets());
@@ -138,17 +139,20 @@ public class Sniffer extends Thread {
 
                 for (JessSuggestions sug : jess.GetAllSuggestions()) {
                     TemporaryBlockedEntity temporaryBlockedEntity = new TemporaryBlockedEntity();
-//                    System.out.println(sug.getAction() + "  tipo:" + sug.getTipo() + "  ipdst:" + sug.getIp_Dst() + "  ipsrc:" + sug.getIp_Src());
+                    System.out.println(sug.getAction() + "  tipo:" + sug.getTipo() + "  ipdst:" + sug.getIp_Dst() + "  ipsrc:" + sug.getIp_Src());
                     if (!isThisEntityUnblockeable(unblockableEntities, temporaryBlockedEntity)) {
                         switch (sug.getTipo()) {
                             case TemporaryBlockedEntity.BLOCK_IP:
                                 temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
+                                temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
                                 PerformIpBlock performIpBlock = new PerformIpBlock(temporaryBlockedEntity);
                                 performIpBlock.block();
                                 break;
                             case TemporaryBlockedEntity.BLOCK_IP_AND_PORT:
                                 temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
                                 temporaryBlockedEntity.setBlockedPort(sug.getPort());
+                                temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
+
                                 temporaryBlockedEntity.setProtocol(sug.getProtocol());
                                 PerformIPPortBlock performIPPortBlock = new PerformIPPortBlock(temporaryBlockedEntity);
                                 performIPPortBlock.block();
@@ -156,22 +160,24 @@ public class Sniffer extends Thread {
                             case TemporaryBlockedEntity.BLOCK_PORT:
                                 temporaryBlockedEntity.setBlockedPort(sug.getPort());
                                 temporaryBlockedEntity.setProtocol(sug.getProtocol());
+                                temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
+
                                 PerformPortBlock performPortBlock = new PerformPortBlock(temporaryBlockedEntity);
                                 performPortBlock.block();
                                 break;
                             case TemporaryBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP:
                                 temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
                                 // ARREGLAR DOMINIO
-                                temporaryBlockedEntity.setBlockedDomain(sug.getIp_Src());
+                                temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
+                                temporaryBlockedEntity.setBlockedDomain(DnsHelper.getDomainNameFromIp(sug.getIp_Src()));
                                 PerformHttpBlock performHttpBlock = new PerformHttpBlock(temporaryBlockedEntity);
                                 performHttpBlock.block();
                                 break;
                         }
                         temporaryBlockedEntity.setIdentifier(sug.getTipo());
-                        temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
                         temporaryBlockedEntity.save();
-                    }else{
-                         System.out.println("Entidad no puede ser bloqueada ip:"+temporaryBlockedEntity.getBlockedIP()+" port:"+temporaryBlockedEntity.getBlockedPort() );
+                    } else {
+                        System.out.println("Entidad no puede ser bloqueada ip:" + temporaryBlockedEntity.getBlockedIP() + " port:" + temporaryBlockedEntity.getBlockedPort());
                     }
                 }
                 jess.eraseData();

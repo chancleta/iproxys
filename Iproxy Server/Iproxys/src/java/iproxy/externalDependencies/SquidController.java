@@ -1,5 +1,6 @@
 package iproxy.externalDependencies;
 
+import iproxys.PersistenceData.TemporaryBlockedEntity;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
@@ -14,26 +15,21 @@ import java.io.RandomAccessFile;
 public class SquidController {
 
     private static SquidController squidcontroller = null;
-    private static final String filename = "squid_float.conf";
+    private static final String filename = "/home/luis/iproxys/Iproxy Server/Iproxys/squid_float.conf";
     private static RandomAccessFile raf;
     private static EjecutarComando ejecutar = EjecutarComando.getInstance();
-    private SquidController() {
+
+    public SquidController() {
     }
 
-    public static SquidController getInstance() {
-        if (squidcontroller == null && isAccessable()) {
-            squidcontroller = new SquidController();
-        }
-        return squidcontroller;
+    private static void reiniciarSquid() {
 
-    }
-    private void reiniciarSquid(){
-        
         ejecutar.Ejecutar_Comando("service squid3 stop");
         ejecutar.Ejecutar_Comando("service squid3 start");
-    
+
     }
-    private static boolean isAccessable() {
+
+    private static boolean openSquidConfFile() {
 
         try {
             raf = new RandomAccessFile(filename, "rw");
@@ -45,56 +41,18 @@ public class SquidController {
 
     }
 
-    public boolean addNuevoDomain(String ip, String domain) {
+    public static boolean addDomain(TemporaryBlockedEntity temporaryBlockedEntity) {
+        openSquidConfFile();
         try {
-            String line = raf.readLine();
-            String acldomain;
-            String aclip;
-            long pos = 0;
-            while (line != null) {
+            String domain = temporaryBlockedEntity.getBlockedDomain();
+            String ipClient = temporaryBlockedEntity.getBlockedIP();
+            String aclIPName = temporaryBlockedEntity.getBlockedOnTimeDate().toString().replaceAll(" |:", "");
+            String aclDomainName = aclIPName + "_domain";
 
-                if (line.contains("#ACLDOMAIN")) {
-
-                    acldomain = "acl " + domain + "_ACL dstdomain " + domain;
-
-                    nuevaLinea(acldomain);
-                } else if (line.contains("#ACLIP")) {
-
-
-                    aclip = "acl " + domain + "_IP src " + ip;
-                    nuevaLinea(aclip);
-
-                } else if (line.contains("#HTTPACCESS")) {
-
-                    nuevaLinea("http_access deny " + domain + "_ACL " + domain + "_IP");
-                }
-                line = raf.readLine();
-            }
-            reiniciarSquid();
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-            return false;
-        }
-        return true;
-
-    }
-    public boolean addtoExistingDomain(String ip, String domain) {
-        try {
-            String line = raf.readLine();
-            String acldomain;
-            String aclip;
-            long pos = 0;
-            while (line != null) {
-
-                if (line.contains("#ACLIP")) {
-
-
-                    aclip = "acl " + domain + "_IP src " + ip;
-                    nuevaLinea(aclip);
-
-                } 
-                line = raf.readLine();
-            }
+            raf.seek(raf.length());
+            raf.writeBytes("\n\nacl " + aclIPName + " src " + ipClient);
+            raf.writeBytes("\nacl " + aclDomainName + " dstdomain " + domain);
+            raf.writeBytes("\ndelay_access 1 allow " + aclIPName + " " + aclDomainName);
             reiniciarSquid();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
@@ -104,49 +62,29 @@ public class SquidController {
 
     }
 
-    public boolean removeDomain(String domain) {
+    public static boolean deleteDomain(TemporaryBlockedEntity temporaryBlockedEntity) {
+        openSquidConfFile();
         try {
+
+            String aclIPName = temporaryBlockedEntity.getBlockedOnTimeDate().toString().replaceAll(" |:", "");
+            raf.seek(0);
             String read = raf.readLine();
-            String newfile = "";
+            String newFileContent = "";
             while (read != null) {
 
-                if (!read.contains(domain)) {
-                    newfile += read + "\n";
+                if (!read.contains(aclIPName)) {
+                    newFileContent += read + "\n";
                 }
                 read = raf.readLine();
             }
             raf.seek(0);
-            raf.write(newfile.getBytes());
-            raf.setLength(newfile.getBytes().length);
+            raf.write(newFileContent.getBytes());
+            raf.setLength(newFileContent.getBytes().length);
             reiniciarSquid();
-        } catch (Exception ex) {
-        }
-        return true;
-
-    }
-
-    private boolean nuevaLinea(String lineascribir) {
-
-        try {
-            long posicion = raf.getFilePointer();
-            String read = "";
-            String linea = "";
-            while (linea != null) {
-
-                linea = raf.readLine();
-                if (linea != null) {
-                    read += linea + "\n";
-                }
-            }
-            raf.seek(posicion);
-            raf.write((lineascribir + "\n" + read).getBytes());
-            raf.seek(posicion);
-        } catch (Exception ex) {
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
             return false;
         }
         return true;
-
-
     }
-
 }

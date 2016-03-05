@@ -53,7 +53,7 @@ public class DnsHelper {
             return ipAddress;
         }
         String domainName = getTopLevelDomain(ipHostName);
-        return isDomainReachable(domainName)?domainName:ipAddress;
+        return isDomainReachable(domainName)?"."+domainName:ipAddress;
     }
 
     public static String getTopLevelDomain(String uri) {
@@ -102,4 +102,10 @@ public class DnsHelper {
         }
         return retVal;
     }
+    public static void main(String as[]){
+        
+        System.out.println(getDomainNameFromIp("174.36.200.208"));
+    }
+    
+ 
 }

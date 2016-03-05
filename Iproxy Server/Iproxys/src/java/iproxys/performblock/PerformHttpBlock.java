@@ -4,6 +4,7 @@
  */
 package iproxys.performblock;
 
+import iproxy.externalDependencies.SquidController;
 import iproxys.PersistenceData.TemporaryBlockedEntity;
 
 /**
@@ -21,16 +22,11 @@ public class PerformHttpBlock implements PerformBlock {
 
     @Override
     public void block() {
-        
-        
-        
-        
-        
-        
-        
+        SquidController.addDomain(temporaryBlockedEntity);
     }
 
     @Override
     public void unBlock() {
+        SquidController.deleteDomain(temporaryBlockedEntity);
     }
 }

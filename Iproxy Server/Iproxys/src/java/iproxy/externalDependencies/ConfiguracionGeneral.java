@@ -12,7 +12,7 @@ public class ConfiguracionGeneral implements ConfiguracionGeneralInteface {
 
     
     private static String password = "elchulo";
-    private static double anchoBanda = 3.2*Megabit;
+    private static double anchoBanda = 1.5*Megabit;
     private static ConfiguracionGeneral congral = null;
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
