@@ -16,14 +16,15 @@ var socialNetworkApp =
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngStorage'
+    'ngStorage',
+    'chart.js'
   ])
-  .config( ['$routeProvider','$httpProvider', function($routeProvider,$httpProvider) {
+  .config( ['$routeProvider','$httpProvider','ChartJsProvider', function($routeProvider,$httpProvider,ChartJsProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/feed.html',
-        controller: 'FeedCtrl',
-        controllerAs: 'feed'
+        templateUrl: 'views/networkMonitor.html',
+        controller: 'NetworkMonitorCtr',
+        controllerAs: 'monitor'
       })
       .when('/login', {
         templateUrl: 'views/loginForm.html',
@@ -37,6 +38,12 @@ var socialNetworkApp =
         redirectTo: '/404'
       });
 
+
+      // Configure all charts
+      ChartJsProvider.setOptions({
+        colours: ['#97BBCD', '#DCDCDC', '#F7464A', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'],
+        responsive: true
+      });
 
     $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function ($q, $location, $localStorage) {
       return {
