@@ -16,6 +16,22 @@
 *.ear
 *.class
 
-/Iproxy Server/Iproxys/nbproject/private/
-/Iproxy Server/Iproxys/build/
-/Iproxy Server/Iproxys/dist/
+*.iml
+*/Iproxy Server/Iproxys/nbproject/private/
+*/Iproxy Server/Iproxys/build/
+*/Iproxy Server/Iproxys/dist/
+
+IproxysFrontend/node_modules
+IproxysFrontend/dist
+IproxysFrontend/.tmp
+IproxysFrontend/.sass-cache
+IproxysFrontend/bower_components
+IproxysFrontend/.idea
+
+
+IproxysBackend/.idea
+IproxysBackend/out
+IproxysBackend/target
+IproxysBackend/*.iml
+IproxysBackend/classes
+IproxysBackend/src/main/java/META-INF/MANIFEST.MF

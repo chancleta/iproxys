@@ -1,0 +1,26 @@
+<!-- LoginView -->
+<div class="card card-container">
+  <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
+
+  <p id="profile-name" class="profile-name-card"></p>
+
+  <form class="form-signin" name="authenticationForm">
+    <span id="reauth-email" class="reauth-email"></span>
+    <input type="email" id="inputEmail" class="form-control" placeholder="Usuario" required autofocus
+           ng-model="userLoginData.email">
+    <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required
+           ng-model="userLoginData.password">
+
+    <div id="remember" class="checkbox">
+      <label>
+        <input type="checkbox" value="remember-me"> Recordarme
+      </label>
+    </div>
+    <button ng-disabled="authenticationForm.$invalid" class="btn btn-lg btn-success btn-block btn-signin" type="submit"
+            ng-click="doLogIn(userLoginData)">Iniciar Sesión
+    </button>
+  </form><!-- /form -->
+  <a href="#" class="forgot-password">
+    Forgot the password?
+  </a>
+</div><!-- /LoginView-->
