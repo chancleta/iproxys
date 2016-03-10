@@ -70,7 +70,7 @@ body {
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   .container {
-    max-width: 730px;
+    //max-width: 730px;
   }
 
   /* Remove the padding we set earlier */
@@ -126,7 +126,7 @@ body {
   padding: 40px 40px;
 }
 
-.btn {
+.card-container .btn {
   font-weight: 700;
   height: 36px;
   -moz-user-select: none;
@@ -400,4 +400,118 @@ $percentage-text-width: 57px;
   }
   $i: $i + 1;
 }
+}
+
+
+
+.dashboard-tabs {
+  background-color: #ecf0f1;
+
+  padding: 0;
+
+  border: 0 solid #ecf0f1;
+  border-radius: 5px;
+}
+
+.dashboard-tabs:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.dashboard-tabs > div {
+ padding: 0;
+}
+
+.dashboard-tabs > div:first-of-type {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.dashboard-tabs > div:last-of-type {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.dashboard-tabs > div > a {
+  vertical-align: middle;
+  text-align: center;
+  background-color: #ecf0f1;
+  width: 100%;
+
+  text-decoration: none;
+  color: #333;
+
+  border: 0 solid #337ab7;
+  border-radius: 0;
+  padding: 10px 0 4px 0;
+}
+
+.dashboard-tabs > div.active > a {
+  color: #337ab7;
+
+  border-width: 8px 0;
+  padding: 0;
+  margin: -4px 0;
+}
+
+.dashboard-tabs > div:first-of-type > a {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.dashboard-tabs > div:last-of-type > a {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.dashboard-tabs > div.active > a:before {
+  content: '';
+  position: relative;
+  border-style: solid;
+  border-width: 6px 6px 0;
+  border-color: #337ab7 transparent;
+  display: block;
+  width: 0;
+  z-index: 1;
+  margin-left: -6px;
+  top: 0;
+  left: 50%;
+}
+
+.dashboard-tabs > div > a .glyphicon {
+  color: #337ab7;
+  padding-top: 16px;
+  font-size: 40px;
+}
+
+.dashboard .tab-content {
+  margin: 40px 0;
+}
+
+.dashboard .jumbotron {
+  margin-top: 0px;
+  background: #337ab7;
+  color: #fff;
+  border-radius: 5px 5px 0 0;
+}
+
+.dashboard .jumbotron small {
+  color: #fff;
+}
+
+.dashboard .jumbotron-sm {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.colorgraph {
+  height: 5px;
+  border-top: 0;
+  background: #c4e17f;
+  border-radius: 5px;
+  background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
 }

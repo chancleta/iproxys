@@ -4,28 +4,27 @@
  */
 package InetDataCollector;
 
-import externalDependencies.ConfiguracionGeneral;
-import externalDependencies.SquidController;
+import api.LiveMonitorController;
 import PersistenceData.*;
 import dns.DnsHelper;
-import dns.DnsLookupper;
+import externalDependencies.GeneralConfiguration;
 import jess.JessSuggestions;
 import jess.ServiceCore;
-import performblock.PerformBlock;
 import performblock.PerformHttpBlock;
 import performblock.PerformIPPortBlock;
 import performblock.PerformIpBlock;
 import performblock.PerformPortBlock;
+
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
+
 import jpcap.NetworkInterface;
 import jpcap.NetworkInterfaceAddress;
 
 /**
- *
  * @author root
  */
 public class Sniffer extends Thread {
@@ -47,7 +46,6 @@ public class Sniffer extends Thread {
     public static List<SummaryIP_BandWidth> TempIPPDUs = new ArrayList<>();
     private final int TimeTemp = 60000;
     private static Sniffer sniffer = null;
-    private static ConfiguracionGeneral confgral;
     public static double networkMonitor = 0;
     public static double networkMonitorLastSeg = 0;
     private static Timer networkMonTimer = null;
@@ -55,8 +53,19 @@ public class Sniffer extends Thread {
         @Override
         public void run() {
             networkMonitorLastSeg = networkMonitor / 1024;
+
+
+            LiveMonitorController.sessions.stream().forEach(session -> {
+                try {
+                    session.getRemote().sendString(String.valueOf(networkMonitorLastSeg));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
             System.out.println(networkMonitorLastSeg);
             Sniffer.networkMonitor = 0;
+
         }
     };
 
@@ -110,8 +119,7 @@ public class Sniffer extends Thread {
     @Override
     public void run() {
 
-        confgral = ConfiguracionGeneral.getInstance();
-        confgral.setAnchoBanda(ConfiguracionGeneral.Megabit * 1.5);
+
         while (true) {
             //Capturar paquetes hasta que pasen TimeTemp Milisegundos    
             capture.processPacket(-1, new RecievePackets());
@@ -213,15 +221,16 @@ public class Sniffer extends Thread {
 
     }
 
-    private NetworkInterfaceAddress getFirstIPv4Address(NetworkInterfaceAddress[] IPAddrs){
+    private NetworkInterfaceAddress getFirstIPv4Address(NetworkInterfaceAddress[] IPAddrs) {
 
-        for(int index = 0; index < IPAddrs.length; index++){
-            if(IPAddrs[index].address instanceof Inet4Address){
+        for (int index = 0; index < IPAddrs.length; index++) {
+            if (IPAddrs[index].address instanceof Inet4Address) {
                 return IPAddrs[index];
             }
         }
         return null;
     }
+
     public void select() {
         startSniff(1);
         System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[0].name);
@@ -252,33 +261,33 @@ public class Sniffer extends Thread {
     private void BDCalculator_IP(List<SummaryIP_BandWidth> relativo) {
         for (SummaryIP_BandWidth sug : relativo) {
             // Convirtiendo de Bytes a KiloBytes
-            sug.setBdusage(sug.getBdusage() / ConfiguracionGeneral.Kilobit);
+            sug.setBdusage(sug.getBdusage() / GeneralConfiguration.Kilobit);
             // Dividiendo entre la cantidad de segundos que duro el muestreo
             sug.setBdusage(sug.getBdusage() / (TimeTemp / 1000));
             // Obteniendo el porcentaje de utilizacion de ancho 
-            sug.setBdusage((sug.getBdusage() / confgral.getAnchoBanda()) * 100);
+            sug.setBdusage((sug.getBdusage() / GeneralConfiguration.getAvailableBandwidth()) * 100);
         }
     }
 
     private void BDCalculator_Port(List<SummaryPort_BandWidth> relativo) {
         for (SummaryPort_BandWidth sug : relativo) {
             // Convirtiendo de Bytes a KiloBytes
-            sug.setBdusage(sug.getBdusage() / ConfiguracionGeneral.Kilobit);
+            sug.setBdusage(sug.getBdusage() / GeneralConfiguration.Kilobit);
             // Dividiendo entre la cantidad de segundos que duro el muestreo
             sug.setBdusage(sug.getBdusage() / (TimeTemp / 1000));
             // Obteniendo el porcentaje de utilizacion de ancho 
-            sug.setBdusage((sug.getBdusage() / confgral.getAnchoBanda()) * 100);
+            sug.setBdusage((sug.getBdusage() / GeneralConfiguration.getAvailableBandwidth()) * 100);
         }
     }
 
     private void BDCalculator_IPPort(List<SummaryIPPort_BandWidth> relativo) {
         for (SummaryIPPort_BandWidth sug : relativo) {
             // Convirtiendo de Bytes a KiloBytes
-            sug.setBdusage(sug.getBdusage() / ConfiguracionGeneral.Kilobit);
+            sug.setBdusage(sug.getBdusage() / GeneralConfiguration.Kilobit);
             // Dividiendo entre la cantidad de segundos que duro el muestreo
             sug.setBdusage(sug.getBdusage() / (TimeTemp / 1000));
             // Obteniendo el porcentaje de utilizacion de ancho 
-            sug.setBdusage((sug.getBdusage() / confgral.getAnchoBanda()) * 100);
+            sug.setBdusage((sug.getBdusage() / GeneralConfiguration.getAvailableBandwidth()) * 100);
         }
     }
 }

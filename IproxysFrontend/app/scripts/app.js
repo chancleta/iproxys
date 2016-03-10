@@ -10,33 +10,48 @@
  */
 var socialNetworkApp =
   angular
-  .module('socialNetworkApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
-    'ngStorage',
-    'chart.js'
-  ])
-  .config( ['$routeProvider','$httpProvider','ChartJsProvider', function($routeProvider,$httpProvider,ChartJsProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/networkMonitor.html',
-        controller: 'NetworkMonitorCtr',
-        controllerAs: 'monitor'
-      })
-      .when('/login', {
-        templateUrl: 'views/loginForm.html',
-        controller: 'AuthenticationCtrl',
-        controllerAs: 'authentication'
-      })
-      .when('/404', {
-        templateUrl: 'views/404.html'
-      })
-      .otherwise({
-        redirectTo: '/404'
-      });
+    .module('socialNetworkApp', [
+      'ngAnimate',
+      'ngCookies',
+      'ngResource',
+      'ngRoute',
+      'ngSanitize',
+      'ngStorage',
+      'chart.js',
+      'ui.router'
+    ])
+    .config(['$routeProvider', '$httpProvider', 'ChartJsProvider','$stateProvider','$urlRouterProvider', function ($routeProvider, $httpProvider, ChartJsProvider,$stateProvider,$urlRouterProvider) {
+
+
+      $urlRouterProvider.otherwise('/404');
+      $urlRouterProvider.when('', '/');
+
+      $stateProvider
+        .state('dashboard', {
+          url: "/",
+          templateUrl: 'views/dashboard.html',
+          controller: 'DashboardCtrl',
+        })
+        .state('dashboard.livemonitor', {
+          url: "liveMonitor",
+          templateUrl: 'views/networkMonitor.html',
+          controller: 'NetworkMonitorCtrl',
+        })
+        .state('dashboard.configuration', {
+          url: "configuration",
+          templateUrl: 'views/configuration.html',
+          controller: 'ConfigurationCtrl',
+        })
+        .state('login', {
+          url: "/login",
+          templateUrl: 'views/loginForm.html',
+          controller: 'AuthenticationCtrl',
+
+        })
+        .state('404', {
+          url: "/404",
+          templateUrl: 'views/404.html'
+        });
 
 
       // Configure all charts
@@ -45,23 +60,28 @@ var socialNetworkApp =
         responsive: true
       });
 
-    $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function ($q, $location, $localStorage) {
-      return {
-        'request': function (config) {
-          config.headers = config.headers || {};
-          if ($localStorage.token) {
-            config.headers.Authorization = 'Bearer ' + $localStorage.token;
+      $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function ($q, $location, $localStorage) {
+        return {
+          'request': function (config) {
+            config.headers = config.headers || {};
+            if ($localStorage.token) {
+              config.headers.Authorization = 'Bearer ' + $localStorage.token;
+            }
+            return config;
+          },
+          'responseError': function (response) {
+            if (response.status === 401 || response.status === 403) {
+              $location.path('/');
+            }
+            return $q.reject(response);
           }
-          return config;
-        },
-        'responseError': function (response) {
-          if (response.status === 401 || response.status === 403) {
-            $location.path('/');
-          }
-          return $q.reject(response);
-        }
-      };
+        };
+      }]);
+    }])
+    .constant("ConfigData", {url: "http://10.100.29.137", port: 9001, wsURL: "ws://10.100.29.137"})
+    .run(["AuthenticationService","$localStorage","$location", function (AuthenticationService,$localStorage,$location) {
+      //delete $localStorage['token'];
+      if (!AuthenticationService.isUserLoggedIn()) {
+        $location.path("/login");
+      }
     }]);
-  }])
-    .constant("ConfigData", {url:"http://10.100.29.137", port: 9001});
-

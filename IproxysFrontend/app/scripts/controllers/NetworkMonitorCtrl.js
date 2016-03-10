@@ -1,39 +1,38 @@
 'use strict';
 
-socialNetworkApp.controller('NetworkMonitorCtr',["$scope","$location","$interval","AuthenticationService","FeedService", function NetworkMonitorCtr($scope, $location,$interval, AuthenticationService,FeedService){
+socialNetworkApp.controller('NetworkMonitorCtrl',["$scope","$interval","LiveMontiorService", function NetworkMonitorCtrl($scope,$interval, LiveMontiorService){
 
 
 
-  var maximum = document.getElementById('container').clientWidth / 2 || 300;
+ var maxTicksPerGraph = 30;
   $scope.data = [[]];
-  $scope.labels = ["January"];
-  $scope.series = ['Series A'];
+  $scope.labels = [""];
+  $scope.series = ['KB/s'];
 
   $scope.options = {
     animation: false,
-
+    tooltipTemplate: function(v) {return parseFloat(v.value).toFixed(2)+" KB/s";},//Formatting the tooltip 2 decimals and Kbit/s
   };
 
   // Update the dataset at 25FPS for a smoothly-animating chart
   $interval(function () {
-    getLiveChartData();
-  }, 1000);
+  }, 400);
 
-  function getLiveChartData () {
-    if ($scope.data[0].length > 30) {
+
+
+  LiveMontiorService.webSocket.onmessage = function(data){
+    if ($scope.data[0].length > maxTicksPerGraph) {
       $scope.labels = $scope.labels.slice(1);
       $scope.data[0] = $scope.data[0].slice(1);
     }
 
-    console.log( $scope.data[0]);
+    console.log( data.data);
     $scope.labels.push('');
-    $scope.data[0].push(getRandomInt());
+    $scope.data[0].push(data.data);
+  };
 
-  }
-  function getRandomInt() {
-    return Math.floor(Math.random() * (300 - 0 + 1)) + 0;
-  }
 
+  $scope.$emit('childViewLoaded', {target: 'a[ui-sref=".livemonitor"]'});
 
 
 

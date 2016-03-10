@@ -35,3 +35,5 @@ IproxysBackend/target
 IproxysBackend/*.iml
 IproxysBackend/classes
 IproxysBackend/src/main/java/META-INF/MANIFEST.MF
+
+*.log

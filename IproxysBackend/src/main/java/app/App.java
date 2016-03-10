@@ -4,6 +4,7 @@ import InetDataCollector.Sniffer;
 import api.AuthenticationController;
 import api.CompanyController;
 import api.FeedListController;
+import api.LiveMonitorController;
 import com.auth0.jwt.JWTSigner;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.internal.org.apache.commons.codec.binary.Base64;
@@ -22,6 +23,8 @@ import java.nio.file.Paths;
 import java.security.SignatureException;
 import java.util.Map;
 
+import static spark.Spark.webSocket;
+
 
 /**
  * Created by lupena on 2/5/2016.
@@ -31,16 +34,22 @@ public class App {
 
     public static void main(String [] args) throws  Exception{
 
-//        Spark.port(9001);
-//        Spark.staticFileLocation("/public");
-//        Spark.before("*",(request, response) -> {
-//            response.header("Access-Control-Allow-Origin", request.headers("Origin"));
-//            response.header("Access-Control-Request-Method", "POST, GET, OPTIONS");
-//            response.header("Access-Control-Allow-Headers", request.headers("Access-Control-Request-Headers"));
-//        });
-      //  new CompanyController(CompanyService.getInstance());
- //     new AuthenticationController();
-     //   new FeedListController(FeedService.getInstance());
+        Spark.port(9001);
+
+        webSocket("/liveMonitor", LiveMonitorController.class);
+
+        Spark.staticFileLocation("/public")
+        ;
+        Spark.before("*",(request, response) -> {
+            response.header("Access-Control-Allow-Origin", request.headers("Origin"));
+            response.header("Access-Control-Request-Method", "POST, GET, OPTIONS");
+            response.header("Access-Control-Allow-Headers", request.headers("Access-Control-Request-Headers"));
+        });
+
+
+        //new CompanyController(CompanyService.getInstance());
+        new AuthenticationController();
+        new FeedListController(FeedService.getInstance());
 
         Sniffer.getInstance().select();
 

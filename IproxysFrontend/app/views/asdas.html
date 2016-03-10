@@ -1,0 +1,171 @@
+<html>
+<head>
+  <META content=\"IE=11.0000\" http-equiv=\"X-UA-Compatible\">
+  \r\n <title>title</title>\r\n
+  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">
+  \r\n
+  <link href=\"../Styles2/aSDK.css\" rel=\"stylesheet\" type=\"text/css\">
+  \r\n
+  <style type=\"text/css\">\r\n * {
+    \r\n margin-left: -1px;
+    \r\n margin-right: 5px;
+    \r\n margin-top: 0px;
+    \r\n margin-bottom: -4px;
+    \r\n padding-left: 0px;
+    \r\n padding-right: 1px;
+    \r\n padding-top: 0px;
+    \r\n padding-bottom: -4px;
+    \r\n
+  }
+
+  \r\n \r\n html, body \r\n {
+    \r\n height: 100%;
+    \r\n width: 100%;
+    \r\n overflow: hidden;
+    \r\n margin-bottom: 17px;
+    \r\n
+  }
+
+  \r\n\r\n .cfstView \r\n {
+    \r\n position: relative;
+    \r\n height: 101.6%;
+    \r\n
+  }
+
+  \r\n\r\n .cfraViewBottom\r\n {
+    \r\n position: absolute;
+    \r\n bottom: 0px;
+    \r\n background: #ccc;
+    \r\n padding-top: 3px;
+    \r\n width: 100%;
+    \r\n
+  }
+
+  \r\n \r\n .cAutoSaveDiv {
+    \r\n height: 15px;
+    \r\n color: #000;
+    \r\n padding: 3px 3px 2px 3px;
+    \r\n background: transparent;
+    \r\n border: 1px solid #000;
+    \r\n display: block;
+    \r\n
+  }
+
+  \r\n input[type=\"button\"] {
+    \r\n padding: 0;
+    \r\n height: 22px;
+    \r\n width: 70px;
+    \r\n
+  }
+
+  \r\n    </style>
+  \r\n \r\n
+  <script src=\"../JScripts2/aSDK.js\" type=\"text/javascript\"></script>
+  \r\n
+  <script src=\"../Jquery/jquery-FAFHelper.js\" type=\"text/javascript\"></script>
+  <script src=\"../Jquery/jquery-2.1.4.min.js\" type=\"text/javascript\"></script>
+  <script src=\"../Jquery/jquery-ui.js\" type=\"text/javascript\"></script>
+  <script src=\"../Jquery/jquery-FAFDialog.js\" type=\"text/javascript\"></script>
+  <script src=\"../Jquery/jquery.dialogextend.js\" type=\"text/javascript\"></script>
+  \r\n
+  <script src=\"../JScripts2/aContents.js\" type=\"text/javascript\"></script>
+  \r\n
+  <script src=\"../JScripts2/aTabView.js\" type=\"text/javascript\"></script>
+  \r\n
+  <script src=\"../Navigation2/View.js\" type=\"text/javascript\"></script>
+  \r\n\r\n
+  <script src=\"../Navigation2/ViewTop.Jquery.js\" type=\"text/javascript\"></script>
+  \r\n
+  <script src=\"../Navigation2/ViewBottom.Jquery.js\" type=\"text/javascript\"></script>
+  <link href=\"../Styles2/aSDK.css\" rel=\"stylesheet\" type=\"text/css\">
+  \r\n
+  <script src=\"../Navigation2/ViewDefault.Jquery.js\" type=\"text/javascript\"></script>
+  <link href=\"../Styles2/aSDK.css\" rel=\"stylesheet\" type=\"text/css\">
+  \r\n\r\n\r\n\r\n
+  <script language=\"javascript\" type=\"text/javascript\">\r\n        var fraViewTop = null;\r\n        var fraPageWin = null;\r\n        var fraViewBottom = null;\r\n\r\n        $(window).load(function () {\r\n\r\n            \r\n            fraViewTop = $(\"#divViewTop\").ViewTop().ViewTop;\r\n            fraViewTop.Page_Load();\r\n\r
+\n            //fraPageWin = $(\"#divPageWin\").ViewDefault().ViewDefault;\r\n\r\n            fraViewBottom = $(\"#divViewBottom\").ViewBottom().ViewBottom;\r\n            fraViewBottom.Page_OnLoad();\r\n\r\n            //this should be called after loading ViewTop and ViewBottom\r\n            ViewWin_OnLoad();\r\n        });\r\n     \r\n        $(window).unload(function () {\r\n\r\n            ViewWin_OnBeforeUnload();\r\n\r\n        });\r\n\r\n        //Defect: 671075 , Heighlited buttons issue fixed by Dhananjay on 04th, Jan 2016\r\n        //This is centerlized implementation for entire application.\r\n        $(\"#fraPageWin\").load(function () {\r\n\r\n            var styleClass = \"<style type='text/css'> button:hover:visited, input[type=button]:hover:visited {border:0;}</style>\";\r\n            $(\"#fraPageWin\").contents().find(\"head\").append($(styleClass));\r\n            \r\n        });\r\n\r\n
+  </script>
+  \r\n\r\n
+</head>
+\r\n
+<body>\r\n    <!--<br />-->\r\n
+<header id=\"divViewTop\">\r\n
+  <div id=\"idTabView\"></div>
+  \r\n
+</header>
+\r\n    <!--<div id=\"divPageWin\" name=\"divPageWin\" style=\"height:550px;\"></div>-->\r\n
+<main id=\"divPageWin\" style=\"margin: 0px; width: 100%; height: 100%; position: fixed;\
+">\r\n
+<iframe name=\"fraPageWin\" id=\"fraPageWin\"
+        src=\"http:\\\\Eval03.imaging.firstam.net\\\\Fastimages\\\\2016\\\\3\\\\1486\\\\1487\\\\35829051\\\\392016_72833AM_8924.TIF?FQID=HM_BUP_WI_OWA_262162301_&amp;CFID=35829857,35829133,74359,35811510&amp;CBUID=1486,1487,86208,1486,1487,0&amp;fIDoIDfNum=35829051_35829775_74283_0_0_2529_12_0_0\"
+        style=\"width: 100%; height: 100%; position: fixed;\
+"></iframe>\r\n    </main>\r\n
+<footer class=\"cfraViewBottom\" id=\"divViewBottom\" style=\"height: 35px; display: none;\
+">\r\n
+<table id=\"dialogButtons\">\r\n
+  <tbody>
+  <tr>\r\n
+    <td style=\"width: 100%;\
+    "></td>\r\n
+    <td style=\"vertical-align: top;\
+    "><input name=\"btnDelete\" title=\"Ctrl+Delete\" class=\"roundedCorner\" id=\"btnDelet
+             e\" style=\"width: 70px; height: 22px; display: none;\" onclick=\"_OnDelete()\" type=\"button\"
+    value=\"[Delete]\"></td>\r\n
+    <td style=\"vertical-align: top;\
+    "><input name=\"btnNew\" title=\"Ctrl+N\" class=\"roundedCorner\" id=\"btnNew\" style=\"width: 70px; height: 22px;
+             display: none;\" onclick=\"_OnNew()\" type=\"button\" value=\"[N]ew\"></td>\r\n
+    <td style=\"vertical-align: top;\
+    ">\r\n <input name=\"btnCancel\" title=\"Ctrl+Q\" class=\"roundedCorner\" id=\"btnCancel\" style=\"width: 70px;
+                  height: 22px; display: none;\" onclick=\"_OnCancel()\" type=\"button\" value=\"Cancel[Q]\">\r\n <input
+      name=\"btnReset\" title=\"Ctrl+R\" class=\"roundedCorner\" id=\"btnReset\" style=\"width: 70px; height: 22px;
+      display: none;\" onclick=\"_OnReset()\" type=\"button\" value=\"[R]eset\">\r\n                </td>\r\n
+    <td style=\"vertical-align: top;\
+    ">\r\n
+    <div class=\"cAutoSaveDiv\" id=\"divAutoSave\" style=\"display: none
+         ;\
+    ">Auto&nbsp;Save</div>\r\n <input name=\"btnSave\" title=\"Ctrl+S\" class=\"roundedCorner\" id=\"btnSave\"
+                                      style=\"width: 70px; height: 22px; display: none;\" onclick=\"_OnSave()\"
+    type=\"button\" value=\"[S]ave\">\r\n                </td>\r\n
+    <td style=\"vertical-align: top;\
+    ">\r\n <span class=\"cButtonSpan\">\r\n                        <input name=\"btnDone\" title=\"Ctrl+D\"
+                                                                          class=\"roundedCorner\" id=\"btnDone\"
+                                                                          style=\"width: 70px; height: 22px; display:
+                                                                          none;\" onclick=\"_OnDone()\" type=\"button\" value=\"[D]one\">\r\n                    </span>\r\n                </td>
+    \r\n
+  </tr>
+  \r\n
+  </tbody>
+</table>
+\r\n
+<table id=\"wizardButtons\" style=\"padding: 3px 10px 3px 3px; display: none; position: relative;\
+">\r\n
+<tbody>
+<tr>\r\n
+  <td style=\"width: 100%;\
+  "><span id=\"spnStatus\"></span></td>\r\n
+  <td><input name=\"wizCancel\" title=\"Ctrl+Q\" class=\"roundedCorner\" id=\"wizCancel\" style=\"w
+             idth: 70px; height: 22px; display: none;\" onclick=\"_OnWizCancel()\" type=\"button\" value=\"Cancel\">
+  </td>
+  \r\n
+  <td><input name=\"wizBack\" title=\"Ctrl+B\" class=\"roundedCorner\" id=\"wizBack\" style=\"width: 70px; height: 22px;
+             display: none;\" onclick=\"_OnWizBack()\" type=\"button\" value=\"Back\">
+  </td>
+  \r\n
+  <td><input name=\"wizNext\" title=\"Ctrl+N\" class=\"roundedCorner\" id=\"wizNext\" style=\"width: 70px; display:
+             none;\" onclick=\"_OnWizNext()\" type=\"button\" value=\"Next\">
+  </td>
+  \r\n
+  <td>\r\n <input name=\"wizFinish\" title=\"Ctrl+F\" class=\"roundedCorner\" id=\"wizFinish\" style=\"width: 70px;
+                  height: 22px; display: none;\" onclick=\"_OnWizFinish()\" type=\"button\" value=\"Finish\">\r\n <input
+    name=\"wizDone\" class=\"roundedCorner\" id=\"wizDone\" style=\"width: 70px; height: 22px; display: none;\"
+    onclick=\"_OnWizDone()\" type=\"button\" value=\"Done\">\r\n <input name=\"wizCommit\" class=\"
+                                                                        roundedCorner\" id=\"wizCommit\" style=\"width:
+    70px; height: 22px; display: none;\" onclick=\"_OnWizCommit()\" type=\"button\" value=\"Commit\">\r\n
+  </td>
+  \r\n
+</tr>
+\r\n
+</tbody>
+</table>\r\n    </footer>\r\n\r\n\r\n\r\n
+</body>
+</html>"

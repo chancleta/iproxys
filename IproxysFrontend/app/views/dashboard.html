@@ -1,0 +1,34 @@
+<div class="dashboard">
+  <div class="row dashboard-tabs">
+    <div class="active col-xs-3">
+      <a href="#/configuration" class="btn" ui-sref=".configuration">
+        <span class="glyphicon glyphicon-cog"></span>
+        <h4>Configuration</h4>
+      </a>
+    </div>
+    <div  class="col-xs-3" >
+      <a href="#/liveMonitor" class="btn"   ui-sref=".livemonitor" >
+        <span class="glyphicon glyphicon-stats"></span>
+        <h4>Live Monitor</h4>
+      </a>
+    </div>
+    <div class="col-xs-3">
+      <a href="#/" class="btn"   ui-sref=".firewallconfig">
+        <span class="glyphicon glyphicon-fire"></span>
+        <h4>Firewall Config</h4>
+      </a>
+    </div>
+    <div class="col-xs-3">
+      <a href="#/" class="btn"   ui-sref=".resourcemanager">
+        <span class="glyphicon glyphicon-list-alt"></span>
+        <h4>Resource Manager</h4>
+      </a>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="" style="margin-bottom: 15px">
+  <div ui-view class="row"></div>
+</div>
