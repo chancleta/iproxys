@@ -25,12 +25,15 @@ var socialNetworkApp =
 
       $urlRouterProvider.otherwise('/404');
       $urlRouterProvider.when('', '/');
+      $urlRouterProvider.when('/', '/configuration');
+
 
       $stateProvider
         .state('dashboard', {
           url: "/",
           templateUrl: 'views/dashboard.html',
           controller: 'DashboardCtrl',
+          abstract:true
         })
         .state('dashboard.livemonitor', {
           url: "liveMonitor",
