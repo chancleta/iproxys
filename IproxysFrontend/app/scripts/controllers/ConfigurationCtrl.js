@@ -2,7 +2,8 @@
 
 socialNetworkApp.controller('ConfigurationCtrl',["$scope", function ConfigurationCtrl($scope){
 
-  $scope.$emit('childViewLoaded', {target: 'a[ui-sref=".configuration"]'});
-
+  $('#configuration').show( {
+    duration: 500
+  });
 
 }]);

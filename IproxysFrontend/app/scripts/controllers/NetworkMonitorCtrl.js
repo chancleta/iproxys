@@ -2,9 +2,7 @@
 
 socialNetworkApp.controller('NetworkMonitorCtrl',["$scope","$interval","LiveMontiorService", function NetworkMonitorCtrl($scope,$interval, LiveMontiorService){
 
-
-
- var maxTicksPerGraph = 30;
+  var maxTicksPerGraph = 30;
   $scope.data = [[]];
   $scope.labels = [""];
   $scope.series = ['KB/s'];
@@ -31,7 +29,7 @@ socialNetworkApp.controller('NetworkMonitorCtrl',["$scope","$interval","LiveMont
   });
 
 
-  $scope.$emit('childViewLoaded', {target: 'a[ui-sref=".livemonitor"]'});
+  //$scope.$emit('childViewLoaded', {target: 'a[ui-sref=".livemonitor"]'});
 
 
 

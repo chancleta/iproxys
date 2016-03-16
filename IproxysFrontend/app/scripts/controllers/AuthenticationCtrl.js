@@ -1,6 +1,7 @@
 'use strict';
 
-socialNetworkApp.controller('AuthenticationCtrl',["$scope","$location","AuthenticationService", function AuthenticationCtrl($scope, $location,AuthenticationService){
+socialNetworkApp.controller('AuthenticationCtrl',["$scope","$location","AuthenticationService","$rootScope", function AuthenticationCtrl($scope, $location,AuthenticationService,$rootScope){
+
   if(AuthenticationService.isUserLoggedIn()){
     $location.path("/");
   }
@@ -10,4 +11,5 @@ socialNetworkApp.controller('AuthenticationCtrl',["$scope","$location","Authenti
   $scope.doLogIn = function(userData){
     AuthenticationService.doLogIn(userData);
   };
+
 }]);

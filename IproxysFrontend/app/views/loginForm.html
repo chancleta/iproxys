@@ -1,26 +1,36 @@
-<!-- LoginView -->
-<div class="card card-container">
-  <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
+<div class="row container" id="loginForm">
+  <div class="col l12 m12 s12">
+    <div class="card grey lighten-5">
+      <form class="form-signin" name="authenticationForm">
+        <div class="card-content teal-text">
+          <span class="card-title">Log In</span>
+          <div class="input-field">
+            <i class="material-icons prefix">email</i>
+            <input id="inputEmail" type="email" class="validate" required
+                   ng-model="userLoginData.email">
+            <label for="inputEmail">Email</label>
+          </div>
+          <div class="input-field">
+            <i class="material-icons prefix">vpn_key</i>
+            <input id="inputPassword" type="password" class="validate" required
+                   ng-model="userLoginData.password">
+            <label for="inputPassword">Password</label>
+          </div>
 
-  <p id="profile-name" class="profile-name-card"></p>
 
-  <form class="form-signin" name="authenticationForm">
-    <span id="reauth-email" class="reauth-email"></span>
-    <input type="email" id="inputEmail" class="form-control" placeholder="Usuario" required autofocus
-           ng-model="userLoginData.email">
-    <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required
-           ng-model="userLoginData.password">
 
-    <div id="remember" class="checkbox">
-      <label>
-        <input type="checkbox" value="remember-me"> Recordarme
-      </label>
+        </div>
+        <div class="card-action">
+
+          <button class="btn waves-effect waves-light" type="submit" name="action"
+                  ng-disabled="authenticationForm.$invalid"  ng-click="doLogIn(userLoginData)">Iniciar Sesión
+            <i class="material-icons right">send</i>
+          </button>
+
+        </div>
+      </form><!-- /form -->
+
     </div>
-    <button ng-disabled="authenticationForm.$invalid" class="btn btn-lg btn-success btn-block btn-signin" type="submit"
-            ng-click="doLogIn(userLoginData)">Iniciar Sesión
-    </button>
-  </form><!-- /form -->
-  <a href="#" class="forgot-password">
-    Forgot the password?
-  </a>
-</div><!-- /LoginView-->
+  </div>
+</div>
+

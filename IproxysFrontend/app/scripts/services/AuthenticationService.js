@@ -8,8 +8,10 @@ socialNetworkApp.factory('AuthenticationService',["$resource","$localStorage","$
       return;
     }
     $localStorage.token = responseData.token;
-    $location.path("/");
 
+    $("nav.navbar-fixed").attr("logged","true");
+    $('#loginForm').hide();
+    $location.path("/");
   };
 
 

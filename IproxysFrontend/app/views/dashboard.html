@@ -1,34 +1,27 @@
-<div class="dashboard">
-  <div class="row dashboard-tabs">
-    <div class="active col-xs-3">
-      <a href="#/configuration" class="btn" ui-sref=".configuration">
-        <span class="glyphicon glyphicon-cog"></span>
-        <h4>Configuration</h4>
-      </a>
-    </div>
-    <div  class="col-xs-3" >
-      <a href="#/liveMonitor" class="btn"   ui-sref=".livemonitor" >
-        <span class="glyphicon glyphicon-stats"></span>
-        <h4>Live Monitor</h4>
-      </a>
-    </div>
-    <div class="col-xs-3">
-      <a href="#/" class="btn"   ui-sref=".firewallconfig">
-        <span class="glyphicon glyphicon-fire"></span>
-        <h4>Firewall Config</h4>
-      </a>
-    </div>
-    <div class="col-xs-3">
-      <a href="#/" class="btn"   ui-sref=".resourcemanager">
-        <span class="glyphicon glyphicon-list-alt"></span>
-        <h4>Resource Manager</h4>
-      </a>
+<div class="teal darken-1">
+  <div class="container">
+    <div class="row">
+      <div class="col s12">
+        <ul class="tabs teal darken-1 ">
+          <li class="tab col s3"><a href="#configurationTab" ng-click="loadView('configuration')" class="white-text">Configuración</a></li>
+          <li class="tab col s3"><a href="#liveMonitorTab" ng-click="loadView('livemonitor')" class="white-text">Live Monitor</a></li>
+          <li class="tab col s3"><a href="#firewallconfigTab" data-target="" class="white-text">Firewall Config</a></li>
+          <li class="tab col s3"><a href="#resourcemanagerTab" data-target="" class="white-text">Resource Manager</a></li>
+        </ul>
+      </div>
+      <div id="configurationTab"></div>
+      <div id="liveMonitorTab"></div>
+      <div id="firewallconfigTab"></div>
+      <div id="resourcemanagerTab"></div>
+
     </div>
 
   </div>
-
+</div>
+<div class="container">
+  <div ui-view class=""></div>
 </div>
 
-<div class="" style="margin-bottom: 15px">
-  <div ui-view class="row"></div>
-</div>
+<script>
+
+</script>
