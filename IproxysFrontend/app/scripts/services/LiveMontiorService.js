@@ -1,6 +1,6 @@
-socialNetworkApp.factory('LiveMontiorService',  ["ConfigData",function(ConfigData) {
+socialNetworkApp.factory('LiveMontiorService',  ["ConfigData", "$websocket","$localStorage",function(ConfigData,$websocket,$localStorage) {
+  var webSocket = $websocket.$new({'url': ConfigData.wsURL + ":" + ConfigData.port + "/liveMonitor/?token="+$localStorage.token, 'protocols': [], 'subprotocols': ['base46'] });
 
-  var webSocket = new WebSocket(ConfigData.wsURL + ":" + ConfigData.port + "/liveMonitor/");
   return {
     webSocket: webSocket
   };

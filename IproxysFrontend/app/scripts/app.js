@@ -18,7 +18,8 @@ var socialNetworkApp =
       'ngSanitize',
       'ngStorage',
       'chart.js',
-      'ui.router'
+      'ui.router',
+      'ngWebsocket'
     ])
     .config(['$routeProvider', '$httpProvider', 'ChartJsProvider','$stateProvider','$urlRouterProvider', function ($routeProvider, $httpProvider, ChartJsProvider,$stateProvider,$urlRouterProvider) {
 
@@ -74,6 +75,7 @@ var socialNetworkApp =
           },
           'responseError': function (response) {
             if (response.status === 401 || response.status === 403) {
+              delete $localStorage['token'];
               $location.path('/');
             }
             return $q.reject(response);
@@ -83,7 +85,7 @@ var socialNetworkApp =
     }])
     .constant("ConfigData", {url: "http://10.100.29.137", port: 9001, wsURL: "ws://10.100.29.137"})
     .run(["AuthenticationService","$localStorage","$location", function (AuthenticationService,$localStorage,$location) {
-      //delete $localStorage['token'];
+      delete $localStorage['token'];
       if (!AuthenticationService.isUserLoggedIn()) {
         $location.path("/login");
       }

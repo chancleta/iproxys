@@ -5,8 +5,11 @@ import com.auth0.jwt.JWTSigner;
 import exceptions.InvalidCompanyDataException;
 import models.Token;
 import models.User;
+import services.AuthenticationService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import static app.ResponseManager.toJson;
 import static spark.Spark.*;
@@ -16,23 +19,16 @@ import static spark.Spark.*;
  */
 public class AuthenticationController extends BaseJsonController{
 
-    private final static String SECRET = "my_secret";
-
-
-    public AuthenticationController(){
+    public AuthenticationController(final AuthenticationService authenticationService){
 
     post("/authenticate", ((request, response) -> {
 
-        //Validate User and create a proper Claim
         User user = CustomGson.Gson().fromJson(request.body(), User.class);
 
         if(!user.isValid())
             throw new InvalidCompanyDataException(user.getErrorMessage());
 
-        Map<String,Object> claim = new HashMap<>();
-        claim.put("SomeDataSomeShit", "AnotherDataAnotherShit");
-
-        return  new Token((new JWTSigner(SECRET)).sign(claim));
+        return authenticationService.Authenticate(user);
 
     }),toJson());
 

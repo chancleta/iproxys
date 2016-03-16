@@ -18,8 +18,8 @@ public abstract class PersistenceProvider implements Serializable {
     private EntityManagerProvider entityManagerProvider;
     protected EntityManager entityManager;
     public PersistenceProvider(){
-    //    entityManagerProvider = EntityManagerProvider.getInstance();
-   //     entityManager = entityManagerProvider.getEntityManager();
+        entityManagerProvider = EntityManagerProvider.getInstance();
+        entityManager = entityManagerProvider.getEntityManager();
     }
     public boolean save() {
         try {

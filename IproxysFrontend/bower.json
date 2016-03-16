@@ -12,7 +12,8 @@
     "angular-sanitize": "^1.4.0",
     "ngstorage": "^0.3.10",
     "angular-chart.js": "^0.8.8",
-    "angular-ui-router": "^0.2.18"
+    "angular-ui-router": "^0.2.18",
+    "ng-websocket": "^0.2.1"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"

@@ -20,16 +20,15 @@ socialNetworkApp.controller('NetworkMonitorCtrl',["$scope","$interval","LiveMont
 
 
 
-  LiveMontiorService.webSocket.onmessage = function(data){
+  LiveMontiorService.webSocket.$on("$message" , function(data){
     if ($scope.data[0].length > maxTicksPerGraph) {
       $scope.labels = $scope.labels.slice(1);
       $scope.data[0] = $scope.data[0].slice(1);
     }
 
-    console.log( data.data);
     $scope.labels.push('');
-    $scope.data[0].push(data.data);
-  };
+    $scope.data[0].push(data);
+  });
 
 
   $scope.$emit('childViewLoaded', {target: 'a[ui-sref=".livemonitor"]'});

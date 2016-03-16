@@ -13,6 +13,7 @@ import static spark.Spark.webSocket;
  */
 
 @WebSocket
+@Authenticated(route = "/liveMonitor", isWebSocket = true)
 public class LiveMonitorController {
 
 
