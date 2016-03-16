@@ -174,16 +174,6 @@ public class CompanyController extends BaseJsonController{
             return storedEmployee;
         },toJson());
 
-        exception(InvalidCompanyDataException.class, (e, req, res) -> {
-            res.status(400);
-            res.body(toJson(new GenericErrorMessage(e.getMessage())));
-        });
-
-        exception(JsonSyntaxException.class, (e, req, res) -> {
-            res.status(400);
-            res.body(toJson(new GenericErrorMessage("Error while parsing Json, please verify the Json for errors")));
-        });
-
 
 
 

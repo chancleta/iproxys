@@ -4,7 +4,7 @@ socialNetworkApp.factory('AuthenticationService',["$resource","$localStorage","$
 
   var doLogin = function(responseData){
     if(responseData.error){
-      //push error
+      Materialize.toast(responseData.messsage, 5000,"error");
       return;
     }
     $localStorage.token = responseData.token;
@@ -25,7 +25,7 @@ socialNetworkApp.factory('AuthenticationService',["$resource","$localStorage","$
 
       if(this.isUserLoggedIn())
       {
-        //push message user already loagged in, redirecting to feed
+        Materialize.toast("Usuario ya estó autenticado", 5000,"error");
         return;
       }
 
@@ -34,10 +34,8 @@ socialNetworkApp.factory('AuthenticationService',["$resource","$localStorage","$
         doLogin(responseData);
       })
       .catch(function(response){
-
-        //push error
+        Materialize.toast("Oops! ocurrió un error, favor intentelo mas tarde.", 5000,"error");
       });
-
 
     },
 

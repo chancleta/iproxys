@@ -36,20 +36,30 @@ $icons-font-path: "../bower_components/Materialize/font/material-design-icons/";
   color: #00796B;
 }
 
-#loginForm {
+#loginForm,#configuration {
   margin: auto;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
   position: absolute;
+}
+#configuration{
+  height: 193px;
+}
+#loginForm{
   height: 340px;
 }
-
 nav[logged="true"].navbar-fixed {
   box-shadow: none;
 }
 
 .tabs .indicator{
   background: white !important;
+}
+.toast.error{
+  background: #B71C1C;
+}
+.toast.success{
+  background: #004D40;
 }
