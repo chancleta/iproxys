@@ -1,8 +1,5 @@
 package exceptions;
 
-import java.io.InputStream;
-import java.util.stream.IntStream;
-
 /**
  * Created by lupena on 2/5/2016.
  */

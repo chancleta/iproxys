@@ -4,12 +4,14 @@
  */
 package InetDataCollector;
 
-import api.LiveMonitorController;
 import PersistenceData.*;
+import api.LiveMonitorController;
 import dns.DnsHelper;
 import externalDependencies.GeneralConfiguration;
 import jess.JessSuggestions;
 import jess.ServiceCore;
+import jpcap.NetworkInterface;
+import jpcap.NetworkInterfaceAddress;
 import performblock.PerformHttpBlock;
 import performblock.PerformIPPortBlock;
 import performblock.PerformIpBlock;
@@ -20,9 +22,6 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
-
-import jpcap.NetworkInterface;
-import jpcap.NetworkInterfaceAddress;
 
 /**
  * @author root

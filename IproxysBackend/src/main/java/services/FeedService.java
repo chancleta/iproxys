@@ -2,12 +2,9 @@ package services;
 
 import io.codearte.jfairy.Fairy;
 import io.codearte.jfairy.producer.person.Person;
-import models.Company;
-import models.Employee;
 import models.Feed;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 

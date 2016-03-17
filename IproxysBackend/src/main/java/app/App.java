@@ -10,7 +10,6 @@ import spark.Filter;
 import spark.Spark;
 
 import java.util.Set;
-import java.util.function.BiFunction;
 
 import static spark.Spark.*;
 

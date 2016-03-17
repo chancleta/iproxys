@@ -8,9 +8,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import validator.ValiatableObject;
 
-import javax.validation.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 

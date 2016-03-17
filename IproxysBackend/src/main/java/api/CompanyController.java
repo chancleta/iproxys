@@ -1,10 +1,6 @@
 package api;
 
 import JsonParser.CustomGson;
-
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.stream.MalformedJsonException;
-import exceptions.GenericErrorMessage;
 import exceptions.GenericMessage;
 import exceptions.InvalidCompanyDataException;
 import models.Company;
@@ -12,7 +8,6 @@ import models.Employee;
 import services.CompanyService;
 
 import static app.ResponseManager.toJson;
-
 import static spark.Spark.*;
 
 /**

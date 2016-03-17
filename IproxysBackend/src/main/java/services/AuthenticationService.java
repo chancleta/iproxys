@@ -8,7 +8,6 @@ import models.Token;
 import models.User;
 import org.apache.commons.lang3.time.DateUtils;
 
-import java.security.SignatureException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

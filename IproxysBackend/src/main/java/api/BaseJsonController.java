@@ -4,9 +4,6 @@ import app.ResponseManager;
 import com.google.gson.JsonSyntaxException;
 import exceptions.GenericErrorMessage;
 import exceptions.InvalidCompanyDataException;
-import org.reflections.Reflections;
-
-import java.util.Set;
 
 import static app.ResponseManager.toJson;
 import static spark.Spark.after;

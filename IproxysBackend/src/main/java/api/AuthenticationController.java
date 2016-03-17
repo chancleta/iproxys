@@ -1,18 +1,13 @@
 package api;
 
 import JsonParser.CustomGson;
-import com.auth0.jwt.JWTSigner;
 import exceptions.InvalidCompanyDataException;
-import models.Token;
 import models.User;
 import services.AuthenticationService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import static app.ResponseManager.toJson;
-import static spark.Spark.*;
+import static spark.Spark.options;
+import static spark.Spark.post;
 
 /**
  * Created by lupena on 2/15/2016.

@@ -1,17 +1,10 @@
 package api;
 
-import JsonParser.CustomGson;
-import com.google.gson.JsonSyntaxException;
-import exceptions.GenericErrorMessage;
-import exceptions.GenericMessage;
-import exceptions.InvalidCompanyDataException;
-import models.Company;
-import models.Employee;
-import services.CompanyService;
 import services.FeedService;
 
 import static app.ResponseManager.toJson;
-import static spark.Spark.*;
+import static spark.Spark.get;
+import static spark.Spark.options;
 
 /**
  * Created by lupena on 2/5/2016.

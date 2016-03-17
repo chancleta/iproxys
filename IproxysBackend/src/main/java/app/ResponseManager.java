@@ -1,7 +1,6 @@
 package app;
 
 import JsonParser.CustomGson;
-import com.google.gson.Gson;
 import spark.ResponseTransformer;
 
 /**

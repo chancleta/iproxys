@@ -4,8 +4,8 @@
  */
 package PersistenceData;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  *

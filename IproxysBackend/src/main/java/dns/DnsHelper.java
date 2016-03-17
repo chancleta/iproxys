@@ -6,18 +6,19 @@ package dns;
 
 
 import com.google.common.net.InternetDomainName;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Enumeration;
-import java.util.Properties;
+
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
+import java.util.Properties;
 
 /*
  * To change this template, choose Tools | Templates

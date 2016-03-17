@@ -7,9 +7,10 @@ package InetDataCollector;
 import PersistenceData.SummaryIPPort_BandWidth;
 import PersistenceData.SummaryIP_BandWidth;
 import PersistenceData.SummaryPort_BandWidth;
-import java.util.List;
 import jpcap.PacketReceiver;
 import jpcap.packet.Packet;
+
+import java.util.List;
 
 /**
  *
