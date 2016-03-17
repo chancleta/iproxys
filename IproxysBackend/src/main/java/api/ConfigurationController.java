@@ -1,30 +1,53 @@
 package api;
 
 import JsonParser.CustomGson;
+import PersistenceData.Configuration;
+import PersistenceData.ConfigurationType;
 import exceptions.InvalidCompanyDataException;
+import externalDependencies.GeneralConfiguration;
 import models.User;
 import services.AuthenticationService;
 
 import static app.ResponseManager.toJson;
 import static spark.Spark.put;
+import static spark.Spark.get;
 
 /**
  * Created by lupena on 2/15/2016.
  */
-public class ConfigurationController extends BaseJsonController{
+//@Authenticated(route = "/configuration")
+public class ConfigurationController extends BaseJsonController {
 
-    public ConfigurationController(final AuthenticationService authenticationService){
+    public ConfigurationController() {
 
-    put("/configuration", (request, response) -> {
+        put("/configuration/bandwidth", (request, response) -> {
 
-        User user = CustomGson.Gson().fromJson(request.body(), User.class);
+            models.Configuration config = CustomGson.Gson().fromJson(request.body(), models.Configuration.class);
 
-        if(!user.isValid())
-            throw new InvalidCompanyDataException(user.getErrorMessage());
+            if(!config.isValid())
+                throw new InvalidCompanyDataException(config.getErrorMessage());
 
-        return authenticationService.Authenticate(user);
+            try{
+                Configuration bandwidthConfig = new Configuration().findByConfigurationType(ConfigurationType.Bandwidth);
+                GeneralConfiguration.setAvailableBandwidth(Double.parseDouble(config.getData()));
+                bandwidthConfig.setData(config.getData());
+                bandwidthConfig.update();
 
-    },toJson());
+            }catch (NumberFormatException ex){
+                throw new InvalidCompanyDataException("Ocurrio un error al salvar los datos, verifique que los datos sean correctos");
+
+            }
+
+            return config;
+        }, toJson());
+
+        get("/configuration/bandwidth", (request, response) -> {
+            Configuration bandwidthConfig = new Configuration().findByConfigurationType(ConfigurationType.Bandwidth);
+            models.Configuration config = new models.Configuration();
+            config.setType(ConfigurationType.Bandwidth);
+            config.setData(bandwidthConfig == null ? Double.toString(GeneralConfiguration.getAvailableBandwidth()) : bandwidthConfig.getData());
+            return config;
+        }, toJson());
 
 //    options("/authenticate", (request, response) -> true);
 

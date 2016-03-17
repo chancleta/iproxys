@@ -5,14 +5,6 @@ $icons-font-path: "../bower_components/Materialize/font/material-design-icons/";
 @import "Materialize/sass/materialize.scss";
 // endbower
 
-//Materialize fixes
-
-@media only screen and (max-width: 992px) {
-  nav .brand-logo {
-    left: initial;
-    transform: translateX(0);
-  }
-}
 
 /* label focus color */
 .input-field input[type=text]:focus + label, .input-field input[type=email]:focus + label, .input-field input[type=password]:focus + label,.input-field input[type=number]:focus + label {
@@ -62,4 +54,18 @@ nav[logged="true"].navbar-fixed {
 }
 .toast.success{
   background: #004D40;
+}
+#darshboardMenu li{
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease;
+}
+
+.side-nav li:hover, .side-nav li.active{
+background: #007C6F;
+}
+
+#selectedMenuText.brand-logo{
+  font-size: 1.1rem;
 }

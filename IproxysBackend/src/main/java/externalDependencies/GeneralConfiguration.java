@@ -19,7 +19,10 @@ public class GeneralConfiguration {
 
 
     public static double getAvailableBandwidth(){
-        return GeneralConfiguration.availableBandwidth;
+        return availableBandwidth;
     }
-    
+
+    public static void setAvailableBandwidth(double availableBandwidth ){
+        GeneralConfiguration.availableBandwidth = availableBandwidth;
+    }
 }

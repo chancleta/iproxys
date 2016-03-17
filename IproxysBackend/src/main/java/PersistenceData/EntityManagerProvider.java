@@ -12,7 +12,7 @@ import javax.persistence.Persistence;
  *
  * @author root
  */
-public class EntityManagerProvider {
+public class EntityManagerProvider  {
 
     private static EntityManagerProvider entityManagerProvider = null;
     private static final String PERSISTENCE_UNIT = "TestJEE-ejbPU";

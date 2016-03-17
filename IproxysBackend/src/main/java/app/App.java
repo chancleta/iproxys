@@ -1,7 +1,10 @@
 package app;
 
 import InetDataCollector.Sniffer;
+import PersistenceData.Configuration;
+import PersistenceData.ConfigurationType;
 import api.*;
+import externalDependencies.GeneralConfiguration;
 import org.reflections.Reflections;
 import services.AuthenticationService;
 import services.CompanyService;
@@ -37,8 +40,10 @@ public class App {
         new CompanyController(CompanyService.getInstance());
         new AuthenticationController(AuthenticationService.getInstance());
         new FeedListController(FeedService.getInstance());
+        new ConfigurationController();
         initAuthenticatedRoutes();
         Sniffer.getInstance().select();
+        initConfiguration();
     }
 
     public static void initAuthenticatedRoutes() {
@@ -85,6 +90,19 @@ public class App {
         });
     }
 
+    public static void initConfiguration(){
 
+        Configuration bandwidthConfig = new Configuration().findByConfigurationType(ConfigurationType.Bandwidth);
+        //Setting default configuration If not present
+        if(bandwidthConfig == null){
+            GeneralConfiguration.setAvailableBandwidth(1.5*GeneralConfiguration.Megabit);
+            bandwidthConfig = new Configuration();
+            bandwidthConfig.setType(ConfigurationType.Bandwidth);
+            bandwidthConfig.setData(Double.toString(GeneralConfiguration.getAvailableBandwidth()));
+            bandwidthConfig.save();
+        }else{
+            GeneralConfiguration.setAvailableBandwidth(Double.parseDouble(bandwidthConfig.getData()));
+        }
+    }
 }
 
