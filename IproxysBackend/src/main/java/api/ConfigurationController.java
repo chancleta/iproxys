@@ -3,6 +3,7 @@ package api;
 import JsonParser.CustomGson;
 import PersistenceData.Configuration;
 import PersistenceData.ConfigurationType;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import exceptions.InvalidCompanyDataException;
 import externalDependencies.GeneralConfiguration;
 import models.User;
@@ -23,6 +24,7 @@ public class ConfigurationController extends BaseJsonController {
         put("/configuration/bandwidth", (request, response) -> {
 
             models.Configuration config = CustomGson.Gson().fromJson(request.body(), models.Configuration.class);
+            config.setType(ConfigurationType.Bandwidth);
 
             if(!config.isValid())
                 throw new InvalidCompanyDataException(config.getErrorMessage());
@@ -37,7 +39,6 @@ public class ConfigurationController extends BaseJsonController {
                 throw new InvalidCompanyDataException("Ocurrio un error al salvar los datos, verifique que los datos sean correctos");
 
             }
-
             return config;
         }, toJson());
 

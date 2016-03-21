@@ -45,7 +45,9 @@ $icons-font-path: "../bower_components/Materialize/font/material-design-icons/";
 nav[logged="true"].navbar-fixed {
   box-shadow: none;
 }
-
+.tabs{
+  overflow: hidden !important;
+}
 .tabs .indicator{
   background: white !important;
 }
@@ -68,4 +70,5 @@ background: #007C6F;
 
 #selectedMenuText.brand-logo{
   font-size: 1.1rem;
+  padding-bottom: 15px;
 }

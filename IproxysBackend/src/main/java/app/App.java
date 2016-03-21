@@ -33,7 +33,8 @@ public class App {
 
         Spark.before("*", (request, response) -> {
             response.header("Access-Control-Allow-Origin", request.headers("Origin"));
-            response.header("Access-Control-Request-Method", "POST, GET, OPTIONS, UPDATE");
+            response.header("Access-Control-Request-Method", "POST, GET, OPTIONS, PUT");
+            response.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT");
             response.header("Access-Control-Allow-Headers", request.headers("Access-Control-Request-Headers"));
         });
 
