@@ -1,22 +1,23 @@
-<nav class="teal darken-1 z-depth-2" id="darshboardMenu">
+<div class="teal  z-depth-1" id="darshboardMenu">
   <div class="nav-wrapper">
     <a href="#" data-activates="mobile-menu" class="button-collapse show-on-small hide-on-med-and-up"><i class="material-icons">menu</i></a>
     <a href="#" class="brand-logo center show-on-small hide-on-med-and-up" id="selectedMenuText">Configuración</a>
 
-    <ul class="right hide-on-small-and-down" id="desktopMenu">
-      <li class="active"><a href="#" ui-sref=".configuration" class="white-text" ng-click="updateActiveItem($event)">Configuración</a></li>
-      <li><a href="#"   ui-sref=".livemonitor" class="white-text" ng-click="updateActiveItem($event)">Live Monitor</a></li>
-      <li><a href="#" ui-sref=".livemonitor" class="white-text" ng-click="updateActiveItem($event)">Firewall Config</a></li>
-      <li><a href="#" ui-sref=".livemonitor"  class="white-text" ng-click="updateActiveItem($event)">Resource Manager</a></li>
+
+    <ul  class="right  teal tabs hide-on-small-and-down" id="desktopMenu" >
+      <li class="tab col s3 active"><a href="#configuration" data-sref="configuration" class="white-text" ng-click="loadState($event)">Configuración</a></li>
+      <li class="tab col s3"><a href="#livemonitor"   data-sref="livemonitor" class="white-text" ng-click="loadState($event)">Live Monitor</a></li>
+      <li class="tab col s3"><a href="#livemonitor2" data-sref="livemonitor2" class="white-text" ng-click="loadState($event)">Firewall Config</a></li>
+      <li class="tab col s3"><a href="#livemonitor3" data-sref="livemonitor3"  class="white-text" ng-click="loadState($event)">Resource Manager</a></li>
     </ul>
+
     <ul class="side-nav teal darken-1" id="mobile-menu">
-      <li class="active"><a href="#" ui-sref=".configuration" class="white-text" ng-click="updateActiveItem($event)">Configuración</a></li>
-      <li><a href="#"   ui-sref=".livemonitor" class="white-text" ng-click="updateActiveItem($event)">Live Monitor</a></li>
-      <li><a href="#" ui-sref=".livemonitor" class="white-text" ng-click="updateActiveItem($event)">Firewall Config</a></li>
-      <li><a href="#" ui-sref=".livemonitor"  class="white-text" ng-click="updateActiveItem($event)">Resource Manager</a></li>
-    </ul>
+    <li class="active"><a href="#" data-sref="configuration" class="white-text" ng-click="loadState($event)">Configuración</a></li>
+    <li><a href="#"   data-sref="livemonitor" class="white-text" ng-click="loadState($event)">Live Monitor</a></li>
+    <li><a href="#" data-sref="livemonitor2" class="white-text" ng-click="loadState($event)">Firewall Config</a></li>
+    <li><a href="#" data-sref="livemonitor3"  class="white-text" ng-click="loadState($event)">Resource Manager</a></li>
   </div>
-</nav>
+</div>
 
 
 <div class="container">

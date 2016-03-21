@@ -4,20 +4,26 @@ socialNetworkApp.controller('DashboardCtrl',["$scope","$state","$location", func
 
   //Initialize Mobile Menu
   $(".button-collapse").sideNav();
+  $('ul.tabs').tabs();
 
-  $scope.updateActiveItem = function($event){
+  $scope.loadState = function($event){
 
-    angular.element($event.target).parent().parent().find(".active").removeClass("active");
-    angular.element($event.target).parent().toggleClass("active");
 
     angular.element("#selectedMenuText").html(angular.element($event.target).html());
+    $state.transitionTo('dashboard.'+angular.element($event.target).attr('data-sref'));
 
     if( angular.element($event.target).parent().parent().attr("id") == "mobile-menu"){
-      angular.element("#desktopMenu").find(".active").removeClass("active");
-      angular.element("#desktopMenu").find('a[ui-sref="'+angular.element($event.target).attr('ui-sref')+'"]').parent().toggleClass("active");
+      angular.element($event.target).parent().parent().find(".active").removeClass("active");
+      angular.element($event.target).parent().toggleClass("active");
+      setTimeout(
+        function(){
+          $('ul.tabs').tabs('select_tab',angular.element($event.target).attr('data-sref'));
+
+        },300);
+
     }else{
       angular.element("#mobile-menu").find(".active").removeClass("active");
-      angular.element("#mobile-menu").find('a[ui-sref="'+angular.element($event.target).attr('ui-sref')+'"]').parent().toggleClass("active");
+      angular.element("#mobile-menu").find('a[data-sref="'+angular.element($event.target).attr('data-sref')+'"]').parent().toggleClass("active");
     }
   };
 }]);

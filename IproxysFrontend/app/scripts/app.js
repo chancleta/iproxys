@@ -83,7 +83,7 @@ var socialNetworkApp =
         };
       }]);
     }])
-    .constant("ConfigData", {url: "http://10.100.29.137", port: 9001, wsURL: "ws://10.100.29.137"})
+    .constant("ConfigData", {url: "http://localhost", port: 9001, wsURL: "ws://localhost"})
     .run(["AuthenticationService","$localStorage","$location", function (AuthenticationService,$localStorage,$location) {
       delete $localStorage['token'];
       if (!AuthenticationService.isUserLoggedIn()) {
