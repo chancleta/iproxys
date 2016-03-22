@@ -6,13 +6,13 @@ socialNetworkApp.controller('ConfigurationCtrl', ["$scope","ConfigurationService
   $('#configuration').show({
     duration: 500
   });
-
+  $scope.configurationData = {};
   $scope.isRequestInProgress = false;
 
   ConfigurationService.loadBandwith().$promise.then(function (responseData) {
       //EMIT SUCCESS
-      $scope.bandwidth = responseData;
-      console.log(responseData)
+      $scope.configurationData.bandwidth = parseFloat(responseData.data);
+
     })
     .catch(function (response) {
       Materialize.toast("Oops! ocurrió un error cargando la configuración, favor intentelo mas tarde.", 5000, "error");
@@ -28,6 +28,7 @@ socialNetworkApp.controller('ConfigurationCtrl', ["$scope","ConfigurationService
     ConfigurationService.saveBandwidth(configurationData,function(){
       angular.element("#configuration .progress").hide();
       $scope.isRequestInProgress = false;
+      console.log($scope);
     });
   }
 }]);
