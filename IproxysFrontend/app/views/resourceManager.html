@@ -1,0 +1,35 @@
+<div class="row container" id="resourceManagerList">
+  <div class="col l12 m12 s12">
+    <div class="card grey lighten-5">
+      <div class="progress" style="visibility: hidden">
+        <div class="indeterminate"></div>
+      </div>
+      <ul class="collection">
+        <li class="collection-item avatar grey lighten-5" ng-repeat="resource in resourceList">
+          <i class="material-icons circle teal">verified_user</i>
+          <span class="title">IP: {{resource.ip}}</span>
+          <p ng-show="resource.type == resourceType[2]">Puerto: {{resource.port}}<br>{{resource.protocol}}
+          </p>
+          <span class="secondary-content">
+            <span  class="pointer waves-effect waves-light"><i class="material-icons edit">create</i></span>
+            <span  class="pointer waves-effect waves-light" ng-click="deleteResource(resource, $event)" ><i class="material-icons delete">delete</i></span>
+          </span>
+
+        </li>
+      </ul>
+      <button class="btn-floating btn-large waves-effect waves-light green center" ng-click="addNewResource()"><i class="material-icons">add</i></button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="addNewResource" class="modal modal-fixed-footer">
+  <div class="modal-content">
+    <h4>Modal Header</h4>
+    <p>A bunch of text</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn-floating btn-large waves-effect waves-light red" ng-click=""><i class="material-icons">cancel</i></button>
+    <button class="btn-floating btn-large waves-effect waves-light green" ng-click=""><i class="material-icons">playlist_add</i></button>
+  </div>
+</div>
