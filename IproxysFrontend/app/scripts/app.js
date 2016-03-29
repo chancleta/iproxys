@@ -52,6 +52,11 @@ var socialNetworkApp =
           controller: 'AuthenticationCtrl',
 
         })
+        .state('dashboard.resourceManager', {
+          url: "resourceManager",
+          templateUrl: 'views/resourceManager.html',
+          controller: 'ResourceManagerCtrl',
+        })
         .state('404', {
           url: "/404",
           templateUrl: 'views/404.html'

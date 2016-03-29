@@ -6,6 +6,9 @@ socialNetworkApp.controller('ConfigurationCtrl', ["$scope","ConfigurationService
   $('#configuration').show({
     duration: 500
   });
+
+  $("#inputBandwidth").focus();
+
   $scope.configurationData = {};
   $scope.isRequestInProgress = false;
 
