@@ -14,6 +14,7 @@ module App.Controllers {
             tooltipTemplate: function(v) {return parseFloat(v.value).toFixed(2)+" KB/s";},//Formatting the tooltip 2 decimals and Kbit/s
         } ;
         constructor($interval:angular.IIntervalService) {
+            document.querySelector("title").innerHTML = "iProxys - Dashboard";
 
             // Update the dataset at 25FPS for a smoothly-animating chart
             $interval(() => {

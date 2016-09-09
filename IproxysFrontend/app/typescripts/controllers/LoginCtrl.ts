@@ -12,7 +12,7 @@ module App.Controllers {
 
         constructor(public localStorage:angular.local.storage.ILocalStorageService, $rootScope:angular.IRootScopeService, public authorizationService:App.Services.IAuthorizationService,
                     public $state:angular.ui.IStateService, $templateCache:angular.ITemplateCacheService) {
-            document.querySelector("title").innerHTML = "Punto de Ventas - Login";
+            document.querySelector("title").innerHTML = "iProxys - Login";
 
             //inviladate all view cache so the user can log in with diferent roles
             $templateCache.removeAll();
