@@ -4,6 +4,8 @@
  */
 package PersistenceData;
 
+import validator.ValiatableObject;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
@@ -14,7 +16,7 @@ import java.util.List;
  *
  * @author Luis
  */
-public abstract class PersistenceProvider implements Serializable {
+public abstract class PersistenceProvider extends ValiatableObject implements Serializable   {
     private EntityManagerProvider entityManagerProvider;
     protected EntityManager entityManager;
     public PersistenceProvider(){
@@ -65,4 +67,6 @@ public abstract class PersistenceProvider implements Serializable {
             return false;
         }
     }
+
+
 }

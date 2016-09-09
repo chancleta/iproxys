@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
 /**
  *
  */
-public class CompanyService  {
+public class CompanyService {
 
     private static CompanyService  companyService;
     private List<Company> companyList;

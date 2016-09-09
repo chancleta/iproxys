@@ -43,7 +43,7 @@ module App.Controllers {
 
         logout():void {
             this.localStorage.remove('token');
-            this.$state.go('frontpage');
+            this.$state.go('login');
         }
     }
 

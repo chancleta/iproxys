@@ -5,9 +5,11 @@ package models;
  */
 public class Token {
     private String token;
+    private String refreshToken;
 
     public Token(String token){
         this.token = token;
+//        this.refreshToken =
     }
     public String getToken() {
         return token;
@@ -15,5 +17,13 @@ public class Token {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToke) {
+        this.refreshToken = refreshToke;
     }
 }

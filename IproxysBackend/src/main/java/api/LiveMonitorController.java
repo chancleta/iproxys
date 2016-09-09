@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 
 @WebSocket
-@Authenticated(route = "/liveMonitor", isWebSocket = true)
+//@RequiresAuthorization(isWebSocket = true, allowedRoles = UserRoles.Admin)
 public class LiveMonitorController {
 
 

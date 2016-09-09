@@ -1,16 +1,16 @@
-package api;
+package api.common;
+
+import models.UserRoles;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Created by lupena on 3/15/2016.
- */
-@Target(ElementType.TYPE)
+@Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Authenticated {
+public @interface Authorize{
+    UserRoles[] roles();
+    RequestMethod method();
     String route();
-    boolean isWebSocket() default false;
 }

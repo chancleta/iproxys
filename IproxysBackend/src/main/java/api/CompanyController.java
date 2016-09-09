@@ -1,8 +1,9 @@
 package api;
 
 import JsonParser.CustomGson;
+import api.common.BaseJsonController;
+import exceptions.GenericException;
 import exceptions.GenericMessage;
-import exceptions.InvalidCompanyDataException;
 import models.Company;
 import models.Employee;
 import services.CompanyService;
@@ -13,7 +14,7 @@ import static spark.Spark.*;
 /**
  * Created by lupena on 2/5/2016.
  */
-public class CompanyController extends BaseJsonController{
+public class CompanyController extends BaseJsonController {
 
     public CompanyController(final CompanyService companyService) {
         super();
@@ -26,7 +27,7 @@ public class CompanyController extends BaseJsonController{
             Company company = CustomGson.Gson().fromJson(request.body(), Company.class);
             company.setCompanyID(companyService.getRandomID());
             if(!company.isValid())
-                throw new InvalidCompanyDataException(company.getErrorMessage());
+                throw new GenericException(company.getErrorMessage());
 
             companyService.AddCompany(company);
 
@@ -45,12 +46,12 @@ public class CompanyController extends BaseJsonController{
             String CompanyID = request.params(":id");
 
             if(!companyService.isNumeric(CompanyID))
-                throw new InvalidCompanyDataException("Invalid Company ID");
+                throw new GenericException("Invalid Company ID");
 
             Company storedCompany = companyService.getCompanyByID(Long.parseLong(CompanyID));
 
             if(storedCompany == null)
-                throw new InvalidCompanyDataException("Company wasn't found");
+                throw new GenericException("Company wasn't found");
 
             return  storedCompany;
 
@@ -61,18 +62,18 @@ public class CompanyController extends BaseJsonController{
             String CompanyID = request.params(":id");
 
             if(!companyService.isNumeric(CompanyID))
-                throw new InvalidCompanyDataException("Invalid Company ID");
+                throw new GenericException("Invalid Company ID");
 
             Company storedCompany = companyService.getCompanyByID(Long.parseLong(CompanyID));
 
             if(storedCompany == null)
-                throw new InvalidCompanyDataException("Company wasn't found");
+                throw new GenericException("Company wasn't found");
 
             Company newCompanyData = CustomGson.Gson().fromJson(request.body(), Company.class);
             newCompanyData.setCompanyID(Long.parseLong(CompanyID));
 
             if(!newCompanyData.isValid())
-                throw new InvalidCompanyDataException(newCompanyData.getErrorMessage());
+                throw new GenericException(newCompanyData.getErrorMessage());
 
           companyService.updateCompany(newCompanyData);
             return  newCompanyData;
@@ -83,12 +84,12 @@ public class CompanyController extends BaseJsonController{
             String CompanyID = request.params(":id");
 
             if(!companyService.isNumeric(CompanyID))
-                throw new InvalidCompanyDataException("Invalid Company ID");
+                throw new GenericException("Invalid Company ID");
 
             Company storedCompany = companyService.getCompanyByID(Long.parseLong(CompanyID));
 
             if(storedCompany == null)
-                throw new InvalidCompanyDataException("Company wasn't found");
+                throw new GenericException("Company wasn't found");
 
             companyService.removeCompanyByID(storedCompany.getCompanyID());
 
@@ -104,12 +105,12 @@ public class CompanyController extends BaseJsonController{
             String CompanyID = request.params(":id");
 
             if(!companyService.isNumeric(CompanyID))
-                throw new InvalidCompanyDataException("Invalid Company ID");
+                throw new GenericException("Invalid Company ID");
 
             Company storedCompany = companyService.getCompanyByID(Long.parseLong(CompanyID));
 
             if(storedCompany == null)
-                throw new InvalidCompanyDataException("Company wasn't found");
+                throw new GenericException("Company wasn't found");
 
             return storedCompany.getEmployees();
         },toJson());
@@ -124,20 +125,20 @@ public class CompanyController extends BaseJsonController{
             String EmployeeID = request.params(":employeeid");
 
             if(!companyService.isNumeric(CompanyID))
-                throw new InvalidCompanyDataException("Invalid Company ID");
+                throw new GenericException("Invalid Company ID");
 
             if(!companyService.isNumeric(EmployeeID))
-                throw new InvalidCompanyDataException("Invalid Employee ID");
+                throw new GenericException("Invalid Employee ID");
 
             Company storedCompany = companyService.getCompanyByID(Long.parseLong(CompanyID));
 
             if(storedCompany == null)
-                throw new InvalidCompanyDataException("Company wasn't found");
+                throw new GenericException("Company wasn't found");
 
             Employee storedEmployee = companyService.getEmployeeFromCompany(Long.parseLong(EmployeeID),storedCompany);
 
             if(storedEmployee == null)
-                throw new InvalidCompanyDataException("Employee wasn't found");
+                throw new GenericException("Employee wasn't found");
 
             return storedEmployee;
         },toJson());
@@ -151,20 +152,20 @@ public class CompanyController extends BaseJsonController{
             String EmployeeID = request.params(":employeeid");
 
             if(!companyService.isNumeric(CompanyID))
-                throw new InvalidCompanyDataException("Invalid Company ID");
+                throw new GenericException("Invalid Company ID");
 
             if(!companyService.isNumeric(EmployeeID))
-                throw new InvalidCompanyDataException("Invalid Employee ID");
+                throw new GenericException("Invalid Employee ID");
 
             Company storedCompany = companyService.getCompanyByID(Long.parseLong(CompanyID));
 
             if(storedCompany == null)
-                throw new InvalidCompanyDataException("Company wasn't found");
+                throw new GenericException("Company wasn't found");
 
             Employee storedEmployee = companyService.getEmployeeFromCompany(Long.parseLong(EmployeeID),storedCompany);
 
             if(storedEmployee == null)
-                throw new InvalidCompanyDataException("Employee wasn't found");
+                throw new GenericException("Employee wasn't found");
 
             return storedEmployee;
         },toJson());

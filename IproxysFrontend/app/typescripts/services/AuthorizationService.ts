@@ -24,7 +24,6 @@ namespace App.Services {
         }
 
         authorize(user:App.Models.IUser):angular.IPromise<App.Models.IToken> {
-            user.role = App.Models.UserRoles[this.userRoleConfig];
             return this.tokenResourceService.get().getToken(user).$promise;
         }
 

@@ -7,11 +7,12 @@ namespace App {
 
     class Init {
 
-        public static $inject = ["$routeProvider", "$stateProvider", "$urlRouterProvider", "$rootScope", "$httpProvider", "$state", "authorizationService"];
+        public static $inject = ["$routeProvider", "$stateProvider", "$urlRouterProvider", "$rootScope", "$httpProvider", "$state", "authorizationService","ChartJsProvider"];
         private static _moduleName = "iProxys";
 
         public static init():void {
-            angular.module(Init._moduleName, ["ionic", "LocalStorageModule", "ui.router", "ngResource"]).config(Init.config);
+            //angular.module(Init._moduleName, ["ionic", "LocalStorageModule", "ui.router", "ngResource"]).config(Init.config);
+            angular.module(Init._moduleName, ["LocalStorageModule", "ui.router", "ngResource","chart.js"]).config(Init.config);
             angular.module(Init._moduleName).run(Init.run);
             angular.module(Init._moduleName).service("authorizationService", App.Services.AuthorizationService);
             angular.module(Init._moduleName).service("tokenResourceService", App.Services.TokenResourceService);
@@ -80,17 +81,18 @@ namespace App {
         }
 
         private static
-        config($urlRouterProvider:angular.ui.IUrlRouterProvider, $stateProvider:angular.ui.IStateProvider, $httpProvider:angular.IHttpProvider):void {
+        config($urlRouterProvider:angular.ui.IUrlRouterProvider, $stateProvider:angular.ui.IStateProvider, $httpProvider:angular.IHttpProvider,ChartJsProvider:any):void {
 
-            $urlRouterProvider.otherwise("/");
+            $urlRouterProvider.otherwise("/login");
             $urlRouterProvider.when('', '/');
+            $urlRouterProvider.when('/', '/login');
 
             $stateProvider
                 .state('admin', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.AdminCtrl))
                 .state('admin.dashboard', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.DashboardCtrl))
                 .state('login', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.LoginCtrl))
-                .state('frontpage', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.FrontPageCtrl))
-                .state('admin.usermanagement', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.UserManagementCtrl));
+                //.state('frontpage', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.FrontPageCtrl))
+                //.state('admin.usermanagement', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.UserManagementCtrl));
             let inFlightAuthRequest:any = null;
 
             $httpProvider.interceptors.push(['$q', 'localStorageService', "$injector", ($q:angular.IQService, localStorageService:angular.local.storage.ILocalStorageService, $injector:IInjectorService) => {
@@ -151,6 +153,11 @@ namespace App {
                     }
                 };
             }]);
+
+            ChartJsProvider.setOptions({
+                colours: ['#97BBCD', '#DCDCDC', '#F7464A', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'],
+                responsive: true
+            });
         }
     }
 
@@ -165,7 +172,7 @@ namespace App {
         //TODO: Load from Config FIle
         public static values:any = {
             //url: "http://69.28.92.208:4000",
-            url: "http://69.28.92.208:4000",
+            url: "http://localhost:4000",
             endPoints: {
                 getToken: "/oauth/token",
                 validateToken: "/oauth/token/validate",
@@ -242,17 +249,17 @@ module App.Factories {
             //noinspection TypeScriptValidateTypes
             switch (<string>controllerType.toString()) {
 
-                case  App.Controllers.UserManagementCtrl.toString():
-                    route.url = "/user-management";
-                    route.controller = controllerType;
-                    route.templateUrl = "views/usermanagement/usermanagement.html";
-                    //route.templateProvider = DynamicTemplateUrl(route);
-                    break;
+                //case  App.Controllers.UserManagementCtrl.toString():
+                //    route.url = "/user-management";
+                //    route.controller = controllerType;
+                //    route.templateUrl = "views/usermanagement/usermanagement.html";
+                //    //route.templateProvider = DynamicTemplateUrl(route);
+                //    break;
                 case  App.Controllers.DashboardCtrl.toString():
                     route.url = "/dashboard";
                     route.controller = controllerType;
-                    route.baseUrl = "views/dashboard/dashboard.$USERROLE$.html";
-                    route.templateProvider = DynamicTemplateUrl(route);
+                    route.templateUrl = "views/dashboard/dashboard.html";
+                    //route.templateProvider = DynamicTemplateUrl(route);
                     break;
                 case  App.Controllers.AdminCtrl.toString():
                     route.templateUrl = "views/admin/admin.tpl.html";
@@ -264,11 +271,11 @@ module App.Factories {
                     route.controller = controllerType;
                     route.templateUrl = "views/login/login.html";
                     break;
-                case  App.Controllers.FrontPageCtrl.toString():
-                    route.url = "/";
-                    route.controller = controllerType;
-                    route.templateUrl = "views/frontpage/frontpage.html";
-                    break;
+                //case  App.Controllers.FrontPageCtrl.toString():
+                //    route.url = "/";
+                //    route.controller = controllerType;
+                //    route.templateUrl = "views/frontpage/frontpage.html";
+                //    break;
                 default:
                     throw "Argument is not a controller type";
             }

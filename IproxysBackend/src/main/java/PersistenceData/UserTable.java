@@ -8,14 +8,15 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- *
  * @author ljpena
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = UserTable.findAllUsers, query = "select u from UserTable u"),
-    @NamedQuery(name = UserTable.findbyUsername, query = "select u from UserTable u where u.username = :username"),
-    @NamedQuery(name = "UserTable.findAll", query = "SELECT u FROM UserTable u")
+        @NamedQuery(name = UserTable.findAllUsers, query = "select u from UserTable u"),
+        @NamedQuery(name = UserTable.findbyUsername, query = "select u from UserTable u where u.username = :username"),
+        @NamedQuery(name = "UserTable.findAll", query = "SELECT u FROM UserTable u"),
+        @NamedQuery(name = "UserTable.findById", query = "SELECT u FROM UserTable u where u.id = :id"),
+        @NamedQuery(name = "UserTable.findUserByCredentials", query = "SELECT u FROM UserTable u where u.username = :username and u.password = :password")
 })
 public class UserTable extends PersistenceProvider implements Serializable {
 
@@ -39,7 +40,7 @@ public class UserTable extends PersistenceProvider implements Serializable {
     public UserTable() {
         super();
     }
-        
+
     /**
      * @return the id
      */

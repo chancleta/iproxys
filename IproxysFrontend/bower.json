@@ -10,7 +10,8 @@
     "getmdl-select": "*",
     "angular-resource": "^1.4.0",
     "crypto-js": "^3.1.6",
-    "bootstrap-sass": "bootstrap-sass-official#^3.3.6"
+    "bootstrap-sass": "bootstrap-sass-official#^3.3.6",
+    "angular-chart.js": "^0.8.8"
   },
   "devDependencies": {},
   "private": true,
@@ -20,10 +21,10 @@
       "main": "material.js"
     },
     "nvd3": {
-      "ignore": true
+      "ignore": false
     },
     "d3": {
-      "ignore": true
+      "ignore": false
     },
     "crypto-js": {
       "ignore": false,
