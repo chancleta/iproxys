@@ -1,74 +1,64 @@
-<!doctype html>
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en" ng-app="iProxys">
+<head>
+    <link rel="icon" type="image/png" href="images/DB_16х16.png">
     <meta charset="utf-8">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="activacionesRD">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!--Import Google Icon Font-->
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="../bower_components/angular-chart.js/dist/angular-chart.css">
-
-    <!-- endbuild -->
-  </head>
-  <body ng-app="socialNetworkApp" class="grey lighten-2">
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
 
 
-  <nav class="navbar-fixed teal darken-3">
-    <div class="nav-wrapper">
-        <div class="container">
-          <a href="#" class="brand-logo center">iProxys</a>
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
 
-        </div>
-    </div>
-  </nav>
 
-    <div ui-view></div>
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
 
-    <!-- build:js(.) scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/ngstorage/ngStorage.js"></script>
-    <script src="bower_components/Chart.js/Chart.js"></script>
-    <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
-    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="bower_components/ng-websocket/ng-websocket.js"></script>
-    <script src="bower_components/Materialize/bin/materialize.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
+    <title>Activaciones RD</title>
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-    <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <script src="scripts/app.js"></script>
 
-    <script src="scripts/controllers/AuthenticationCtrl.js"></script>
-    <script src="scripts/services/AuthenticationService.js"></script>
+    <link href="styles/style.css" rel="stylesheet"/>
+    <script src="cordova.js"></script>
 
-    <script src="scripts/controllers/FeedCtrl.js"></script>
-    <script src="scripts/services/FeedService.js"></script>
+</head>
+<body>
 
-    <script src="scripts/controllers/NetworkMonitorCtrl.js"></script>
-    <script src="scripts/services/LiveMontiorService.js"></script>
+<div ui-view></div>
 
-    <script src="scripts/controllers/DashboardCtrl.js"></script>
 
-    <script src="scripts/controllers/ConfigurationCtrl.js"></script>
-    <script src="scripts/services/ConfigurationService.js"></script>
 
-  <script src="scripts/controllers/ResourceManagerCtrl.js"></script>
+<!-- build:js js/main.js -->
+<script src="js/vendor.js" type="application/javascript"></script>
 
-    <script src="scripts/directives/FeedPostsDirective.js"></script>
-    <script src="scripts/directives/OnNgRepeatDone.js"></script>
+<script src="js/models/Token.js" type="application/javascript"></script>
+<script src="js/models/User.js" type="application/javascript"></script>
 
-    <!-- endbuild -->
+<script src="js/resources/TokenResource.js" type="application/javascript"></script>
+
+
+<script src="js/services/AuthorizationService.js" type="application/javascript"></script>
+<script src="js/services/TokenResourceService.js" type="application/javascript"></script>
+<script src="js/services/UserResourceService.js" type="application/javascript"></script>
+<script src="js/services/UserManagementService.js" type="application/javascript"></script>
+
+<script src="js/controllers/DashboardCtrl.js" type="application/javascript"></script>
+<script src="js/controllers/LoginCtrl.js" type="application/javascript"></script>
+<script src="js/controllers/FrontPageCtrl.js" type="application/javascript"></script>
+<script src="js/controllers/AdminCtrl.js" type="application/javascript"></script>
+<script src="js/controllers/UserManagementCtrl.js" type="application/javascript"></script>
+
+
+<script src="js/app.js" type="application/javascript"></script>
+<!-- endbuild -->
+
 </body>
 </html>

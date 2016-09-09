@@ -1,32 +1,36 @@
 {
-  "name": "social-network",
-  "version": "0.0.0",
+  "name": "private",
   "dependencies": {
-    "angular": "^1.4.0",
-    "jquery": "^2.2.1",
-    "angular-animate": "^1.4.0",
-    "angular-cookies": "^1.4.0",
+    "angular-route": "^1.5.5",
+    "angular-local-storage": "^0.2.7",
+    "angular-ui-router": "^0.3.0",
+    "material-design-lite": "^1.2.0",
+    "d3": "3.5.14",
+    "nvd3": "1.8.2",
+    "getmdl-select": "*",
     "angular-resource": "^1.4.0",
-    "angular-route": "^1.4.0",
-    "angular-sanitize": "^1.4.0",
-    "ngstorage": "^0.3.10",
-    "angular-chart.js": "^0.8.8",
-    "angular-ui-router": "^0.2.18",
-    "ng-websocket": "^0.2.1",
-    "Materialize": "materialize#^0.97.5"
+    "crypto-js": "^3.1.6",
+    "bootstrap-sass": "bootstrap-sass-official#^3.3.6"
   },
-  "devDependencies": {
-    "angular-mocks": "^1.4.0"
-  },
-  "appPath": "app",
-  "moduleName": "socialNetworkApp",
+  "devDependencies": {},
+  "private": true,
   "overrides": {
-    "bootstrap": {
-      "main": [
-        "less/bootstrap.less",
-        "dist/css/bootstrap.css",
-        "dist/js/bootstrap.js"
-      ]
+    "material-design-lite": {
+      "ignore": false,
+      "main": "material.js"
+    },
+    "nvd3": {
+      "ignore": true
+    },
+    "d3": {
+      "ignore": true
+    },
+    "crypto-js": {
+      "ignore": false,
+      "main": "crypto-js.js"
+    },
+    "getmdl-select": {
+      "ignore": false
     }
   }
 }

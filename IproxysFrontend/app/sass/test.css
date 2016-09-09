@@ -1,0 +1,285 @@
+.top-bar.mobile-top-bar-hide{
+    background-color: #0d6e30;
+}
+.top-bar.mobile-top-bar-hide ul.top-bar-info i.fa{
+    color: #ffffff;
+}
+#text-2 > div > ul > li:nth-child(2) > a,#text-2 > div > ul > li:nth-child(2) > a:selected,#text-2 > div > ul > li:nth-child(2) > a:hover{
+    color: #ffffff;
+}
+.top-bar.mobile-top-bar-hide ul.top-bar-info li:first-child{
+    border-left: solid 1px #267d45;
+}
+.top-bar.mobile-top-bar-hide ul.top-bar-info li{
+    border-right: solid 1px #267d45;
+}
+.top-bar.mobile-top-bar-hide ul.top-bar-info li a:hover{
+    color: #ffffff;
+}
+.top-bar .sidebar .widget-social-profile.social-icon-bordered li a:hover i.fa{
+    background-color: #e60505;
+    border-color: #e60505;
+}
+header.main-header .menu-wrapper ul.x-nav-menu > li > a{
+    color: #7c7b7b;
+}
+header.main-header .menu-wrapper .x-nav-menu li.current-menu-ancestor > a.x-menu-a-text, header.main-header .menu-wrapper .x-nav-menu li.current-menu-parent > a.x-menu-a-text, header.main-header .menu-wrapper .x-nav-menu li.current-menu-item > a.x-menu-a-text, header.main-header .menu-wrapper .x-nav-menu li.menu-current > a.x-menu-a-text, header.main-header .menu-wrapper .x-nav-menu li > a.x-menu-a-text:hover, header.main-header .menu-wrapper .x-nav-menu li:hover > a, header.main-header .menu-wrapper .x-nav-menu li ul.x-sub-menu li:hover > a{
+    color: #e12724;
+}
+header.main-header .menu-wrapper .x-nav-menu li.current-menu-ancestor > a.x-menu-a-text > b.x-caret:before, header.main-header .menu-wrapper .x-nav-menu li.current-menu-parent > a.x-menu-a-text > b.x-caret:before, header.main-header .menu-wrapper .x-nav-menu li.current-menu-item > a.x-menu-a-text > b.x-caret:before, header.main-header .menu-wrapper .x-nav-menu li.menu-current > a.x-menu-a-text > b.x-caret:before, header.main-header .menu-wrapper .x-nav-menu li > a.x-menu-a-text:hover > b.x-caret:before, header.main-header .menu-wrapper .x-nav-menu li:hover > a > b.x-caret:before, header.main-header .menu-wrapper .x-nav-menu li ul.x-sub-menu li:hover > a > b.x-caret:before{
+    color: #e12724;
+}
+header.main-header .menu-wrapper .x-nav-menu li > ul.x-sub-menu{
+    border-color: #e12724;
+
+}
+.home #wrapper-content{
+    border-top: 1px solid #023f7a;
+}
+.home .site-content-page{
+    border-top: 2px solid #024448;
+}
+.slotholder:after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(3,72,28,0);
+}
+.innovation-call-action{
+    background-color: #444344;
+}
+.innovation-feature .innovation-feature-content h4 a{
+    color: #19773f;
+}
+.innovation-feature .innovation-feature-content > a{
+    color: #040404;
+}
+.innovation-feature .innovation-feature-content > a:hover,.innovation-feature .innovation-feature-content h4 a:hover{
+    color: #f80a20;
+    text-decoration: none;
+}
+.informationbutton a:last-child{
+    background-color: #737273;
+    border: none;
+}
+.portfolio .portfolio-tabs .title-portfolio .bottom-line{
+    border-top: solid 2px #fff;
+}
+.portfolio-wrapper .portfolio-item .entry-thumbnail .entry-thumbnail-hover .entry-hover-wrapper .entry-hover-inner a.view-gallery{
+    background-color: #fff;
+}
+.portfolio.style_2 .portfolio-tabs ul li > a.active, .portfolio.style_2 .portfolio-tabs ul li > a:hover,.portfolio.style_2 .portfolio-tabs ul li > a{
+    color: #fff;
+}
+.portfolio.style_2 .portfolio-tabs ul{
+    border-top-color: #5d9781;
+    border-bottom-color: #5d9781;
+    color: #fff;
+}
+.portfolio.style_2 .portfolio-tabs ul li > a.active, .portfolio.style_2 .portfolio-tabs ul li > a:hover{
+    font-weight: bold;
+}
+.portfolio .portfolio-tabs ul li.magic-line{
+    background-color: #fff;
+}
+.portfolio .portfolio-tabs ul li.bottom.magic-line{
+    bottom: 1px;
+}
+.vc-tabs-1 .wpb_content_element .wpb_tabs_nav li.ui-tabs-active a:after,.vc-tabs-1 .wpb_content_element .wpb_tabs_nav li.ui-tabs-active a,.vc-tabs-1 .wpb_content_element .wpb_tabs_nav li:hover a,.vc-tabs-1 .wpb_content_element .wpb_tabs_nav li:hover a:after{
+    background: #0d6e30;
+}
+.innovation-heading.style1 h2:after{
+    border-bottom: 2px solid #000;
+}
+.testimonio {
+    /* width: 33.33%; */
+    /* float: left; */
+    text-align: center;
+    color: #fff;
+    margin-top:45px;
+}
+.testimonio h4 {
+    color: #f2ea0d;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+.testimonio p {
+    font-style: italic;
+    max-width: 400px;
+    margin: 0 auto;
+}
+.testimonio span {
+    width: 120px;
+    height: 120px;
+    display: inline-block;
+    background: #fff;
+    border-radius: 60px;
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+.innovation-heading.style1.testimoniotitle{
+    text-align: center;
+}
+.innovation-heading.style1.testimoniotitle h2{
+    color: #fff;
+    margin-bottom: 0;
+    margin-top: 30px;
+}
+.innovation-heading.style1.testimoniotitle h2:after{
+    border: none;
+}
+.blog-inner .entry-thumbnail:hover a.entry-thumbnail_overlay:before, .innovation-latest-post .entry-thumbnail:hover a.entry-thumbnail_overlay:before{
+    background-color: rgba(3,72,28,.65);
+}
+.innovation-latest-post .innovation-latest-post-title:hover,.innovation-latest-post .innovation-latest-post-readmore:hover,.innovation-latest-post .innovation-latest-post-author span a:hover{
+    color: #cb1212;
+    font-weight: bold;
+    text-decoration: none;
+}
+footer .dark{
+    color: #fff;
+    background-image: url(http://ingcovisa.com/wp-content/uploads/2015/06/projetcsbg.jpg?id=861) !important;
+}
+footer .main-footer .subscribe input[type='submit']{
+    background-color: #06b847;
+}
+footer .main-footer .subscribe #mc4wp_email{
+    background-color: #257543;
+    border-color: #fff;
+}
+#site-loading{
+    background-color: rgba(3,72,28,.9) !important;
+}
+.innovation-heading.style3 h2:after{
+    border-bottom: 2px solid #000;
+}
+.innovation-button.style2{
+    background-color: #0d6e30;
+}
+.innovation-ourteam .over-ourteam{
+    background-color: rgba(3,72,28,.65);
+}
+.portfolio .portfolio-tabs ul li > a.active, .portfolio .portfolio-tabs ul li > a:hover{
+    color: #e12724;
+}
+.innovation-service-listing .innovation-service-content > a{
+    color: #000;
+}
+.innovation-service-listing .innovation-service-content > a:hover{
+    text-decoration: none;
+    color: #e12724;
+}
+.services-left-sidebar .menu li, .services-right-sidebar .menu li{
+    background-color: #0d6e30;
+    border-bottom: 1px solid #267d45;
+}
+.innovation-conpany-info span i{
+    color: #0d6e30;
+}
+.innovation-service-listing .innovation-service-content h4 a:hover,.blog-inner h3.entry-title a:hover, .innovation-latest-post h3.entry-title a:hover{
+    color: #e12724;
+}
+.blog-inner.blog-style-classic .entry-post-meta-wrap ul.entry-meta li a, .innovation-latest-post.blog-style-classic .entry-post-meta-wrap ul.entry-meta li a, .blog-inner.blog-single .entry-post-meta-wrap ul.entry-meta li a, .innovation-latest-post.blog-single .entry-post-meta-wrap ul.entry-meta li a{
+    color: #000;
+}
+.entry-content input[type="submit"], .comment-text input[type="submit"]{
+    background-color: #0d6e30;
+}
+.list-style-bullet ul li:before{
+    color: #0d6e30;
+}
+.rev_slider_wrapper, [id*='-layer-1']{
+    text-align: left !important;
+}
+.innovation-icon-box.style1 .innovation-ib-animated .innovation-ib-inner .innovation-ib-back{
+    background-color: rgba(3,72,28,1);
+}
+.page404 h2{
+    color: #0d6e30;
+}
+.footer_inner .innovation-contact-info span{
+    color: #fff;
+}
+::selection {
+    background: #0d6e30;
+    color: #ffffff;
+}
+body::-webkit-scrollbar-thumb {
+    background-color: #0d6e30;
+}
+.entry-content a.postreadmore {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #0d6e30;
+    color: #FFFFFF;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 10px 24px;
+    border: none;
+}
+.entry-content a.postreadmore:hover {
+    background-color: #333333;
+    color: #FFFFFF;
+}
+.entry-content a, .comment-text a{
+    color: #0d6e30;
+}
+#recaptchacontainer {
+    margin-bottom: 20px;
+}
+.innovation-feature .innovation-feature-content p{
+    text-align: justify;
+}
+body,.portfolio-info,.innovation-service-listing .innovation-service-content p,.innovation-conpany-info span,.innovation-contact-info span{
+    font-size: 14px !important;
+}
+.innovation-conpany-info h3{
+    text-align: center;
+}
+.top-bar ul.top-bar-info li{
+    font-size: 12px !important;
+}
+.hades .tp-arr-allwrapper{
+    width: 150px;
+}
+.home .innovation-partner-carousel.container{
+    visibility: hidden;
+    display: none;
+}
+.innovation-service .innovation-service-content p,.innovation-latest-post p,.innovation-heading  p,.portfolio-info p,.innovation-service-listing .innovation-service-content p, .single-services .wpb_text_column.wpb_content_element p,.blog-inner .entry-excerpt p, .innovation-latest-post .entry-excerpt p, .single-post .entry-content p {
+    text-align: justify;
+}
+.post-navigation .nav-previous:hover .post-navigation-icon, .post-navigation .nav-next:hover .post-navigation-icon, .post-navigation .nav-previous:hover .post-navigation-title, .post-navigation .nav-next:hover .post-navigation-title{
+    color: #0d6e30;
+}
+.innovation-icon-box.style1 .innovation-ib-animated .innovation-ib-inner .innovation-ib-front{
+    background: transparent;
+}
+.innovation-icon-box.style1 .innovation-ib-animated .innovation-ib-inner .innovation-ib-icon{
+    display: none;
+    visibility: hidden;
+}
+.sunrise1 .innovation-ib-title, .sunrise2 .innovation-ib-title, .sunrise3 .innovation-ib-title{
+    visibility: hidden;
+}
+
+.sunrise1 .innovation-ib-inner{
+    background: url("http://ingcovisa.com/wp-content/uploads/2015/12/Sunrise0-w300-h300.jpg");
+}
+
+.sunrise2 .innovation-ib-inner{
+    background: url("http://ingcovisa.com/wp-content/uploads/2015/12/Sunrise1-w300-h300.jpg");
+}
+.sunrise3 .innovation-ib-inner{
+    background: url("http://ingcovisa.com/wp-content/uploads/2015/12/Sunrise2-w300-h300.png");
+}
+
+.innovation-icon-box.style1 .innovation-ib-animated .innovation-ib-inner .innovation-ib-front{
+    height: 200px;
+}

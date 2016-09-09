@@ -1,0 +1,74 @@
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header loginPage">
+
+    <main class="mdl-layout__content mdl-color--grey-100">
+        <div class="mdl-card mdl-shadow--2dp employer-form" action="#">
+            <div class="mdl-card__title">
+                <h2 ng-click="vm.goBack()">Activaciones RD</h2>
+
+                <div class="mdl-card__subtitle">Acceso Administrativo</div>
+            </div>
+
+            <div class="mdl-card__supporting-text">
+                <form action="#" class="form" name="loginForm">
+                    <div class="form__article login-form__username">
+                        <div class="mdl-grid">
+                            <div class="mdl-cell mdl-cell--9-col input-group">
+                                <i class="material-icons pull-left">person</i>
+
+                                <div class="mdl-textfield mdl-js-textfield pull-left" >
+                                    <input class="mdl-textfield__input" type="text" id="username" name="username" ng-model="vm.user.username"  ng-required="true" ng-change="vm.toLowerCase()">
+                                    <label class="mdl-textfield__label" for="username">Usuario</label>
+                                    <span class="loginPage__errorMsg" ng-if="loginForm.username.$dirty && loginForm.username.$error.required">Este campo es requerido</span>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form__article login-form__password">
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--9-col input-group">
+                                    <i class="material-icons pull-left">lock_outline</i>
+
+                                    <div class="mdl-textfield mdl-js-textfield pull-left">
+                                        <input class="mdl-textfield__input" type="password"  name="password" id="password" ng-model="vm.user.password"  ng-required="true">
+                                        <label class="mdl-textfield__label" for="password">Contraseña</label>
+                                        <span class="loginPage__errorMsg" ng-if="loginForm.password.$dirty && loginForm.password.$error.required">Este campo es requerido</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form__article login-form__submit">
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--9-col input-group">
+                                    <button id="submit"
+                                            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="submit"
+                                    ng-click="vm.doLogin(loginForm)" ng-disabled="loginForm.$invalid || vm.requestInProgress">
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form__action">
+                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="isInfoReliable">
+                                <span class="mdl-checkbox__label">Mantenerme Logueado</span>
+                                <input type="checkbox" id="isInfoReliable" class="mdl-checkbox__input" />
+                            </label>
+
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+    </main>
+    <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+        <div class="mdl-snackbar__text"></div>
+        <button class="mdl-snackbar__action" type="button"></button>
+    </div>
+
+
+</div>
+
+

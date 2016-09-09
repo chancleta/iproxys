@@ -1,0 +1,21 @@
+.projects-table {
+  width: 100%;
+  tbody {
+
+    .task-done {
+      padding-top: 6px !important;
+      padding-bottom: 0 !important;
+      color: $progress-main-color;
+      .material-icons {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 848px) {
+  .projects-table {
+    display: none;
+  }
+}
+

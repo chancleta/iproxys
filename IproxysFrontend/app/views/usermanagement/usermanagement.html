@@ -1,0 +1,260 @@
+<div class="mdl-grid mdl-grid--no-spacing user-management" ng-cloak="">
+
+    <div class="mdl-grid mdl-cell mdl-cell--9-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-cell--top ">
+        <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-shadow--2dp">
+            <div class="mdl-card ">
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">{{vm.isAdmin? 'Manejo de Usuarios':'Manejo de Puntos de
+                        Venta'}}</h2>
+                    <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" ng-show="vm.requestInProgress"></div>
+
+                </div>
+                <div class="mdl-card__supporting-text">
+                    <div class="table-responsive">
+                        <table class="mdl-data-table mdl-js-data-table projects-table" set-material-data-table="checkbox">
+                            <thead>
+                            <tr>
+                                <th  upgrade-material-checkbox="">
+                                    <label class="mdl-checkbox mdl-js-checkbox" for="checkbox-all">
+                                    <input type="checkbox" id="checkbox-all" class="mdl-checkbox__input">
+                                    </label>
+
+                                </th>
+                                <th class="mdl-data-table__cell--non-numeric">Nombre</th>
+                                <th class="mdl-data-table__cell--non-numeric">Usuario</th>
+                                <th class="mdl-data-table__cell--non-numeric">Correo</th>
+                                <th class="mdl-data-table__cell--non-numeric">Rol</th>
+                                <th class="mdl-data-table__cell--non-numeric">Editar</th>
+                                <th class="mdl-data-table__cell--non-numeric">Eliminar</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <!--class="is-selected"  -->
+                            <tr ng-repeat="user in vm.users" ng-class="{'highlight':user.highlight}"
+                                upgrade-material-checkbox="" id="user_{{user.id}}">
+                                <td >
+                                    <label for="checkbox-{{$index}}" class="mdl-checkbox mdl-js-checkbox">
+                                        <input type="checkbox" id="checkbox-{{$index}}" class="mdl-checkbox__input">
+                                        <span class="mdl-checkbox__label"></span>
+                                    </label>
+
+                                </td>
+                                <td class="mdl-data-table__cell--non-numeric">{{user.firstName}} {{user.lastName}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{user.username}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{user.email}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">
+                                    <span class="label label--mini {{user.role == 'Admin' ? 'background-color--primary' : user.role == 'Distribuitor' ? ' background-color--mint' : 'background-color--cerulean'}}">
+                                        {{user.role}}
+                                    </span>
+                                </td>
+                                <td class="mdl-data-table__cell--non-numeric">
+                                    <button class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--blue-600" ng-click="vm.showEditUserDialog(user)">
+                                        <i class="material-icons">mode_edit</i>
+                                    </button>
+                                </td>
+                                <td class="mdl-data-table__cell--non-numeric">
+                                    <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" ng-click="vm.deleteUser(user)">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="mdl-card__actions">
+                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect"
+                            data-upgraded=",MaterialButton,MaterialRipple"><span
+                            class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button>
+                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--fab mdl-shadow--8dp mdl-button--colored "
+                            data-upgraded=",MaterialButton,MaterialRipple" ng-click="vm.showUserCreationDialog()">
+                        <i class="material-icons mdl-js-ripple-effect" data-upgraded=",MaterialRipple">add</i>
+                        <span class="mdl-button__ripple-container"><span class="mdl-ripple is-animating"></span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <dialog class="mdl-dialog createUserDialog">
+        <div class="mdl-dialog__content">
+            <div class="mdl-card mdl-shadow--2dp employer-form">
+                <div class="mdl-card__title">
+                    <h2>{{vm.isAdmin? 'Crear Nuevo Distribuidor':'Crear Nuevo Punto de Venta'}}</h2>
+                    <!--<div class="mdl-card__subtitle">Please complete the form</div>-->
+                    <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" ng-show="vm.requestInProgress"></div>
+
+                </div>
+
+                <div class="mdl-card__supporting-text">
+                    <form action="#" class="form" name="createUserForm">
+                        <div class="form__article">
+                            <!--<h3>Personal data</h3>-->
+
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="firstName" ng-required="true"
+                                           ng-model="vm.newUser.firstName"/>
+                                    <label class="mdl-textfield__label" for="firstName">Nombre</label>
+                                </div>
+
+                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="lastName" ng-required="true"
+                                           ng-model="vm.newUser.lastName"/>
+                                    <label class="mdl-textfield__label" for="lastName">Apellido</label>
+                                </div>
+                            </div>
+
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="email" id="email" ng-required="true"
+                                           name="email"
+                                           ng-model="vm.newUser.email"
+                                           ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/"
+                                           ng-change="createUserForm.email.$setValidity('alreadyExists',true)"/>
+                                    <label class="mdl-textfield__label" for="email">Correo</label>
+                                    <span class="user-management__errorMsg"
+                                          ng-if="createUserForm.email.$dirty && (createUserForm.email.$error.email || createUserForm.email.$error.pattern)">Favor escribir un correo valido</span>
+                                    <span class="user-management__errorMsg"
+                                          ng-if="createUserForm.email.$dirty && (createUserForm.email.$error.alreadyExists)">Este correo ya existe</span>
+
+                                </div>
+
+                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="username" ng-required="true"
+                                           name="username"
+                                           ng-model="vm.newUser.username"
+                                           ng-change="createUserForm.username.$setValidity('alreadyExists',true)"/>
+                                    <label class="mdl-textfield__label" for="username">Nombre de usuario</label>
+                                    <span class="user-management__errorMsg"
+                                          ng-if="createUserForm.username.$dirty && (createUserForm.username.$error.alreadyExists)">Este nombre de usuario ya existe</span>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="mdl-dialog__actions">
+                            <button type="button" class="mdl-button background-color--cerulean"
+                                    ng-click="vm.createUser(createUserForm)"
+                                    ng-disabled="createUserForm.$invalid || vm.requestInProgress">Crear
+                            </button>
+                            <button type="button" class="mdl-button background-color--mint"
+                                    ng-click="vm.closeUserCreationDialog()">
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </dialog>
+
+    <dialog class="mdl-dialog editUserDialog">
+        <div class="mdl-dialog__content">
+            <div class="mdl-card mdl-shadow--2dp employer-form">
+                <div class="mdl-card__title">
+                    <h2>{{vm.isAdmin? 'Editar Distribuidor':'Editar Punto de Venta'}}</h2>
+                    <!--<div class="mdl-card__subtitle">Please complete the form</div>-->
+                    <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" ng-show="vm.requestInProgress"></div>
+
+                </div>
+
+                <div class="mdl-card__supporting-text">
+                    <form action="#" class="form" name="editUserForm">
+                        <div class="form__article">
+                            <!--<h3>Personal data</h3>-->
+
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="updateFirstName" ng-required="true" value="{{vm.editUser.firstName}}"
+                                           ng-model="vm.editUser.firstName"/>
+                                    <label class="mdl-textfield__label" for="updateFirstName">Nombre</label>
+                                </div>
+
+                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="updateLastName" ng-required="true"  value="{{vm.editUser.lastName}}"
+                                           ng-model="vm.editUser.lastName"/>
+                                    <label class="mdl-textfield__label" for="updateLastName">Apellido</label>
+                                </div>
+                            </div>
+
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="email" id="updateEmail" ng-required="true"
+                                           name="email"
+                                           ng-model="vm.editUser.email"
+                                           ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/"
+                                           ng-change="editUserForm.email.$setValidity('alreadyExists',true)"  value="{{vm.editUser.email}}"/>
+                                    <label class="mdl-textfield__label" for="updateEmail">Correo</label>
+                                    <span class="user-management__errorMsg"
+                                          ng-if="editUserForm.email.$dirty && (editUserForm.email.$error.email || editUserForm.email.$error.pattern)">Favor escribir un correo valido</span>
+                                    <span class="user-management__errorMsg"
+                                          ng-if="editUserForm.email.$dirty && (editUserForm.email.$error.alreadyExists)">Este correo ya existe</span>
+
+                                </div>
+
+                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="updateUsername" ng-required="true"
+                                           name="username"
+                                           ng-model="vm.editUser.username"
+                                           ng-change="editUserForm.username.$setValidity('alreadyExists',true)"  value="{{vm.editUser.username}}"/>
+                                    <label class="mdl-textfield__label" for="updateUsername">Nombre de usuario</label>
+                                    <span class="user-management__errorMsg"
+                                          ng-if="editUserForm.username.$dirty && (editUserForm.username.$error.alreadyExists)">Este nombre de usuario ya existe</span>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="mdl-dialog__actions">
+                            <button type="button" class="mdl-button background-color--cerulean"
+                                    ng-click="vm.updateUser(editUserForm)"
+                                    ng-disabled="editUserForm.$invalid || vm.requestInProgress">Actualizar
+                            </button>
+                            <button type="button" class="mdl-button background-color--mint"
+                                    ng-click="vm.closeUpdateUserDialog()" ng-disabled="vm.requestInProgress">
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </dialog>
+
+
+    <dialog class="mdl-dialog errorDialog">
+        <div class="mdl-dialog__content">
+
+            <div class="mdl-card mdl-shadow--2dp employer-form">
+                <div class="mdl-card__supporting-text" ng-bind="vm.errorMsg">
+
+                </div>
+                <div class="mdl-dialog__actions">
+                    <button type="button" class="mdl-button background-color--mint" ng-click="vm.closeErrorDialog()">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </dialog>
+
+
+    <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+        <div class="mdl-snackbar__text"></div>
+        <button class="mdl-snackbar__action" type="button"></button>
+    </div>
+</div>

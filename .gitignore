@@ -26,7 +26,16 @@ IproxysFrontend/dist
 IproxysFrontend/.tmp
 IproxysFrontend/.sass-cache
 IproxysFrontend/bower_components
+IproxysFrontend/typings/
 IproxysFrontend/.idea
+IproxysFrontend/app/typescripts/*.js
+IproxysFrontend/app/typescripts/*.map
+IproxysFrontend/app/js/**/*
+IproxysFrontend/app/styles/**/*
+
+
+
+
 
 
 IproxysBackend/.idea
