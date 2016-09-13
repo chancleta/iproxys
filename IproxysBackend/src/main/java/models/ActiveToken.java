@@ -10,6 +10,7 @@ import java.io.Serializable;
  * Created by lupena on 2/15/2016.
  */
 @Entity
+@Table(name = "activeTokens")
 @NamedQueries({
         @NamedQuery(name = "ActiveToken.findByUserId", query = "select u from ActiveToken u where u.userId = :id"),
         @NamedQuery(name = "ActiveToken.findByUserIdAndRefreshToken", query = "select u from ActiveToken u where u.userId = :id and u.refreshToken = :refreshToken")

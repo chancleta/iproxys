@@ -1,7 +1,7 @@
 package api.common;
 
 import JsonParser.CustomGson;
-import PersistenceData.UserTable;
+import PersistenceData.User;
 import app.EncryptionHelper;
 import exceptions.GenericException;
 import exceptions.UnAuthorizedException;
@@ -117,10 +117,13 @@ public class OAuthController extends BaseJsonController {
                 throw new GenericException(recievedUserData.getErrorMessage());
 
 
-            UserTable actualUserDB = UserDao.findUserByCredentials(recievedUserData.getUsername(), recievedUserData.getPassword());
+            User actualUserDB = UserDao.findUserByCredentials(recievedUserData.getUsername(), recievedUserData.getPassword());
 
             if (actualUserDB == null)
                 throw new GenericException("Invalid Username or Password");
+
+            try{Thread.sleep(3000);}
+            catch (Exception e){}
 
             return authorizationService.Authorize(actualUserDB);
 

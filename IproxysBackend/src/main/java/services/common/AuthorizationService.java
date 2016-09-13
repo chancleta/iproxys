@@ -1,6 +1,6 @@
 package services.common;
 
-import PersistenceData.UserTable;
+import PersistenceData.User;
 import app.EncryptionHelper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -39,17 +39,17 @@ public class AuthorizationService {
         return authorizationService;
     }
 
-    public Token Authorize(UserTable user) {
+    public Token Authorize(User user) {
 
         Date expDate = DateUtils.addSeconds(new Date(), 3600);
         SecureRandom random = new SecureRandom();
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("firstName", user.getNombre());
-        claims.put("lastName", user.getApellido());
+        claims.put("firstName", user.getFirstName());
+        claims.put("lastName", user.getLastName());
         claims.put("id", user.getId());
         claims.put("username", user.getUsername());
-        claims.put("email", user.getCorreo());
+        claims.put("email", user.getEmail());
 
         claims.put("iss", "iproxys");
         claims.put("iat", new Date());

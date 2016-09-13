@@ -60,6 +60,10 @@
         margin-left: 40.5px;
       }
     }
+    #loadingBar{
+      width: calc(100% - 40.5px);
+      margin-left: 40.5px;
+    }
     .mdl-cell:last-of-type {
       margin: 0 auto;
     }

@@ -84,6 +84,7 @@ public class Sniffer extends Thread {
             networkMonTimer.scheduleAtFixedRate(netMonTask, 1000, 1000);
 
         } catch (Exception ex) {
+
             System.err.println(ex);
         }
 
@@ -215,14 +216,16 @@ public class Sniffer extends Thread {
         NetworkInterfaceAddress IPaddr = getFirstIPv4Address(InetInterfaces[Sniffer.SELECTED_NETWORK_INTERFACE].addresses);
         Sniffer.InterfaceIP = IPaddr.address.getHostAddress();
         Sniffer.interfaceMask = IPaddr.subnet.getHostAddress();
+
         capture.setFilter("dst net " + getNetwork(InterfaceIP, interfaceMask) + " mask " + IPaddr.subnet.getHostAddress() + "", true);
         System.err.println("dst net " + getNetwork(InterfaceIP, interfaceMask) + " mask " + IPaddr.subnet.getHostAddress() + "");
 
     }
 
     private NetworkInterfaceAddress getFirstIPv4Address(NetworkInterfaceAddress[] IPAddrs) {
-
+        System.out.println(IPAddrs.length);
         for (int index = 0; index < IPAddrs.length; index++) {
+            System.out.println(IPAddrs[index].address.getAddress().toString());
             if (IPAddrs[index].address instanceof Inet4Address) {
                 return IPAddrs[index];
             }
@@ -231,7 +234,7 @@ public class Sniffer extends Thread {
     }
 
     public void select() {
-        startSniff(1);
+        startSniff(0);
         System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[0].name);
     }
 

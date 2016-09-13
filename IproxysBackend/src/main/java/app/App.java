@@ -1,5 +1,6 @@
 package app;
 
+import InetDataCollector.Sniffer;
 import api.UserController;
 import api.common.OAuthController;
 import services.UserService;
@@ -33,6 +34,7 @@ public class App {
         new UserController(UserService.getInstance());
 
         AuthorizationFilters.setFilters();
+        Sniffer.getInstance().select();
     }
 
 

@@ -1,6 +1,6 @@
 package app;
 
-import PersistenceData.UserTable;
+import PersistenceData.User;
 import api.common.Authorize;
 import api.common.RequestMethod;
 import api.common.RequiresAuthorization;
@@ -14,6 +14,7 @@ import persistence.dao.ActiveTokenDao;
 import persistence.dao.UserDao;
 import services.common.AuthorizationService;
 import spark.Filter;
+import spark.Request;
 
 import java.util.Date;
 import java.util.Set;
@@ -27,84 +28,82 @@ public class AuthorizationFilters {
         Reflections reflections = new Reflections("api");
         Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(RequiresAuthorization.class);
 
-
-//        Filter beforeAuthenticatedWebSocket = (request, response) -> {
-
-//            String autorizationToken = request.queryParams("token");
-//
-//            if (autorizationToken == null || autorizationToken.isEmpty()) {
-//               throw new UnAuthorizedException( "This Resource Requires Previous Authentication");
-//            }
-//
-//            if (AuthorizationService.getInstance().GetDataFromToken(autorizationToken) == null) {
-//               throw new UnAuthorizedException( "Wrong Token, please verify your request");
-//            }
-//           throw new UnAuthorizedException( "Not implemented");
-//
-//        };
-
         annotatedClasses.forEach(annotatedClass -> {
 
-            RequiresAuthorization annotation = annotatedClass.getAnnotation(RequiresAuthorization.class);
-//            boolean isWebSocket = annotation.isWebSocket();
-            Authorize[] authorizations = annotation.allowedRoles();
+                    RequiresAuthorization annotation = annotatedClass.getAnnotation(RequiresAuthorization.class);
+                    boolean isWebSocket = annotation.isWebSocket();
+                    Authorize[] authorizations = annotation.allowedRoles();
 
-            for (Authorize authorization : authorizations) {
-                spark.Spark.before(authorization.route(), getFilterFor(authorization.roles(), authorization.method()));
-            }
-        }
+                    for (Authorize authorization : authorizations) {
+                        spark.Spark.before(authorization.route(), getFilterFor(authorization.roles(), authorization.method(),isWebSocket));
+                    }
+                }
 
-    );
-}
+        );
+    }
 
-    private static Filter getFilterFor(UserRoles[] allowedRoles, RequestMethod requestMethod) {
+    private static Filter getFilterFor(UserRoles[] allowedRoles, RequestMethod requestMethod, boolean isWebSocket) {
         return (request, response) -> {
 
-            if( !requestMethod.equals(request.requestMethod())){
+            if (!requestMethod.equals(request.requestMethod())) {
                 return;
             }
-            String autorizationHeader = request.headers("Authorization");
+            String encryptedToken = isWebSocket ? getTokenFromQueryString(request) : getTokenFromHeader(request);
 
-            if (autorizationHeader == null || autorizationHeader.isEmpty() || !autorizationHeader.startsWith("Bearer")) {
-               throw new UnAuthorizedException( "This Resource Requires Previous Authorization");
-            }
-
-            String encryptedToken = autorizationHeader.substring("Bearer".length()).trim();
 
             String plainToken = EncryptionHelper.decrypt(encryptedToken);
             if (plainToken == null) {
-               throw new UnAuthorizedException( "Invalid Token, please verify your request");
+                throw new UnAuthorizedException("Invalid Token, please verify your request");
             }
 
             Jws<Claims> claimsJwt = AuthorizationService.getInstance().GetDataFromToken(plainToken);
 
             if (claimsJwt == null) {
-               throw new UnAuthorizedException( "Invalid Token, please verify your request");
+                throw new UnAuthorizedException("Invalid Token, please verify your request");
             }
 
             Long id = claimsJwt.getBody().get("id", Long.class);
 
             if (id == null) {
-               throw new UnAuthorizedException( "Invalid Token, please verify your request");
+                throw new UnAuthorizedException("Invalid Token, please verify your request");
             }
 
-            ActiveToken activeToken = ActiveTokenDao.findByUserIdAndToken(id,encryptedToken);
+            ActiveToken activeToken = ActiveTokenDao.findByUserIdAndToken(id, encryptedToken);
 
             if (activeToken == null) {
-               throw new UnAuthorizedException( "Invalid Token, please verify your request");
+                throw new UnAuthorizedException("Invalid Token, please verify your request");
             }
 
             if (activeToken.getExpDate() < (new Date()).getTime()) {
                 throw new UnAuthorizedException("Expired Token, please verify your request");
             }
 
-            UserTable user = UserDao.findUserById(id);
+            User user = UserDao.findUserById(id);
 
             if (user == null /* || !Arrays.asList(allowedRoles).contains(user.getRole())*/) {
-               throw new UnAuthorizedException( "User is unauthorized for this EndPoint");
+                throw new UnAuthorizedException("User is unauthorized for this EndPoint");
             }
 
-
         };
+    }
+
+    private static String getTokenFromQueryString(Request request) throws UnAuthorizedException {
+
+        String authorizationToken = request.queryParams("token");
+
+        if (authorizationToken == null || authorizationToken.isEmpty()) {
+            throw new UnAuthorizedException("This Resource Requires Previous Authentication");
+        }
+        return  authorizationToken;
+    }
+
+    private static String getTokenFromHeader(Request request) throws UnAuthorizedException {
+        String authorizationHeader = request.headers("Authorization");
+
+        if (authorizationHeader == null || authorizationHeader.isEmpty() || !authorizationHeader.startsWith("Bearer")) {
+            throw new UnAuthorizedException("This Resource Requires Previous Authorization");
+        }
+        return authorizationHeader.substring("Bearer".length()).trim();
+
     }
 }

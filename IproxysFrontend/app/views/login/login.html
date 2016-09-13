@@ -1,10 +1,11 @@
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header loginPage">
 
     <main class="mdl-layout__content mdl-color--grey-100">
-        <div class="mdl-card mdl-shadow--2dp employer-form" action="#">
-            <div class="mdl-card__title">
-                <h2 ng-click="vm.goBack()">iProxys</h2>
 
+        <div class="mdl-card mdl-shadow--2dp employer-form" action="#">
+
+            <div class="mdl-card__title">
+                <h2 >iProxys</h2>
                 <div class="mdl-card__subtitle">Acceso Administrativo</div>
             </div>
 
@@ -47,15 +48,16 @@
                                     ng-click="vm.doLogin(loginForm)" ng-disabled="loginForm.$invalid || vm.requestInProgress">
                                         Submit
                                     </button>
+                                    <div id="loadingBar" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" ng-show="vm.requestInProgress"></div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form__action">
-                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="isInfoReliable">
-                                <span class="mdl-checkbox__label">Mantenerme Logueado</span>
-                                <input type="checkbox" id="isInfoReliable" class="mdl-checkbox__input" />
-                            </label>
+                            <!--<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="isInfoReliable">-->
+                                <!--<span class="mdl-checkbox__label">Mantenerme Logueado</span>-->
+                                <!--<input type="checkbox" id="isInfoReliable" class="mdl-checkbox__input" />-->
+                            <!--</label>-->
 
                         </div>
                     </div>

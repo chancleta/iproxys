@@ -1,7 +1,6 @@
 package services;
 
-import PersistenceData.UserTable;
-import models.User;
+import PersistenceData.User;
 import models.UserRoles;
 import persistence.dao.UserDao;
 
@@ -22,31 +21,31 @@ public class UserService {
         return userService;
     }
 
-    public List<User> findAll() {
+    public List<models.User> findAll() {
         return UserDao.findAll();
     }
 
-    public UserTable findById(long id){
+    public User findById(long id){
         return UserDao.findUserById(id);
     }
 
-    public List<User> findByRole(UserRoles distribuitor) {
+    public List<models.User> findByRole(UserRoles distribuitor) {
         return UserDao.findByRole(distribuitor);
     }
 
-    public List<User> findByCreatedby(String id) {
+    public List<models.User> findByCreatedby(String id) {
         return UserDao.findByCreatedby(id);
     }
 
-    public List<User> findByEmailAndUsername(String email, String username) {
+    public List<models.User> findByEmailAndUsername(String email, String username) {
         return UserDao.findByEmailAndUsername(email,username);
     }
 
-    public List<User> findByEmail(String email) {
+    public List<models.User> findByEmail(String email) {
         return UserDao.findByEmail(email);
     }
 
-    public List<User> findByUsername(String username) {
+    public List<models.User> findByUsername(String username) {
         return UserDao.findByUsername(username);
     }
 }
