@@ -12,7 +12,7 @@ namespace App {
 
         public static init():void {
             //angular.module(Init._moduleName, ["ionic", "LocalStorageModule", "ui.router", "ngResource"]).config(Init.config);
-            angular.module(Init._moduleName, ["LocalStorageModule", "ui.router", "ngResource","chart.js"]).config(Init.config);
+            angular.module(Init._moduleName, ["LocalStorageModule", "ui.router", "ngResource","chart.js","ngWebSocket"]).config(Init.config);
             angular.module(Init._moduleName).run(Init.run);
             angular.module(Init._moduleName).service("authorizationService", App.Services.AuthorizationService);
             angular.module(Init._moduleName).service("tokenResourceService", App.Services.TokenResourceService);
@@ -173,6 +173,10 @@ namespace App {
         public static values:any = {
             //url: "http://69.28.92.208:4000",
             url: "http://localhost:4000",
+            webSocketsUrl: "ws://localhost:4000",
+            webSockets: {
+                liveMonitor: "/liveMonitor"
+            },
             endPoints: {
                 getToken: "/oauth/token",
                 validateToken: "/oauth/token/validate",

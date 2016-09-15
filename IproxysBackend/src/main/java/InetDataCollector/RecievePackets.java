@@ -26,7 +26,7 @@ public class RecievePackets implements PacketReceiver {
         
         if (packet instanceof jpcap.packet.IPPacket) {
             
-            Sniffer.networkMonitor += packet.caplen;
+            Sniffer.bandwidthMonitor += packet.caplen;
             this.RecievedPacket = (jpcap.packet.IPPacket) packet;
 
             if (!this.RecievedPacket.src_ip.getHostAddress().equals(Sniffer.InterfaceIP)) {

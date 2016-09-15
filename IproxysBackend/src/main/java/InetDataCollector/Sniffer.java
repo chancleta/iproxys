@@ -5,7 +5,6 @@
 package InetDataCollector;
 
 import PersistenceData.*;
-import api.LiveMonitorController;
 import dns.DnsHelper;
 import externalDependencies.GeneralConfiguration;
 import jess.JessSuggestions;
@@ -45,28 +44,9 @@ public class Sniffer extends Thread {
     public static List<SummaryIP_BandWidth> TempIPPDUs = new ArrayList<>();
     private final int TimeTemp = 60000;
     private static Sniffer sniffer = null;
-    public static double networkMonitor = 0;
-    public static double networkMonitorLastSeg = 0;
+    public static double bandwidthMonitor = 0;
     private static Timer networkMonTimer = null;
-    private static TimerTask netMonTask = new TimerTask() {
-        @Override
-        public void run() {
-            networkMonitorLastSeg = networkMonitor / 1024;
 
-
-            LiveMonitorController.sessions.stream().forEach(session -> {
-                try {
-                    session.getRemote().sendString(String.valueOf(networkMonitorLastSeg));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            System.out.println(networkMonitorLastSeg);
-            Sniffer.networkMonitor = 0;
-
-        }
-    };
 
     public static NetworkInterface[] getAllInterfaces() {
         return InetInterfaces;
@@ -81,7 +61,7 @@ public class Sniffer extends Thread {
             loop = new Thread(this);
             loop.start();
             networkMonTimer = new Timer();
-            networkMonTimer.scheduleAtFixedRate(netMonTask, 1000, 1000);
+            networkMonTimer.scheduleAtFixedRate(new BandwidthMonitor(), 1000, 1000);
 
         } catch (Exception ex) {
 
@@ -234,8 +214,12 @@ public class Sniffer extends Thread {
     }
 
     public void select() {
-        startSniff(0);
-        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[0].name);
+        //windows
+        startSniff(2);
+        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[2].name);
+        //linux
+//        startSniff(0);
+//        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[0].name);
     }
 
     private Sniffer() {

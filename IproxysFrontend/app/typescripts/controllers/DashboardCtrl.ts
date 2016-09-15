@@ -3,35 +3,52 @@
 module App.Controllers {
     'use strict';
     export class DashboardCtrl {
-        public static $inject = ["$interval"];
+        public static $inject = ["$websocket","API","localStorageService","$rootScope"];
 
-        private maxTicksPerGraph:number = 30;
+        private maxTicksPerGraph:number = 18;
         public data:any = [[]];
         public labels:Array<string>  = [""];
         public series:Array<string> = ['KB/s'];
+        private static _snackbarSelector = "#snackbar";
+
         public options:any = {
             animation: false,
             tooltipTemplate: function(v) {return parseFloat(v.value).toFixed(2)+" KB/s";},//Formatting the tooltip 2 decimals and Kbit/s
         } ;
-        constructor($interval:angular.IIntervalService) {
+
+        private dataStream:angular.websocket.IWebSocket;
+
+        constructor($websocket:angular.websocket.IWebSocket,API:any,localStorageService:angular.local.storage.ILocalStorageService,$rootScope:angular.IRootScopeService) {
             document.querySelector("title").innerHTML = "iProxys - Dashboard";
 
-            // Update the dataset at 25FPS for a smoothly-animating chart
-            $interval(() => {
-                    if (this.data[0].length > this.maxTicksPerGraph) {
-                        this.labels = this.labels.slice(1);
-                        this.data[0] = this.data[0].slice(1);
-                    }
 
+            //noinspection TypeScriptValidateTypes
+            this.dataStream = $websocket(API.webSocketsUrl + API.webSockets.liveMonitor +"?token="+ encodeURIComponent(localStorageService.get<App.Models.IToken>("token").token));
+
+            this.dataStream.onMessage((message) => {
+                if (this.data[0].length > this.maxTicksPerGraph) {
+                    this.labels = this.labels.slice(1);
+                    this.data[0] = this.data[0].slice(1);
+                }
                 this.labels.push('');
-                this.data[0].push(Math.random()*100);
-            }, 1000);
+                this.data[0].push(message.data);
+            });
 
 
-            //LiveMontiorService.webSocket.$on("$message" , function(data){
+            this.dataStream.onError((event: Event)=>{
+                document.querySelector(DashboardCtrl._snackbarSelector).MaterialSnackbar.showSnackbar({
+                    message: "An error occurred with the WebSocket please try later",
+                    timeout: 7000,
+                });
+            });
 
-            //});
+            $rootScope.$on('$stateChangeSuccess',()=>{
+                console.log("DASBOARDCONTROLLER->$stateChangeStart:event");
+                this.dataStream.close();
+            })
+
         }
+
 
 
     }

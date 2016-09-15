@@ -1,5 +1,9 @@
 package api;
 
+import api.common.Authorize;
+import api.common.RequestMethod;
+import api.common.RequiresAuthorization;
+import models.UserRoles;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -15,7 +19,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 
 @WebSocket
-//@RequiresAuthorization(isWebSocket = true, allowedRoles = UserRoles.Admin)
+@RequiresAuthorization(allowedRoles = {
+        @Authorize(roles = {UserRoles.Admin, UserRoles.Distribuitor}, method = RequestMethod.GET, route = "/liveMonitor"),
+    },
+    isWebSocket = true)
 public class LiveMonitorController {
 
 

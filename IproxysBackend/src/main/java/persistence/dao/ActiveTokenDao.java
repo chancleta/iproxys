@@ -31,8 +31,16 @@ public class ActiveTokenDao extends PersistenceProvider {
     }
 
     public static ActiveToken findByUserIdAndToken(long userId, String token) {
-        List<ActiveToken> activeTokens = Mongo.getDataStore().createQuery(ActiveToken.class).filter("userId =", userId).filter("token =", token).asList();
-        return activeTokens.size() == 1 ? activeTokens.get(0) : null;
+        Query query = EntityManagerProvider.getInstance().getEntityManager().createNamedQuery("ActiveToken.findByUserIdAndToken", ActiveToken.class);
+        query.setParameter("id", userId);
+        query.setParameter("token", token);
+
+        try {
+            return (ActiveToken) query.getSingleResult();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
     }
 
     public static ActiveToken findByUserId(long userId) {

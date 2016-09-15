@@ -1,11 +1,14 @@
 package app;
 
 import InetDataCollector.Sniffer;
+import api.LiveMonitorController;
 import api.UserController;
 import api.common.OAuthController;
 import services.UserService;
 import services.common.AuthorizationService;
 import spark.Spark;
+
+import static spark.Spark.webSocket;
 
 /**
  * Created by lupena on 2/5/2016.
@@ -16,7 +19,7 @@ public class App {
 
         Spark.port(4000);
 
-//        webSocket("/liveMonitor", LiveMonitorController.class);
+        webSocket("/liveMonitor", LiveMonitorController.class);
 //        Spark.staticFileLocation("/public");
 
 //        User u = new User();
@@ -36,6 +39,8 @@ public class App {
         AuthorizationFilters.setFilters();
         Sniffer.getInstance().select();
     }
+
+
 
 
 }

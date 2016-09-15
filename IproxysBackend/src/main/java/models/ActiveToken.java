@@ -13,7 +13,8 @@ import java.io.Serializable;
 @Table(name = "activeTokens")
 @NamedQueries({
         @NamedQuery(name = "ActiveToken.findByUserId", query = "select u from ActiveToken u where u.userId = :id"),
-        @NamedQuery(name = "ActiveToken.findByUserIdAndRefreshToken", query = "select u from ActiveToken u where u.userId = :id and u.refreshToken = :refreshToken")
+        @NamedQuery(name = "ActiveToken.findByUserIdAndRefreshToken", query = "select u from ActiveToken u where u.userId = :id and u.refreshToken = :refreshToken"),
+        @NamedQuery(name = "ActiveToken.findByUserIdAndToken", query = "select u from ActiveToken u where u.userId = :id and u.token = :token"),
 })
 public class ActiveToken extends PersistenceProvider implements Serializable {
 

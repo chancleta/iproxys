@@ -18,6 +18,8 @@ declare  interface DisableCheck {
 }
 declare interface MaterialProgressProperty {
     MaterialProgress:MaterialProgress;
+    innerHTML:string;
+
 }
 
 declare interface  MaterialProgress {

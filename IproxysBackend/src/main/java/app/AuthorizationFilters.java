@@ -35,7 +35,7 @@ public class AuthorizationFilters {
                     Authorize[] authorizations = annotation.allowedRoles();
 
                     for (Authorize authorization : authorizations) {
-                        spark.Spark.before(authorization.route(), getFilterFor(authorization.roles(), authorization.method(),isWebSocket));
+                        spark.Spark.before(authorization.route(), getFilterFor(authorization.roles(), authorization.method(), isWebSocket));
                     }
                 }
 
@@ -45,7 +45,7 @@ public class AuthorizationFilters {
     private static Filter getFilterFor(UserRoles[] allowedRoles, RequestMethod requestMethod, boolean isWebSocket) {
         return (request, response) -> {
 
-            if (!requestMethod.equals(request.requestMethod())) {
+            if (!isWebSocket && !requestMethod.equals(request.requestMethod())) {
                 return;
             }
             String encryptedToken = isWebSocket ? getTokenFromQueryString(request) : getTokenFromHeader(request);
@@ -62,7 +62,8 @@ public class AuthorizationFilters {
                 throw new UnAuthorizedException("Invalid Token, please verify your request");
             }
 
-            Long id = claimsJwt.getBody().get("id", Long.class);
+
+            Integer id= claimsJwt.getBody().get("id", Integer.class);
 
             if (id == null) {
                 throw new UnAuthorizedException("Invalid Token, please verify your request");
@@ -94,7 +95,7 @@ public class AuthorizationFilters {
         if (authorizationToken == null || authorizationToken.isEmpty()) {
             throw new UnAuthorizedException("This Resource Requires Previous Authentication");
         }
-        return  authorizationToken;
+        return authorizationToken;
     }
 
     private static String getTokenFromHeader(Request request) throws UnAuthorizedException {
