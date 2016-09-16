@@ -1,0 +1,65 @@
+<div class="mdl-grid mdl-grid--no-spacing user-management" ng-cloak="">
+
+    <div class="mdl-grid mdl-cell mdl-cell--9-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-cell--top ">
+        <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-shadow--2dp">
+            <div class="mdl-card mdl-shadow--2dp employer-form">
+                <div class="mdl-card__title">
+                    <h2>Configuración</h2>
+
+                    <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"
+                         ng-show="vm.requestInProgress"></div>
+
+                </div>
+                <form action="#" class="form" name="updateConfigForm">
+
+                    <div class="mdl-card__supporting-text">
+                        <div class="form__article">
+                            <!--<h3>Personal data</h3>-->
+
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="number" id="bandwidth" step="0.01"
+                                           required min="0" ng-model="vm.configuration.bandwidth.bandwidth"/>
+                                    <label class="mdl-textfield__label" for="bandwidth">Bandwidth</label>
+                                </div>
+
+                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select">
+                                    <input class="mdl-textfield__input" ng-model="vm.configuration.bandwidth.scale" type="text" id="measurement"
+                                           readonly
+                                           tabIndex="-1" required/>
+
+                                    <label class="mdl-textfield__label" for="measurement">Measurement</label>
+
+                                    <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu dark_dropdown"
+                                        for="measurement">
+                                        <li ng-repeat="scale in vm.dataScales" class="mdl-menu__item">{{scale}}</li>
+                                    </ul>
+
+                                    <label for="measurement">
+                                        <i class="mdl-icon-toggle__label material-icons">arrow_drop_down</i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="mdl-dialog__actions">
+                        <button type="button" class="mdl-button background-color--cerulean" ng-click="vm.updateConfig(updateConfigForm)"
+                                ng-click="" ng-disabled="updateConfigForm.$invalid || vm.requestInProgress">Actualizar
+                        </button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+    <div class="mdl-snackbar__text"></div>
+    <button class="mdl-snackbar__action" type="button"></button>
+</div>
+</div>
