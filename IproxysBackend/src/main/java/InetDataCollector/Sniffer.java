@@ -215,11 +215,11 @@ public class Sniffer extends Thread {
 
     public void select() {
         //windows
-//        startSniff(2);
-//        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[2].name);
+        startSniff(2);
+        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[2].name);
         //linux
-        startSniff(0);
-        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[0].name);
+//        startSniff(0);
+//        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[0].name);
     }
 
     private Sniffer() {

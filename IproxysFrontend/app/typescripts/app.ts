@@ -90,6 +90,7 @@ namespace App {
             $stateProvider
                 .state('admin', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.AdminCtrl))
                 .state('admin.dashboard', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.DashboardCtrl))
+                .state('admin.configuration', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.ConfigurationCtrl))
                 .state('login', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.LoginCtrl))
                 //.state('frontpage', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.FrontPageCtrl))
                 //.state('admin.usermanagement', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.UserManagementCtrl));
@@ -274,6 +275,11 @@ module App.Factories {
                     route.url = "/login";
                     route.controller = controllerType;
                     route.templateUrl = "views/login/login.html";
+                    break;
+                case  App.Controllers.ConfigurationCtrl.toString():
+                    route.url = "/config";
+                    route.controller = controllerType;
+                    route.templateUrl = "views/config/config.html";
                     break;
                 //case  App.Controllers.FrontPageCtrl.toString():
                 //    route.url = "/";
