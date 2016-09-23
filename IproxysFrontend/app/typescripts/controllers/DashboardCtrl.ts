@@ -33,8 +33,8 @@ module App.Controllers {
                         this.data[0] = this.data[0].slice(1);
                     }
                     let rounded = parseFloat(Math.round(message.data * 100) / 100).toFixed(2);
-                    this.labels.push(rounded);
-                    this.data[0].push(rounded);
+                    this.labels.push("");
+                    this.data[0].push(message.data);
                 });
 
 

@@ -14,7 +14,7 @@ public class BandwidthMonitor extends TimerTask {
     @Override
     public void run() {
         double bandwidthMonitorLastSecond = Sniffer.bandwidthMonitor / 1024;
-
+//        System.out.println(bandwidthMonitorLastSecond);
         LiveMonitorController.sessions.stream().forEach(session -> {
             try {
                 session.getRemote().sendString(String.valueOf(bandwidthMonitorLastSecond));
