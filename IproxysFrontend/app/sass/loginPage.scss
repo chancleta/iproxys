@@ -77,3 +77,9 @@ body, div[ui-view]{
   height: 100%;
 
 }
+
+.dashboard{
+  .mdl-card__supporting-text{
+    background: white;
+  }
+}

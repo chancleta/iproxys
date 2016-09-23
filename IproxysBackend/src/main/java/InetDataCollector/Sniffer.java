@@ -42,7 +42,7 @@ public class Sniffer extends Thread {
     public static List<SummaryPort_BandWidth> TempPortPDUs = new ArrayList<>();
     public static List<SummaryIP_BandWidth> IPPDUs = new ArrayList<>();
     public static List<SummaryIP_BandWidth> TempIPPDUs = new ArrayList<>();
-    private final int TimeTemp = 60000;
+    private final int TimeTemp = 10000;
     private static Sniffer sniffer = null;
     public static double bandwidthMonitor = 0;
     private static Timer networkMonTimer = null;
@@ -123,7 +123,7 @@ public class Sniffer extends Thread {
                                 temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
                                 temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
                                 PerformIpBlock performIpBlock = new PerformIpBlock(temporaryBlockedEntity);
-                                performIpBlock.block();
+//                                performIpBlock.block();
                                 break;
                             case TemporaryBlockedEntity.BLOCK_IP_AND_PORT:
                                 temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
@@ -132,7 +132,7 @@ public class Sniffer extends Thread {
 
                                 temporaryBlockedEntity.setProtocol(sug.getProtocol());
                                 PerformIPPortBlock performIPPortBlock = new PerformIPPortBlock(temporaryBlockedEntity);
-                                performIPPortBlock.block();
+//                                performIPPortBlock.block();
                                 break;
                             case TemporaryBlockedEntity.BLOCK_PORT:
                                 temporaryBlockedEntity.setBlockedPort(sug.getPort());
@@ -140,7 +140,7 @@ public class Sniffer extends Thread {
                                 temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
 
                                 PerformPortBlock performPortBlock = new PerformPortBlock(temporaryBlockedEntity);
-                                performPortBlock.block();
+//                                performPortBlock.block();
                                 break;
                             case TemporaryBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP:
                                 temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
@@ -148,11 +148,11 @@ public class Sniffer extends Thread {
                                 temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
                                 temporaryBlockedEntity.setBlockedDomain(DnsHelper.getDomainNameFromIp(sug.getIp_Src()));
                                 PerformHttpBlock performHttpBlock = new PerformHttpBlock(temporaryBlockedEntity);
-                                performHttpBlock.block();
+//                                performHttpBlock.block();
                                 break;
                         }
                         temporaryBlockedEntity.setIdentifier(sug.getTipo());
-                        temporaryBlockedEntity.save();
+//                        temporaryBlockedEntity.save();
                     } else {
                         System.out.println("Entidad no puede ser bloqueada ip:" + temporaryBlockedEntity.getBlockedIP() + " port:" + temporaryBlockedEntity.getBlockedPort());
                     }
@@ -215,11 +215,11 @@ public class Sniffer extends Thread {
 
     public void select() {
         //windows
-//        startSniff(2);
-//        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[2].name);
+        startSniff(2);
+        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[2].name);
         //linux
-        startSniff(0);
-        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[0].name);
+//        startSniff(0);
+//        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[0].name);
     }
 
     private Sniffer() {
@@ -247,31 +247,31 @@ public class Sniffer extends Thread {
     private void BDCalculator_IP(List<SummaryIP_BandWidth> relativo) {
         for (SummaryIP_BandWidth sug : relativo) {
             // Convirtiendo de Bytes a KiloBytes
-            sug.setBdusage(sug.getBdusage() / GeneralConfiguration.Kilobit);
+//            sug.setBdusage((sug.getBdusage() * 8) / GeneralConfiguration.Kilobit);
             // Dividiendo entre la cantidad de segundos que duro el muestreo
             sug.setBdusage(sug.getBdusage() / (TimeTemp / 1000));
             // Obteniendo el porcentaje de utilizacion de ancho 
-            sug.setBdusage((sug.getBdusage() / GeneralConfiguration.getAvailableBandwidth()) * 100);
+            sug.setBdusage((sug.getBdusage()  / GeneralConfiguration.getAvailableBandwidth()) * 100);
         }
     }
 
     private void BDCalculator_Port(List<SummaryPort_BandWidth> relativo) {
         for (SummaryPort_BandWidth sug : relativo) {
-            // Convirtiendo de Bytes a KiloBytes
-            sug.setBdusage(sug.getBdusage() / GeneralConfiguration.Kilobit);
+            // Convirtiendo de B a KiloBytes
+//            sug.setBdusage((sug.getBdusage() * 8) / GeneralConfiguration.Kilobit);
             // Dividiendo entre la cantidad de segundos que duro el muestreo
-            sug.setBdusage(sug.getBdusage() / (TimeTemp / 1000));
+            sug.setBdusage(sug.getBdusage()  / (TimeTemp / 1000));
             // Obteniendo el porcentaje de utilizacion de ancho 
-            sug.setBdusage((sug.getBdusage() / GeneralConfiguration.getAvailableBandwidth()) * 100);
+            sug.setBdusage((sug.getBdusage()  / GeneralConfiguration.getAvailableBandwidth()) * 100);
         }
     }
 
     private void BDCalculator_IPPort(List<SummaryIPPort_BandWidth> relativo) {
         for (SummaryIPPort_BandWidth sug : relativo) {
             // Convirtiendo de Bytes a KiloBytes
-            sug.setBdusage(sug.getBdusage() / GeneralConfiguration.Kilobit);
+//            sug.setBdusage((sug.getBdusage() * 8) / GeneralConfiguration.Kilobit);
             // Dividiendo entre la cantidad de segundos que duro el muestreo
-            sug.setBdusage(sug.getBdusage() / (TimeTemp / 1000));
+            sug.setBdusage(sug.getBdusage()  / (TimeTemp / 1000));
             // Obteniendo el porcentaje de utilizacion de ancho 
             sug.setBdusage((sug.getBdusage() / GeneralConfiguration.getAvailableBandwidth()) * 100);
         }

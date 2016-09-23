@@ -8,13 +8,12 @@ module App.Controllers {
         private maxTicksPerGraph:number = 18;
         public data:any = [[]];
         public labels:Array<string> = [""];
-        public series:Array<string> = ['KB/s'];
+        public series:Array<string> = ['Kbps'];
         private static _snackbarSelector = "#snackbar";
-
         public options:any = {
             animation: false,
             tooltipTemplate: function (v) {
-                return parseFloat(v.value).toFixed(2) + " KB/s";
+                return parseFloat(v.value).toFixed(2) + " Kbps";
             },//Formatting the tooltip 2 decimals and Kbit/s
         };
 
@@ -34,7 +33,7 @@ module App.Controllers {
                     }
                     let rounded = parseFloat(Math.round(message.data * 100) / 100).toFixed(2);
                     this.labels.push("");
-                    this.data[0].push(message.data);
+                    this.data[0].push(rounded);
                 });
 
 

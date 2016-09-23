@@ -15,7 +15,7 @@ public class GeneralConfiguration {
     public static final double Megabit = 1024*Kilobit;
 
 //    private static String password = "elchulo";
-    private static double availableBandwidth = 1.5*Megabit;
+    private static double availableBandwidth = 10*Megabit;
 
 
     public static double getAvailableBandwidth(){

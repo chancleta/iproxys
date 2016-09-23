@@ -2,16 +2,17 @@
 namespace App.Models {
 
     export interface IConfiguration extends ng.resource.IResource<IConfiguration>{
+        id?:number;
         bandwidth:IBandwidth
     }
 
     export interface IBandwidth{
-        scale: DataScale;
+        bandwidthScale: BandwidthScale;
         bandwidth: number;
     }
 
-    export enum  DataScale{
-        MegaBytes,KiloBytes, Bytes,
+    export enum  BandwidthScale{
+        MegaBit,KiloBit, Bit,
     }
 
 

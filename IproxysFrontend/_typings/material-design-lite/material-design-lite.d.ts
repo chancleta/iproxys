@@ -4,7 +4,7 @@ declare var dialogPolyfill:IDialogPolyFill;
 declare interface IComponentHandlerStatic extends upgradeDom {
     upgradeAllRegistered():void;
     upgradeElements(eles:NodeListOf<Element>):void;
-    downgradeElements(ele:Element):void;
+    downgradeElements(ele:Element|any):void;
 }
 declare interface  IFormElement {
     reset():void;

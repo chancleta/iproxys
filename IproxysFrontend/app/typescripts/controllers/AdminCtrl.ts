@@ -3,14 +3,14 @@
 module App.Controllers {
     'use strict';
     export class AdminCtrl {
-        public static $inject = ["localStorageService", "$state", "authorizationService"];
+        public static $inject = ["localStorageService", "$state", "authorizationService","$rootScope"];
         public user:App.Models.IUser = <App.Models.IUser>{};
         public userRoles = App.Models.UserRoles;
         public dashboardMenuItems:NodeListOf<Element> = document.querySelectorAll(".mdl-navigation .mdl-navigation__link");
         public dashboardItem:Element = document.querySelector(".dashboard-menu__link--dashboard");
         public dashboardMenu:Element = document.querySelector(".dashboard-menu");
 
-        constructor(public localStorage:angular.local.storage.ILocalStorageService, public $state:angular.ui.IStateService, authorizationService:App.Services.IAuthorizationService) {
+        constructor(public localStorage:angular.local.storage.ILocalStorageService, public $state:angular.ui.IStateService, authorizationService:App.Services.IAuthorizationService,$rootScope:any) {
 
             this.user = authorizationService.getTokenClaims();
 
@@ -20,20 +20,24 @@ module App.Controllers {
                 });
             }
             this.setActiveDashboardLink(this.dashboardItem);
+
+            $rootScope.$on("setActiveDashboardLink",(event,data)=>{
+                this.setActiveDashboardLink(data);
+            });
         }
 
-        private setActiveDashboardLink(active:EventTarget|Element) {
+        public setActiveDashboardLink(active:EventTarget|Element) {
             this.cleanActiveDashboardLink();
             (<Element>active).classList.add('mdl-navigation__link--current');
             this.closeDashboardMenuMobileDevices();
         }
 
-        private cleanActiveDashboardLink() {
+        public cleanActiveDashboardLink() {
             for (var linkCount = 0; linkCount < this.dashboardMenuItems.length; linkCount++) {
                 this.dashboardMenuItems[linkCount].classList.remove("mdl-navigation__link--current");
             }
         }
-        private closeDashboardMenuMobileDevices(){
+        public closeDashboardMenuMobileDevices(){
             this.dashboardMenu.classList.remove("is-visible");
             let obfusacator  = document.querySelector('.mdl-layout__obfuscator');
             if(obfusacator)

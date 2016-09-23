@@ -51,3 +51,4 @@ class LongTypeAdapter extends TypeAdapter<Long>{
         writer.value(value);
     }
 }
+

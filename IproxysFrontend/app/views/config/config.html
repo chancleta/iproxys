@@ -17,14 +17,14 @@
                             <!--<h3>Personal data</h3>-->
 
                             <div class="mdl-grid">
-                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
                                     <input class="mdl-textfield__input" type="number" id="bandwidth" step="0.01"
                                            required min="0" ng-model="vm.configuration.bandwidth.bandwidth"/>
                                     <label class="mdl-textfield__label" for="bandwidth">Bandwidth</label>
                                 </div>
 
-                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select">
-                                    <input class="mdl-textfield__input" ng-model="vm.configuration.bandwidth.scale" type="text" id="measurement"
+                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select" >
+                                    <input class="mdl-textfield__input" ng-model="vm.configuration.bandwidth.bandwidthScale" type="text" id="measurement"
                                            readonly
                                            tabIndex="-1" required/>
 

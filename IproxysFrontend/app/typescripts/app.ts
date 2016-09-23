@@ -18,6 +18,7 @@ namespace App {
             angular.module(Init._moduleName).service("tokenResourceService", App.Services.TokenResourceService);
             angular.module(Init._moduleName).service("userResourceService", App.Services.UserResourceService);
             angular.module(Init._moduleName).service("userManagementService", App.Services.UserManagementService);
+            angular.module(Init._moduleName).service("configurationResourceService", App.Services.ConfigurationResourceService);
 
             angular.module(Init._moduleName).directive("upgradeMaterialCheckbox", [() => {
                 return {
@@ -27,6 +28,7 @@ namespace App {
                     }
                 };
             }]);
+
 
 
             angular.module(Init._moduleName).directive("setMaterialDataTable", [() => {
@@ -62,6 +64,10 @@ namespace App {
                     componentHandler.upgradeAllRegistered();
                 });
             });
+
+
+
+
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
                 //If user is logged in, redirect to dashboard if trying to access /login
@@ -156,7 +162,7 @@ namespace App {
             }]);
 
             ChartJsProvider.setOptions({
-                colours: ['#97BBCD', '#DCDCDC', '#F7464A', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'],
+                colours: ['#00ADF9'],
                 responsive: true
             });
         }
@@ -182,7 +188,8 @@ namespace App {
                 getToken: "/oauth/token",
                 validateToken: "/oauth/token/validate",
                 getUsers: "/user",
-                refreshToken: "/oauth/token/refresh"
+                refreshToken: "/oauth/token/refresh",
+                getConfig : "/config"
             }
         };
 

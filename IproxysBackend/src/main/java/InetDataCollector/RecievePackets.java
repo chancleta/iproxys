@@ -28,7 +28,7 @@ public class RecievePackets implements PacketReceiver {
 //            System.out.println( packet.caplen);
             Sniffer.bandwidthMonitor += packet.caplen;
             this.RecievedPacket = (jpcap.packet.IPPacket) packet;
-
+            this.RecievedPacket.caplen *= 8;
             if (!this.RecievedPacket.src_ip.getHostAddress().equals(Sniffer.InterfaceIP)) {
                 
                 updateIP();
@@ -112,7 +112,7 @@ public class RecievePackets implements PacketReceiver {
         for (SummaryPort_BandWidth sumport : relativo) {
            
             if (sumport.getProtocol() == RecievedPacket.protocol) {
-                
+
                 if (this.RecievedPacket instanceof jpcap.packet.TCPPacket) {
                     
                     jpcap.packet.TCPPacket tcp = (jpcap.packet.TCPPacket) this.RecievedPacket;
