@@ -1,0 +1,85 @@
+<div class="mdl-grid mdl-grid--no-spacing user-management" ng-cloak="">
+
+    <div class="mdl-grid mdl-cell mdl-cell--9-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-cell--top ">
+        <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-shadow--2dp">
+            <div class="mdl-card ">
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">iProxys Live Actions</h2>
+                    <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" ng-show="vm.requestInProgress"></div>
+
+                </div>
+                <div class="mdl-card__supporting-text">
+                    <div class="table-responsive">
+                        <table class="mdl-data-table mdl-js-data-table projects-table" set-material-data-table="checkbox">
+                            <thead>
+                            <tr>
+                                <th  upgrade-material-checkbox="">
+                                    <label class="mdl-checkbox mdl-js-checkbox" for="checkbox-all">
+                                    <input type="checkbox" id="checkbox-all" class="mdl-checkbox__input">
+                                    </label>
+
+                                </th>
+                                <th class="mdl-data-table__cell--non-numeric">Nombre</th>
+                                <th class="mdl-data-table__cell--non-numeric">Usuario</th>
+                                <th class="mdl-data-table__cell--non-numeric">Correo</th>
+                                <th class="mdl-data-table__cell--non-numeric">Rol</th>
+                                <th class="mdl-data-table__cell--non-numeric">Editar</th>
+                                <th class="mdl-data-table__cell--non-numeric">Eliminar</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <!--class="is-selected"  -->
+                            <tr ng-repeat="user in vm.users" ng-class="{'highlight':user.highlight}"
+                                upgrade-material-checkbox="" id="user_{{user.id}}">
+                                <td >
+                                    <label for="checkbox-{{$index}}" class="mdl-checkbox mdl-js-checkbox">
+                                        <input type="checkbox" id="checkbox-{{$index}}" class="mdl-checkbox__input">
+                                        <span class="mdl-checkbox__label"></span>
+                                    </label>
+
+                                </td>
+                                <td class="mdl-data-table__cell--non-numeric">{{user.firstName}} {{user.lastName}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{user.username}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{user.email}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">
+                                    <span class="label label--mini {{user.role == 'Admin' ? 'background-color--primary' : user.role == 'Distribuitor' ? ' background-color--mint' : 'background-color--cerulean'}}">
+                                        {{user.role}}
+                                    </span>
+                                </td>
+                                <td class="mdl-data-table__cell--non-numeric">
+                                    <button class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--blue-600" ng-click="vm.showEditUserDialog(user)">
+                                        <i class="material-icons">mode_edit</i>
+                                    </button>
+                                </td>
+                                <td class="mdl-data-table__cell--non-numeric">
+                                    <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" ng-click="vm.deleteUser(user)">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="mdl-card__actions">
+                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect"
+                            data-upgraded=",MaterialButton,MaterialRipple"><span
+                            class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button>
+                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--fab mdl-shadow--8dp mdl-button--colored "
+                            data-upgraded=",MaterialButton,MaterialRipple" ng-click="vm.showUserCreationDialog()">
+                        <i class="material-icons mdl-js-ripple-effect" data-upgraded=",MaterialRipple">add</i>
+                        <span class="mdl-button__ripple-container"><span class="mdl-ripple is-animating"></span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+        <div class="mdl-snackbar__text"></div>
+        <button class="mdl-snackbar__action" type="button"></button>
+    </div>
+</div>

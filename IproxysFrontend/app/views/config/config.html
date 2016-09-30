@@ -32,7 +32,7 @@
 
                                     <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu dark_dropdown"
                                         for="measurement">
-                                        <li ng-repeat="scale in vm.dataScales" class="mdl-menu__item">{{scale}}</li>
+                                        <li ng-repeat="scale in vm.dataScales" class="mdl-menu__item" ng-click="vm.closeMenu()">{{scale}}</li>
                                     </ul>
 
                                     <label for="measurement">

@@ -97,6 +97,8 @@ namespace App {
                 .state('admin', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.AdminCtrl))
                 .state('admin.dashboard', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.DashboardCtrl))
                 .state('admin.configuration', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.ConfigurationCtrl))
+                .state('admin.liveactions', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.LiveActionsCtrl))
+
                 .state('login', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.LoginCtrl))
                 //.state('frontpage', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.FrontPageCtrl))
                 //.state('admin.usermanagement', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.UserManagementCtrl));
@@ -261,12 +263,11 @@ module App.Factories {
             //noinspection TypeScriptValidateTypes
             switch (<string>controllerType.toString()) {
 
-                //case  App.Controllers.UserManagementCtrl.toString():
-                //    route.url = "/user-management";
-                //    route.controller = controllerType;
-                //    route.templateUrl = "views/usermanagement/usermanagement.html";
-                //    //route.templateProvider = DynamicTemplateUrl(route);
-                //    break;
+                case  App.Controllers.LiveActionsCtrl.toString():
+                    route.url = "/live-actions";
+                    route.controller = controllerType;
+                    route.templateUrl = "views/liveactions/liveactions.html";
+                    break;
                 case  App.Controllers.DashboardCtrl.toString():
                     route.url = "/dashboard";
                     route.controller = controllerType;

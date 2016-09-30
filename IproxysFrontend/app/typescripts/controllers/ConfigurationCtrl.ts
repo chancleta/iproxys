@@ -30,8 +30,8 @@ module App.Controllers {
             $timeout(()=> {
                 componentHandler.downgradeElements(document.querySelectorAll(".mdl-textfield"));
                 componentHandler.upgradeElements(document.querySelectorAll(".mdl-textfield"));
-                //noinspection TypeScriptUnresolvedVariable
                 getmdlSelect.init(".getmdl-select");
+
             }, 100);
 
             this.requestInProgress = true;
@@ -40,7 +40,10 @@ module App.Controllers {
                 this.configuration.id = data.id;
             }).finally(()=> {
                 this.requestInProgress = false;
+
             });
+
+
         }
 
         public updateConfig(configForm:angular.IFormController):void {
@@ -50,6 +53,10 @@ module App.Controllers {
                     this.requestInProgress = false
                 });
             }
+        }
+
+        public  closeMenu():void {
+            document.querySelector(".dark_dropdown").MaterialMenu.hide();
         }
     }
 

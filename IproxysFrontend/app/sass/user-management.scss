@@ -56,6 +56,23 @@
       }
     }
   }
+
+  .mdl-textfield.is-invalid.is-dirty .mdl-textfield__input {
+    &.ng-untouched, &.ng-pristine{
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      + label {
+        color: rgb(0,188,212);
+      }
+    }
+  }
+
+  //.mdl-textfield.is-invalid .mdl-textfield__input.ng-pristine {
+  //  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  //
+  //
+  //}
+
+
   .mdl-textfield, .mdl-textfield.is-focused {
     .mdl-textfield__input {
       &.ng-pristine + .mdl-textfield__label:after {
