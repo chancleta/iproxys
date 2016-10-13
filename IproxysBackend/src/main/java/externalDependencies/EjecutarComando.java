@@ -25,19 +25,17 @@ public class EjecutarComando {
     }
 
     public String Ejecutar_Comando(String command) {
-        ProcessBuilder pb;
         try {
-            pb = new ProcessBuilder(command);
-            pb.redirectErrorStream(true);
-            Process process = pb.start();
-            BufferedReader inStreamReader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()));
-            String result = "",readLine;
+            String[] cmd = {"/bin/bash","-c","echo Elchulo00| sudo "+command};
+            Process pb = Runtime.getRuntime().exec(cmd);
 
-            while ((readLine = inStreamReader.readLine()) != null) {
-                result = result + readLine + "\n";
+            String line;
+            String result = "";
+            BufferedReader input = new BufferedReader(new InputStreamReader(pb.getInputStream()));
+            while ((line = input.readLine()) != null) {
+               result += line;
             }
-
+            input.close();
             return result;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());

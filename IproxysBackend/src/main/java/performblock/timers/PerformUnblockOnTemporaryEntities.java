@@ -21,8 +21,12 @@ public class PerformUnblockOnTemporaryEntities extends TimerTask {
 
     @Override
     public void run() {
+
         TemporaryBlockedEntity blockedEntities = new TemporaryBlockedEntity();
         ArrayList<TemporaryBlockedEntity> unblockCandidates = blockedEntities.findEntityToUnblock();
+        if(unblockCandidates.size() != 0)
+            System.out.println("Unblocking temps:");
+
         for (TemporaryBlockedEntity blockedEntity : unblockCandidates) {
             String entidadDesbloqueada = "";
             switch (blockedEntity.getIdentifier()) {

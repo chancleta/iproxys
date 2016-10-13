@@ -10,54 +10,48 @@
                 </div>
                 <div class="mdl-card__supporting-text">
                     <div class="table-responsive">
-                        <table class="mdl-data-table mdl-js-data-table projects-table" set-material-data-table="checkbox">
+                        <table class="mdl-data-table mdl-js-data-table projects-table">
                             <thead>
                             <tr>
-                                <th  upgrade-material-checkbox="">
-                                    <label class="mdl-checkbox mdl-js-checkbox" for="checkbox-all">
-                                    <input type="checkbox" id="checkbox-all" class="mdl-checkbox__input">
-                                    </label>
+                                <!--<th  upgrade-material-checkbox="">-->
+                                    <!--<label class="mdl-checkbox mdl-js-checkbox" for="checkbox-all">-->
+                                    <!--<input type="checkbox" id="checkbox-all" class="mdl-checkbox__input">-->
+                                    <!--</label>-->
 
-                                </th>
-                                <th class="mdl-data-table__cell--non-numeric">Nombre</th>
-                                <th class="mdl-data-table__cell--non-numeric">Usuario</th>
-                                <th class="mdl-data-table__cell--non-numeric">Correo</th>
-                                <th class="mdl-data-table__cell--non-numeric">Rol</th>
-                                <th class="mdl-data-table__cell--non-numeric">Editar</th>
-                                <th class="mdl-data-table__cell--non-numeric">Eliminar</th>
+                                <!--</th>-->
+                                <th class="mdl-data-table__cell--non-numeric">BlockedIP</th>
+                                <th class="mdl-data-table__cell--non-numeric">BlockedDomain</th>
+                                <th class="mdl-data-table__cell--non-numeric">BlockedOn</th>
+                                <th class="mdl-data-table__cell--non-numeric">BlockedPort</th>
+                                <th class="mdl-data-table__cell--non-numeric">Identifier</th>
+                                <th class="mdl-data-table__cell--non-numeric">Protocol</th>
 
                             </tr>
                             </thead>
                             <tbody>
 
                             <!--class="is-selected"  -->
-                            <tr ng-repeat="user in vm.users" ng-class="{'highlight':user.highlight}"
-                                upgrade-material-checkbox="" id="user_{{user.id}}">
-                                <td >
-                                    <label for="checkbox-{{$index}}" class="mdl-checkbox mdl-js-checkbox">
-                                        <input type="checkbox" id="checkbox-{{$index}}" class="mdl-checkbox__input">
-                                        <span class="mdl-checkbox__label"></span>
-                                    </label>
+                            <tr ng-repeat="liveAction in vm.liveActions" ng-class="{'highlight':user.highlight}" >
+                                <!--<td >-->
+                                    <!--<label for="checkbox-{{$index}}" class="mdl-checkbox mdl-js-checkbox">-->
+                                        <!--<input type="checkbox" id="checkbox-{{$index}}" class="mdl-checkbox__input">-->
+                                        <!--<span class="mdl-checkbox__label"></span>-->
+                                    <!--</label>-->
 
-                                </td>
-                                <td class="mdl-data-table__cell--non-numeric">{{user.firstName}} {{user.lastName}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{user.username}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{user.email}}</td>
+                                <!--</td>-->
+                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.blockedIP}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.blockedDomain}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.blockedOnTimeDate}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.blockedPort == 0? "" : liveAction.blockedPort}}</td>
                                 <td class="mdl-data-table__cell--non-numeric">
-                                    <span class="label label--mini {{user.role == 'Admin' ? 'background-color--primary' : user.role == 'Distribuitor' ? ' background-color--mint' : 'background-color--cerulean'}}">
-                                        {{user.role}}
+                                    <span class="label label--mini {{liveAction.identifier == 0 ? 'background-color--primary' : liveAction.identifier == 1 ? ' background-color--mint' : liveAction.identifier == 2 ? 'background-color--cerulean' : 'background-color--baby-blue'}}">
+                                        {{vm.IdentifierNames[liveAction.identifier]}}
                                     </span>
                                 </td>
                                 <td class="mdl-data-table__cell--non-numeric">
-                                    <button class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--blue-600" ng-click="vm.showEditUserDialog(user)">
-                                        <i class="material-icons">mode_edit</i>
-                                    </button>
+                                    {{liveAction.protocol == 0 ? "" : liveAction.protocol}}
                                 </td>
-                                <td class="mdl-data-table__cell--non-numeric">
-                                    <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" ng-click="vm.deleteUser(user)">
-                                        <i class="material-icons">delete</i>
-                                    </button>
-                                </td>
+
                             </tr>
 
                             </tbody>
@@ -68,7 +62,7 @@
                     <button class="mdl-button mdl-js-button mdl-js-ripple-effect"
                             data-upgraded=",MaterialButton,MaterialRipple"><span
                             class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button>
-                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--fab mdl-shadow--8dp mdl-button--colored "
+                    <button class="mdl-button mdl-cell--hide-desktop mdl-cell--hide-phone mdl-cell--hide-tablet mdl-cell--hide-desktopmdl-js-button mdl-js-ripple-effect mdl-button--fab mdl-shadow--8dp mdl-button--colored "
                             data-upgraded=",MaterialButton,MaterialRipple" ng-click="vm.showUserCreationDialog()">
                         <i class="material-icons mdl-js-ripple-effect" data-upgraded=",MaterialRipple">add</i>
                         <span class="mdl-button__ripple-container"><span class="mdl-ripple is-animating"></span></span>

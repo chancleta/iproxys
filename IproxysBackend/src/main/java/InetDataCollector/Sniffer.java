@@ -5,16 +5,21 @@
 package InetDataCollector;
 
 import PersistenceData.*;
+import api.LiveActionsWebSocketController;
+import api.LiveMonitorController;
+import app.ResponseManager;
 import dns.DnsHelper;
 import externalDependencies.GeneralConfiguration;
 import jess.JessSuggestions;
 import jess.ServiceCore;
 import jpcap.NetworkInterface;
 import jpcap.NetworkInterfaceAddress;
+import models.LiveAction;
 import performblock.PerformHttpBlock;
 import performblock.PerformIPPortBlock;
 import performblock.PerformIpBlock;
 import performblock.PerformPortBlock;
+import persistence.dao.TemporaryBlockedEntityDao;
 
 import java.io.IOException;
 import java.net.Inet4Address;
@@ -116,7 +121,7 @@ public class Sniffer extends Thread {
 
                 for (JessSuggestions sug : jess.GetAllSuggestions()) {
                     TemporaryBlockedEntity temporaryBlockedEntity = new TemporaryBlockedEntity();
-                    System.out.println(sug.getAction() + "  tipo:" + sug.getTipo() + "  ipdst:" + sug.getIp_Dst() + "  ipsrc:" + sug.getIp_Src());
+                    System.out.println(sug.getAction() + "  tipo:" + sug.getTipo() + "  ipdst:" + sug.getIp_Dst() + "  ipsrc:" + sug.getIp_Src() + "  port:" + sug.getPort());
                     if (!isThisEntityUnblockeable(unblockableEntities, temporaryBlockedEntity)) {
                         switch (sug.getTipo()) {
                             case TemporaryBlockedEntity.BLOCK_IP:
@@ -147,12 +152,14 @@ public class Sniffer extends Thread {
                                 // ARREGLAR DOMINIO
                                 temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
                                 temporaryBlockedEntity.setBlockedDomain(DnsHelper.getDomainNameFromIp(sug.getIp_Src()));
+//                                temporaryBlockedEntity.setBlockedDomain(sug.getIp_Src());
+
                                 PerformHttpBlock performHttpBlock = new PerformHttpBlock(temporaryBlockedEntity);
-//                                performHttpBlock.block();
+                                performHttpBlock.block();
                                 break;
                         }
                         temporaryBlockedEntity.setIdentifier(sug.getTipo());
-//                        temporaryBlockedEntity.save();
+                        temporaryBlockedEntity.save();
                     } else {
                         System.out.println("Entidad no puede ser bloqueada ip:" + temporaryBlockedEntity.getBlockedIP() + " port:" + temporaryBlockedEntity.getBlockedPort());
                     }
@@ -162,6 +169,29 @@ public class Sniffer extends Thread {
                 Sniffer.TempIPPDUs.clear();
                 Sniffer.TempIPPortPDUs.clear();
 
+                /**
+                 * THIS NEEDS TO BE HANDLED IN ANOTHER FILE AND JUST MAKE A CALL TO UPDATE THE WEBSOCKET WITH
+                 * THE NEW BLOCKED GUYS
+                 */
+                List<LiveAction> liveActions = new ArrayList<>();
+                for (TemporaryBlockedEntity temp : TemporaryBlockedEntityDao.findTemporaryBlockedEntities()) {
+                    LiveAction liveAction = new LiveAction();
+                    liveAction.setBlockedDomain(temp.getBlockedDomain());
+                    liveAction.setBlockedIP(temp.getBlockedIP());
+                    liveAction.setBlockedOnTimeDate(temp.getBlockedOnTimeDate());
+                    liveAction.setBlockedPort(temp.getBlockedPort());
+                    liveAction.setIdentifier(temp.getIdentifier() - 1);
+                    liveAction.setProtocol(temp.getProtocol());
+                    liveActions.add(liveAction);
+                }
+                LiveActionsWebSocketController.sessions.stream().forEach(session -> {
+                    try {
+
+                        session.getRemote().sendString(ResponseManager.toJson(liveActions));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         }
     }
@@ -215,11 +245,11 @@ public class Sniffer extends Thread {
 
     public void select() {
         //windows
-        startSniff(2);
-        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[2].name);
-        //linux
-//        startSniff(0);
-//        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[0].name);
+//        startSniff(2);
+//        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[2].name);
+//        linux
+        startSniff(1);
+        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[0].name);
     }
 
     private Sniffer() {

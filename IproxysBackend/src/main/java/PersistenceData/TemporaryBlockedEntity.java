@@ -15,15 +15,16 @@ import java.util.List;
  * @author root
  */
 @Entity
+
 @NamedQueries({
     @NamedQuery(name = "TemporaryBlockedEntity.findAll", query = "SELECT u FROM TemporaryBlockedEntity u"),
     @NamedQuery(name = "TemporaryBlockedEntity.findEntityToUnblock", query = "SELECT u FROM TemporaryBlockedEntity u where u.blockedOnTimeDate BETWEEN :allowTimeEnd AND :allowTimeStart"),
-    @NamedQuery(name = "TemporaryBlockedEntity.findAllByPermaBlocked", query = "SELECT u FROM TemporaryBlockedEntity u where u.permaBlocked = :permaBlockedValue")
+    @NamedQuery(name = "TemporaryBlockedEntity.findAllByPermaBlocked", query = "SELECT u FROM TemporaryBlockedEntity u where u.permaBlocked = :permaBlockedValue"),
 })
 public class TemporaryBlockedEntity extends PersistenceProvider implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column
     private int identifier;
@@ -157,11 +158,11 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
         this.permaBlocked = permaBlocked;
     }
 
-    public ArrayList<TemporaryBlockedEntity> findEntityToUnblock() {
+    public ArrayList<TemporaryBlockedEntity> findEntityToUnblock(){
 
         Query findEntityToUnblock = entityManager.createNamedQuery("TemporaryBlockedEntity.findEntityToUnblock",TemporaryBlockedEntity.class);
-        findEntityToUnblock.setParameter("allowTimeStart", new Date(System.currentTimeMillis() - (1 * HOUR_IN_MS)), TemporalType.TIMESTAMP);
-        findEntityToUnblock.setParameter("allowTimeEnd", new Date(System.currentTimeMillis() - (1 * HOUR_IN_MS) - (10 * MIN_IN_MS)), TemporalType.TIMESTAMP);
+        findEntityToUnblock.setParameter("allowTimeStart", new Date(System.currentTimeMillis() - (0 * MIN_IN_MS)), TemporalType.TIMESTAMP);
+        findEntityToUnblock.setParameter("allowTimeEnd", new Date(System.currentTimeMillis()  - (40 * MIN_IN_MS)), TemporalType.TIMESTAMP);
         List<Object> resultList = findEntityToUnblock.getResultList();
         return converFromListObjectTo(resultList);
 

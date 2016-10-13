@@ -11,7 +11,7 @@ package externalDependencies;
 public class EjecutarIPtable {
 
     public static final String[] flushIPtables = {"iptables -F", "iptables -X", "iptables -Z", "iptables -t nat -F"};
-    public static final String[] natIPtables = {"sysctl -w net.ipv4.ip_forward=1", "iptables -t nat -A POSTROUTING -s 0.0.0.0/0 -o eth0 -j MASQUERADE", "iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3128", "iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT", "iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT"};
+    public static final String[] natIPtables = {"sysctl -w net.ipv4.ip_forward=1", "iptables -t nat -A POSTROUTING -s 0.0.0.0/0 -o enp5s0 -j MASQUERADE", "iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3128", "iptables -A FORWARD -i enp5s0 -o wlp4s0 -j ACCEPT", "iptables -A FORWARD -i wlp4s0 -o enp5s0 -j ACCEPT"};
     public static final String allow = "allow";
     public static final String block = "block";
     public static final String tcp = "tcp";

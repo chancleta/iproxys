@@ -14,7 +14,7 @@ public class TimerInitializer {
 
     private static boolean initialized = false;
     private static final int MIN_IN_MS = 60*1000;
-    private static final int UnblockTemporalEntitiesRecurrentTime = 10*MIN_IN_MS;
+    private static final int UnblockTemporalEntitiesRecurrentTime = 1*MIN_IN_MS;
     private static final int blockPermanentEntitiesRecurrentTime = TimerInitializer.UnblockTemporalEntitiesRecurrentTime;
     private static PerformUnblockOnTemporaryEntities unblockOnTemporaryEntities;
     private static PerformPermanentEntitiesBlockUnblock performPermaBlock;
@@ -23,7 +23,7 @@ public class TimerInitializer {
     public static void initialize() {
         if (!initialized) {
             TimerInitializer.initUnblockTemporalEntitiesTimer();
-            TimerInitializer.initBlockPermanentEntitiesTimer();
+//            TimerInitializer.initBlockPermanentEntitiesTimer();
             initialized = true;
         }
     }

@@ -19,6 +19,7 @@ namespace App {
             angular.module(Init._moduleName).service("userResourceService", App.Services.UserResourceService);
             angular.module(Init._moduleName).service("userManagementService", App.Services.UserManagementService);
             angular.module(Init._moduleName).service("configurationResourceService", App.Services.ConfigurationResourceService);
+            angular.module(Init._moduleName).service("LiveActionResourceService", App.Services.LiveActionResourceService);
 
             angular.module(Init._moduleName).directive("upgradeMaterialCheckbox", [() => {
                 return {
@@ -184,14 +185,16 @@ namespace App {
             url: "http://localhost:4000",
             webSocketsUrl: "ws://localhost:4000",
             webSockets: {
-                liveMonitor: "/liveMonitor"
+                liveMonitor: "/liveMonitor",
+                liveAction: "/live-actions-socket"
             },
             endPoints: {
                 getToken: "/oauth/token",
                 validateToken: "/oauth/token/validate",
                 getUsers: "/user",
                 refreshToken: "/oauth/token/refresh",
-                getConfig : "/config"
+                getConfig : "/config",
+                getLiveActions: "/live-actions"
             }
         };
 
