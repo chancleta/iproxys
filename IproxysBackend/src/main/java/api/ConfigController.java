@@ -28,8 +28,10 @@ public class ConfigController extends BaseJsonController {
 //            return ConfigDao.get();
             Config dataConf = ConfigDao.get();
             JsonConfig newConf = new JsonConfig();
-            newConf.setBandwidth(dataConf.getBandwidth());
 
+            newConf.setBandwidth(dataConf.getBandwidth());
+            newConf.setMaxBandwidthPerUser(dataConf.getMaxBandwidthPerUser());
+            newConf.setTempTimeDuration(dataConf.getTempTimeDuration());
             return newConf;
         }, toJson());
 

@@ -8,6 +8,8 @@ namespace App.Models {
         blockedPort:number;
         identifier:Identifier;
         protocol:number;
+        id:number;
+
     }
 
     export enum Identifier{

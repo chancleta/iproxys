@@ -16,7 +16,7 @@ import spark.Spark;
 import static spark.Spark.webSocket;
 
 /**
- * Created by lupena on 2/5/2016.
+ * Created by lupena on 2/5/2016.   wsx
  */
 public class App {
 
@@ -39,25 +39,33 @@ public class App {
 //        u.setCreatedBy(new ObjectId("57bd01dbef008d5ff4873a70"));
 //        Mongo.getDataStore().save(u);
 
-//        /**
-        //  Config conf = new Config();
-        //Bandwidth bw = new Bandwidth();
-        //  bw.setBandwidth(50.01);
-        //bw.setBandwidthScale(BandwidthScale.KiloBit);
-        //conf.setBandwidth(bw);
 
-        //conf.save();
-//         **/
+//          Config conf = new Config();
+//        Bandwidth bw = new Bandwidth();
+//          bw.setBandwidth(5);
+//        bw.setBandwidthScale(BandwidthScale.MegaBit);
+//        conf.setBandwidth(bw);
+//
+//        Bandwidth bw1 = new Bandwidth();
+//
+//        bw1.setBandwidth(500);
+//        bw1.setBandwidthScale(BandwidthScale.KiloBit);
+//        conf.setMaxBandwidthPerUser(bw1);
+//
+//        conf.setTempTimeDuration(3);
+//        conf.save();
 
-
-        Config c = ConfigDao.get();
-        System.out.println(c.getBandwidth());
+//
+//
+//        Config c = ConfigDao.get();
+//        System.out.println(c.getBandwidth());
         Cors.enableCORS();
 
         new OAuthController(AuthorizationService.getInstance());
         new UserController(UserService.getInstance());
         new ConfigController();
         new LiveActionsController();
+        new ResourceAllowanceController();
 
         AuthorizationFilters.setFilters();
         Sniffer.getInstance().select();

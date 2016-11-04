@@ -28,6 +28,10 @@ public class SummaryIP_BandWidth implements Serializable, Comparable<SummaryIP_B
     @Temporal(TemporalType.TIMESTAMP) @Column(name="timeref")
     private Date timeref;
 
+    public int userAmount;
+    public double availableBandwidth;
+    public double  maxBandwidthPerUser;
+
     /**
      * @return the id
      */
@@ -101,5 +105,29 @@ public class SummaryIP_BandWidth implements Serializable, Comparable<SummaryIP_B
         this.timeref = timeref;
     }
 
-    
+    public void calculateMaxBWAllowance(){
+        maxBWAllowance = availableBandwidth/maxBandwidthPerUser <= userAmount? maxBandwidthPerUser/availableBandwidth : 1.0/userAmount;
+        maxBWAllowance = maxBWAllowance*100;
+//        System.out.println("----------------");
+//        System.out.println(availableBandwidth/maxBandwidthPerUser);
+        System.out.println("userAmount:"+userAmount);
+        System.out.println("maxUsage:"+maxBWAllowance);
+                System.out.println("----------------");
+
+
+//
+//        System.out.println(1.0/userAmount);
+////        System.out.println(bdusage);
+//        System.out.println("----------------");
+    }
+
+    private double maxBWAllowance;
+
+    public double getMaxBWAllowance() {
+        return maxBWAllowance;
+    }
+
+    public void setMaxBWAllowance(double maxBWAllowance) {
+        this.maxBWAllowance = maxBWAllowance;
+    }
 }

@@ -29,6 +29,8 @@ public class ConfigDao {
         try {
             Config dataconf = (Config) query.getSingleResult();
             dataconf.setBandwidth(jsonConfig.getBandwidth());
+            dataconf.setMaxBandwidthPerUser(jsonConfig.getMaxBandwidthPerUser());
+            dataconf.setTempTimeDuration(jsonConfig.getTempTimeDuration());
             dataconf.save();
             return dataconf;
         } catch (Exception e) {

@@ -33,8 +33,6 @@ module App.Controllers {
                 }).finally(()=>{
                     this.requestInProgress = false;
                 });
-
-
             });
 
             $rootScope.$on('$stateChangeSuccess', ()=> {

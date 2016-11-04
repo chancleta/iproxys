@@ -34,6 +34,10 @@ public class SummaryPort_BandWidth implements Serializable
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeref;
 
+    public int userAmount;
+    public double availableBandwidth;
+    public double  maxBandwidthPerUser;
+
     /**
      * @return the id
      */
@@ -104,6 +108,18 @@ public class SummaryPort_BandWidth implements Serializable
         this.timeref = timeref;
     }
 
+    public void calculateMaxBWAllowance(){
+        maxBWAllowance = availableBandwidth/maxBandwidthPerUser <= userAmount? maxBandwidthPerUser/availableBandwidth : 1.0/userAmount;
+        maxBWAllowance = maxBWAllowance*100;
+    }
 
-    
+    private double maxBWAllowance;
+
+    public double getMaxBWAllowance() {
+        return maxBWAllowance;
+    }
+
+    public void setMaxBWAllowance(double maxBWAllowance) {
+        this.maxBWAllowance = maxBWAllowance;
+    }
 }

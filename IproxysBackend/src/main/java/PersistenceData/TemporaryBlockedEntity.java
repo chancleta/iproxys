@@ -4,6 +4,9 @@
  */
 package PersistenceData;
 
+import InetDataCollector.Sniffer;
+import externalDependencies.GeneralConfiguration;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +21,7 @@ import java.util.List;
 
 @NamedQueries({
     @NamedQuery(name = "TemporaryBlockedEntity.findAll", query = "SELECT u FROM TemporaryBlockedEntity u"),
-    @NamedQuery(name = "TemporaryBlockedEntity.findEntityToUnblock", query = "SELECT u FROM TemporaryBlockedEntity u where u.blockedOnTimeDate BETWEEN :allowTimeEnd AND :allowTimeStart"),
+    @NamedQuery(name = "TemporaryBlockedEntity.findEntityToUnblock", query = "SELECT u FROM TemporaryBlockedEntity u where u.tempUnBlocked = false and u.blockedOnTimeDate BETWEEN :allowTimeEnd AND :allowTimeStart"),
     @NamedQuery(name = "TemporaryBlockedEntity.findAllByPermaBlocked", query = "SELECT u FROM TemporaryBlockedEntity u where u.permaBlocked = :permaBlockedValue"),
 })
 public class TemporaryBlockedEntity extends PersistenceProvider implements Serializable {
@@ -41,6 +44,10 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
     private int protocol;
     @Column(nullable = false)
     private boolean permaBlocked = false;
+
+    @Column(nullable = false)
+    private boolean tempUnBlocked = false;
+
     public static final int BLOCK_IP = 1;
     public static final int BLOCK_IP_AND_PORT = 2;
     public static final int BLOCK_PORT = 3;
@@ -158,11 +165,19 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
         this.permaBlocked = permaBlocked;
     }
 
+    public boolean isTempUnBlocked() {
+        return tempUnBlocked;
+    }
+
+    public void setTempUnBlocked(boolean tempUnBlocked) {
+        this.tempUnBlocked = tempUnBlocked;
+    }
+
     public ArrayList<TemporaryBlockedEntity> findEntityToUnblock(){
 
         Query findEntityToUnblock = entityManager.createNamedQuery("TemporaryBlockedEntity.findEntityToUnblock",TemporaryBlockedEntity.class);
-        findEntityToUnblock.setParameter("allowTimeStart", new Date(System.currentTimeMillis() - (0 * MIN_IN_MS)), TemporalType.TIMESTAMP);
-        findEntityToUnblock.setParameter("allowTimeEnd", new Date(System.currentTimeMillis()  - (40 * MIN_IN_MS)), TemporalType.TIMESTAMP);
+        findEntityToUnblock.setParameter("allowTimeStart", new Date(System.currentTimeMillis() - ((int)GeneralConfiguration.getTempTimeDuration() * MIN_IN_MS)), TemporalType.TIMESTAMP);
+        findEntityToUnblock.setParameter("allowTimeEnd", new Date(System.currentTimeMillis()  - ((int)GeneralConfiguration.getTempTimeDuration()  * MIN_IN_MS) + 3*Sniffer.TimeTemp), TemporalType.TIMESTAMP);
         List<Object> resultList = findEntityToUnblock.getResultList();
         return converFromListObjectTo(resultList);
 

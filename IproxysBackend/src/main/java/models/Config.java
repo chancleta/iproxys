@@ -23,6 +23,14 @@ public class Config extends PersistenceProvider implements Serializable {
     @NotNull
     private Bandwidth bandwidth;
 
+    @Column(nullable = false)
+    @NotNull
+    private Bandwidth maxBandwidthPerUser;
+
+    @Column(nullable = false)
+    @NotNull
+    private long tempTimeDuration;
+
     public Bandwidth getBandwidth() {
         return bandwidth;
     }
@@ -37,5 +45,21 @@ public class Config extends PersistenceProvider implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Bandwidth getMaxBandwidthPerUser() {
+        return maxBandwidthPerUser;
+    }
+
+    public void setMaxBandwidthPerUser(Bandwidth maxBandwidthPerUser) {
+        this.maxBandwidthPerUser = maxBandwidthPerUser;
+    }
+
+    public long getTempTimeDuration() {
+        return tempTimeDuration;
+    }
+
+    public void setTempTimeDuration(long tempTimeDuration) {
+        this.tempTimeDuration = tempTimeDuration;
     }
 }

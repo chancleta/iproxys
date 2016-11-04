@@ -52,6 +52,8 @@ public class PerformUnblockOnTemporaryEntities extends TimerTask {
                     performHttpBlock.unBlock();
                     break;
             }
+            blockedEntity.setTempUnBlocked(true);
+            blockedEntity.update();
             System.out.println("Desbloqueando entidad "+entidadDesbloqueada);
         }
     }

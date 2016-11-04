@@ -4,6 +4,8 @@ namespace App.Models {
     export interface IConfiguration extends ng.resource.IResource<IConfiguration>{
         id?:number;
         bandwidth:IBandwidth
+        maxBandwidthPerUser:IBandwidth
+        tempTimeDuration:number
     }
 
     export interface IBandwidth{

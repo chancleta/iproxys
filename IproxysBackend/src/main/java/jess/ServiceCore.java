@@ -46,7 +46,8 @@ public class ServiceCore {
         engine = new Rete();
 	//engine.reset();
         engine.batch(Paths.get(ServiceCore.class.getClass().getResource("/jess_rules.clp").toURI()).toFile().getAbsolutePath());
-        marker = engine.mark();//para volver a este punto facilmente check point
+//        System.out.println((Paths.get(ServiceCore.class.getClass().getResource("/jess_rules.clp").toURI()).toFile().getAbsolutePath()));
+//        marker = engine.mark();//para volver a este punto facilmente check point
         //eraseData = engine.mark();
     }
 
@@ -102,9 +103,16 @@ public class ServiceCore {
     
     public void eraseData(){
         try {
-            engine.resetToMark(marker);
+//            engine.resetToMark(marker);
+            Configure();
         } catch (JessException ex) {
             System.err.println(ex.getMessage());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
     }
 }

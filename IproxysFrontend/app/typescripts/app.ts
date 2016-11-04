@@ -20,6 +20,7 @@ namespace App {
             angular.module(Init._moduleName).service("userManagementService", App.Services.UserManagementService);
             angular.module(Init._moduleName).service("configurationResourceService", App.Services.ConfigurationResourceService);
             angular.module(Init._moduleName).service("LiveActionResourceService", App.Services.LiveActionResourceService);
+            angular.module(Init._moduleName).service("ResourceAllowanceService", App.Services.ResourceAllowanceService);
 
             angular.module(Init._moduleName).directive("upgradeMaterialCheckbox", [() => {
                 return {
@@ -99,6 +100,7 @@ namespace App {
                 .state('admin.dashboard', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.DashboardCtrl))
                 .state('admin.configuration', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.ConfigurationCtrl))
                 .state('admin.liveactions', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.LiveActionsCtrl))
+                .state('admin.resourceallowance', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.ResourceAllowanceCtrl))
 
                 .state('login', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.LoginCtrl))
                 //.state('frontpage', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.FrontPageCtrl))
@@ -194,7 +196,8 @@ namespace App {
                 getUsers: "/user",
                 refreshToken: "/oauth/token/refresh",
                 getConfig : "/config",
-                getLiveActions: "/live-actions"
+                getLiveActions: "/live-actions",
+                getResourceAllowance: "/resource-allowance"
             }
         };
 
@@ -270,6 +273,11 @@ module App.Factories {
                     route.url = "/live-actions";
                     route.controller = controllerType;
                     route.templateUrl = "views/liveactions/liveactions.html";
+                    break;
+                case  App.Controllers.ResourceAllowanceCtrl.toString():
+                    route.url = "/resource-allowance";
+                    route.controller = controllerType;
+                    route.templateUrl = "views/resourceallowance/resourceallowance.html";
                     break;
                 case  App.Controllers.DashboardCtrl.toString():
                     route.url = "/dashboard";

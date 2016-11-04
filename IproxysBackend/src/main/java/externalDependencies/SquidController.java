@@ -34,10 +34,13 @@ public class SquidController {
 
         ejecutar.Ejecutar_Comando("service squid stop");
         ejecutar.Ejecutar_Comando("service squid start");
-//        ejecutar.Ejecutar_Comando("/usr/sbin/squid -k reconfigure");
 
 
 
+    }
+
+    private  static void reconfigure(){
+        ejecutar.Ejecutar_Comando("/usr/sbin/squid -k reconfigure");
     }
 
     private static boolean openSquidConfFile() {
@@ -91,7 +94,7 @@ public class SquidController {
             raf.seek(0);
             raf.write(newFileContent.getBytes());
             raf.setLength(newFileContent.getBytes().length);
-            reiniciarSquid();
+            reconfigure();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
             return false;

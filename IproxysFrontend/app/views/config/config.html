@@ -40,7 +40,41 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
+
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
+                                    <input class="mdl-textfield__input" type="number" id="maxBandwidthPerUser" step="0.01"
+                                           required min="0" ng-model="vm.configuration.maxBandwidthPerUser.bandwidth"/>
+                                    <label class="mdl-textfield__label" for="maxBandwidthPerUser">Min Bandwidth Per User</label>
+                                </div>
+
+                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select" >
+                                    <input class="mdl-textfield__input" ng-model="vm.configuration.maxBandwidthPerUser.bandwidthScale" type="text" id="measurementMBPU"
+                                           readonly
+                                           tabIndex="-1" required/>
+
+                                    <label class="mdl-textfield__label" for="measurementMBPU">Measurement</label>
+
+                                    <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu dark_dropdown"
+                                        for="measurementMBPU">
+                                        <li ng-repeat="scale in vm.dataScales" class="mdl-menu__item" ng-click="vm.closeMenu()">{{scale}}</li>
+                                    </ul>
+
+                                    <label for="measurementMBPU">
+                                        <i class="mdl-icon-toggle__label material-icons">arrow_drop_down</i>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
+                                    <input class="mdl-textfield__input" type="number" id="tempDurationTime" step="1"
+                                           required min="1" ng-model="vm.configuration.tempTimeDuration"/>
+                                    <label class="mdl-textfield__label" for="tempDurationTime">Limited/Blocked Duration Time(min)</label>
+                                </div>
+                            </div>
+
+
+                            </div>
 
                     </div>
 

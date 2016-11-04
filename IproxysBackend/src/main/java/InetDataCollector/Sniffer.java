@@ -4,10 +4,12 @@
  */
 package InetDataCollector;
 
+import JsonParser.CustomGson;
 import PersistenceData.*;
 import api.LiveActionsWebSocketController;
 import api.LiveMonitorController;
 import app.ResponseManager;
+import com.google.gson.Gson;
 import dns.DnsHelper;
 import externalDependencies.GeneralConfiguration;
 import jess.JessSuggestions;
@@ -20,6 +22,7 @@ import performblock.PerformIPPortBlock;
 import performblock.PerformIpBlock;
 import performblock.PerformPortBlock;
 import persistence.dao.TemporaryBlockedEntityDao;
+import persistence.dao.UnblockableEntityDao;
 
 import java.io.IOException;
 import java.net.Inet4Address;
@@ -37,6 +40,7 @@ public class Sniffer extends Thread {
     private static String DEFAULT_IP_ADDRESS = "192.168.1.1";
     private static jpcap.JpcapCaptor capture;
     public static String InterfaceIP = "";
+    public static String interfaceBroadcastIP = "";
     public static Date TimeTempRef = new Date();
     public static Date TimepRef = new Date();
     private static Thread loop = null;
@@ -47,7 +51,7 @@ public class Sniffer extends Thread {
     public static List<SummaryPort_BandWidth> TempPortPDUs = new ArrayList<>();
     public static List<SummaryIP_BandWidth> IPPDUs = new ArrayList<>();
     public static List<SummaryIP_BandWidth> TempIPPDUs = new ArrayList<>();
-    private final int TimeTemp = 10000;
+    public final int TimeTemp = 10000;
     private static Sniffer sniffer = null;
     public static double bandwidthMonitor = 0;
     private static Timer networkMonTimer = null;
@@ -112,17 +116,20 @@ public class Sniffer extends Thread {
                 Sniffer.TimeTempRef = new Date();
                 jess.ServiceCore jess = ServiceCore.getInstance();
                 doCalculateDB_Temp();
+                calculateMaxBWAllowance();
+
+//                System.out.println(TempIPPDUs.get(0).userAmount);
                 jess.addList(TempIPPDUs.toArray());
                 jess.addList(TempIPPortPDUs.toArray());
                 jess.addList(TempPortPDUs.toArray());
-                UnblockableEntity unblockableEntityProvider = new UnblockableEntity();
-                List<Object> unblockableEntities = new LinkedList<>();//unblockableEntityProvider.findAll();
+                List<UnblockableEntity> unblockableEntities = UnblockableEntityDao.findByAll();
 
 
                 for (JessSuggestions sug : jess.GetAllSuggestions()) {
                     TemporaryBlockedEntity temporaryBlockedEntity = new TemporaryBlockedEntity();
-                    System.out.println(sug.getAction() + "  tipo:" + sug.getTipo() + "  ipdst:" + sug.getIp_Dst() + "  ipsrc:" + sug.getIp_Src() + "  port:" + sug.getPort());
-                    if (!isThisEntityUnblockeable(unblockableEntities, temporaryBlockedEntity)) {
+                    System.out.println(sug.getAction() + "  tipo:" + sug.getTipo() + "  ipdst:" + sug.getIp_Dst() + "  ipsrc:" + sug.getIp_Src() + "  port:" + sug.getPort() + " protocol:" +sug.getProtocol());
+
+                    if (!isThisEntityUnblockeable(unblockableEntities, sug)) {
                         switch (sug.getTipo()) {
                             case TemporaryBlockedEntity.BLOCK_IP:
                                 temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
@@ -161,7 +168,11 @@ public class Sniffer extends Thread {
                         temporaryBlockedEntity.setIdentifier(sug.getTipo());
                         temporaryBlockedEntity.save();
                     } else {
-                        System.out.println("Entidad no puede ser bloqueada ip:" + temporaryBlockedEntity.getBlockedIP() + " port:" + temporaryBlockedEntity.getBlockedPort());
+                        if(sug.getTipo() == TemporaryBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP){
+                            sug.setIp_Src(DnsHelper.getDomainNameFromIp(sug.getIp_Src()));
+                        }
+                        System.out.println("Entidad no puede ser bloqueada :" +  CustomGson.Gson().toJson(sug));
+
                     }
                 }
                 jess.eraseData();
@@ -196,29 +207,60 @@ public class Sniffer extends Thread {
         }
     }
 
-    private boolean isThisEntityUnblockeable(List<Object> unblockableEntities, TemporaryBlockedEntity temporaryBlockedEntity) {
-        boolean isItUnblockable = false;
-        for (Object unblockeableObject : unblockableEntities) {
+    private void calculateMaxBWAllowance() {
 
-            UnblockableEntity unblockableEntity = (UnblockableEntity) unblockeableObject;
-            if (unblockableEntity.getIdentifier() == temporaryBlockedEntity.getIdentifier()) {
+        int userAmount = TempIPPDUs.size();
+        for(SummaryIP_BandWidth summaryIP_bandWidth: TempIPPDUs) {
+            if(summaryIP_bandWidth.getIp_Dst().equals(Sniffer.interfaceBroadcastIP)){
+                userAmount -= 1;
+            }
+        }
+        for(SummaryIP_BandWidth summaryIP_bandWidth: TempIPPDUs){
+            summaryIP_bandWidth.userAmount = userAmount;
+            summaryIP_bandWidth.availableBandwidth = GeneralConfiguration.getAvailableBandwidth();
+            summaryIP_bandWidth.maxBandwidthPerUser = GeneralConfiguration.getMaxBandWidthPerUser();
+            summaryIP_bandWidth.calculateMaxBWAllowance();
+
+        }
+        for(SummaryIPPort_BandWidth summaryIPPort_BandWidth: TempIPPortPDUs){
+            summaryIPPort_BandWidth.userAmount = userAmount;
+            summaryIPPort_BandWidth.availableBandwidth = GeneralConfiguration.getAvailableBandwidth();
+            summaryIPPort_BandWidth.maxBandwidthPerUser = GeneralConfiguration.getMaxBandWidthPerUser();
+            summaryIPPort_BandWidth.calculateMaxBWAllowance();
+        }
+        for(SummaryPort_BandWidth summaryPort_BandWidth: TempPortPDUs){
+            summaryPort_BandWidth.userAmount = userAmount;
+            summaryPort_BandWidth.availableBandwidth = GeneralConfiguration.getAvailableBandwidth();
+            summaryPort_BandWidth.maxBandwidthPerUser = GeneralConfiguration.getMaxBandWidthPerUser();
+            summaryPort_BandWidth.calculateMaxBWAllowance();
+
+        }
+    }
+
+    private boolean isThisEntityUnblockeable(List<UnblockableEntity> unblockableEntities, JessSuggestions jessSuggestions) {
+        boolean isItUnblockable = false;
+        for (UnblockableEntity unblockableEntity : unblockableEntities) {
+
+            if (unblockableEntity.getIdentifier() == jessSuggestions.getTipo()) {
 
                 switch (unblockableEntity.getIdentifier()) {
                     case TemporaryBlockedEntity.BLOCK_IP:
-                        isItUnblockable = unblockableEntity.getBlockedIP().equals(temporaryBlockedEntity.getBlockedIP());
+                        isItUnblockable = unblockableEntity.getBlockedIP().equals(jessSuggestions.getIp_Src());
                         break;
                     case TemporaryBlockedEntity.BLOCK_IP_AND_PORT:
-                        isItUnblockable = unblockableEntity.getBlockedIP().equals(temporaryBlockedEntity.getBlockedIP()) && temporaryBlockedEntity.getBlockedPort() == temporaryBlockedEntity.getBlockedPort() && temporaryBlockedEntity.getProtocol() == temporaryBlockedEntity.getProtocol();
+                        isItUnblockable = unblockableEntity.getBlockedIP().equals(jessSuggestions.getIp_Dst()) && unblockableEntity.getBlockedPort() == jessSuggestions.getPort() && unblockableEntity.getProtocol() == jessSuggestions.getProtocol();
                         break;
                     case TemporaryBlockedEntity.BLOCK_PORT:
-                        isItUnblockable = unblockableEntity.getBlockedPort() == temporaryBlockedEntity.getBlockedPort() && temporaryBlockedEntity.getProtocol() == temporaryBlockedEntity.getProtocol();
+                        isItUnblockable = unblockableEntity.getBlockedPort() == jessSuggestions.getPort() && unblockableEntity.getProtocol() == jessSuggestions.getProtocol();
+                        break;
+                    case TemporaryBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP:
+//                        System.out.println( DnsHelper.getDomainNameFromIp(jessSuggestions.getIp_Src()));
+                        isItUnblockable = unblockableEntity.getBlockedIP().equals(jessSuggestions.getIp_Dst()) && unblockableEntity.getBlockedDomain().equals( DnsHelper.getDomainNameFromIp(jessSuggestions.getIp_Src()));
                         break;
                 }
             }
-            if (isItUnblockable) {
-                return isItUnblockable;
-            }
         }
+//        System.out.println(isItUnblockable);
         return isItUnblockable;
     }
 
@@ -226,7 +268,7 @@ public class Sniffer extends Thread {
         NetworkInterfaceAddress IPaddr = getFirstIPv4Address(InetInterfaces[Sniffer.SELECTED_NETWORK_INTERFACE].addresses);
         Sniffer.InterfaceIP = IPaddr.address.getHostAddress();
         Sniffer.interfaceMask = IPaddr.subnet.getHostAddress();
-
+        Sniffer.interfaceBroadcastIP = IPaddr.broadcast.getHostAddress();
         capture.setFilter("dst net " + getNetwork(InterfaceIP, interfaceMask) + " mask " + IPaddr.subnet.getHostAddress() + "", true);
         System.err.println("dst net " + getNetwork(InterfaceIP, interfaceMask) + " mask " + IPaddr.subnet.getHostAddress() + "");
 
@@ -248,7 +290,7 @@ public class Sniffer extends Thread {
 //        startSniff(2);
 //        System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[2].name);
 //        linux
-        startSniff(1);
+        startSniff(0);
         System.err.println("ESCUCHANDO POR AL INTERFAZ " + InetInterfaces[0].name);
     }
 

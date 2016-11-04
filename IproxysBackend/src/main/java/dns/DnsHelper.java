@@ -58,7 +58,7 @@ public class DnsHelper {
     }
 
     public static String getTopLevelDomain(String uri) {
-        System.out.println("ARREGLAR DNS HELPER GETTOPLEVELDOMAIN METHOD");
+//        System.out.println("ARREGLAR DNS HELPER GETTOPLEVELDOMAIN METHOD");
         return InternetDomainName.from(uri).topPrivateDomain().toString();
     }
 
@@ -92,7 +92,7 @@ public class DnsHelper {
                 }
                 ctx.close();
             } catch (NamingException e) {
-                System.out.print("Did not get anything using  ptr request, trying InetAddress Option"); // NO-OP
+//                System.out.print("Did not get anything using  ptr request, trying InetAddress Option"); // NO-OP
             }
         }
         if (null == retVal) {

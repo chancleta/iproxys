@@ -18,7 +18,7 @@ import java.util.Date;
 public class UnblockableEntity extends PersistenceProvider implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column
     private int identifier;
@@ -31,6 +31,17 @@ public class UnblockableEntity extends PersistenceProvider implements Serializab
     private Date insertedOnDate;
     @Column
     private int protocol;
+    @Column
+    private String blockedDomain;
+
+    public String getBlockedDomain() {
+        return blockedDomain;
+    }
+
+    public void setBlockedDomain(String blockedDomain) {
+        this.blockedDomain = blockedDomain;
+    }
+
 
     public UnblockableEntity() {
         super();

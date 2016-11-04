@@ -1,6 +1,11 @@
 declare var componentHandler:IComponentHandlerStatic;
 declare var dialogPolyfill:IDialogPolyFill;
 
+declare var getmdlSelect;
+
+declare interface  IInit{
+    init(selector:string):void;
+}
 declare interface IComponentHandlerStatic extends upgradeDom {
     upgradeAllRegistered():void;
     upgradeElements(eles:NodeListOf<Element>):void;
@@ -19,6 +24,7 @@ declare  interface DisableCheck {
 declare interface MaterialProgressProperty {
     MaterialProgress:MaterialProgress;
     innerHTML:string;
+    MaterialMenu:any;
 
 }
 
