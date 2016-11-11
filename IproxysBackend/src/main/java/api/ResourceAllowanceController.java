@@ -124,6 +124,7 @@ public class ResourceAllowanceController extends BaseJsonController {
 
             }
 
+            resourceAllowance.setId(unblockableEntity.getId());
             return resourceAllowance;
 
         }, toJson());

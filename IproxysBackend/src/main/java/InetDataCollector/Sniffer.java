@@ -51,7 +51,7 @@ public class Sniffer extends Thread {
     public static List<SummaryPort_BandWidth> TempPortPDUs = new ArrayList<>();
     public static List<SummaryIP_BandWidth> IPPDUs = new ArrayList<>();
     public static List<SummaryIP_BandWidth> TempIPPDUs = new ArrayList<>();
-    public final int TimeTemp = 10000;
+    public static final int TimeTemp = 10000;
     private static Sniffer sniffer = null;
     public static double bandwidthMonitor = 0;
     private static Timer networkMonTimer = null;

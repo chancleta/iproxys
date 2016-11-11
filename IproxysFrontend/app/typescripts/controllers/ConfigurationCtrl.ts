@@ -32,13 +32,6 @@ module App.Controllers {
 
             $scope.$emit("setActiveDashboardLink", document.querySelector(".dashboard-menu__link--configuration"));
 
-            $timeout(()=> {
-                componentHandler.downgradeElements(document.querySelectorAll(".mdl-textfield"));
-                componentHandler.upgradeElements(document.querySelectorAll(".mdl-textfield"));
-                getmdlSelect.init(".getmdl-select");
-                getmdlSelect.init(".getmdl-select");
-
-            }, 100);
 
             this.requestInProgress = true;
             this.configurationResourceService.get().getConfiguration().$promise.then((data)=> {
@@ -46,6 +39,16 @@ module App.Controllers {
                 this.configuration.maxBandwidthPerUser = data.maxBandwidthPerUser;
                 this.configuration.tempTimeDuration = data.tempTimeDuration;
                 this.configuration.id = data.id;
+                $timeout(()=> {
+                    componentHandler.downgradeElements(document.querySelectorAll(".mdl-textfield"));
+                    componentHandler.upgradeElements(document.querySelectorAll(".mdl-textfield"));
+                    getmdlSelect.init(".getmdl-select");
+                    getmdlSelect.init(".getmdl-select");
+                    getmdlSelect.init(".getmdl-select");
+                    getmdlSelect.init(".getmdl-select");
+
+                }, 100);
+
             }).finally(()=> {
                 this.requestInProgress = false;
 

@@ -177,7 +177,7 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
 
         Query findEntityToUnblock = entityManager.createNamedQuery("TemporaryBlockedEntity.findEntityToUnblock",TemporaryBlockedEntity.class);
         findEntityToUnblock.setParameter("allowTimeStart", new Date(System.currentTimeMillis() - ((int)GeneralConfiguration.getTempTimeDuration() * MIN_IN_MS)), TemporalType.TIMESTAMP);
-        findEntityToUnblock.setParameter("allowTimeEnd", new Date(System.currentTimeMillis()  - ((int)GeneralConfiguration.getTempTimeDuration()  * MIN_IN_MS) + 3*Sniffer.TimeTemp), TemporalType.TIMESTAMP);
+        findEntityToUnblock.setParameter("allowTimeEnd", new Date(System.currentTimeMillis()  - ((int)GeneralConfiguration.getTempTimeDuration()  * MIN_IN_MS) + 3 * Sniffer.TimeTemp), TemporalType.TIMESTAMP);
         List<Object> resultList = findEntityToUnblock.getResultList();
         return converFromListObjectTo(resultList);
 

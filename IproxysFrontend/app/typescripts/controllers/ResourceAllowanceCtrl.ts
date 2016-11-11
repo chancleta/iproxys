@@ -83,8 +83,9 @@ module App.Controllers {
                 this.ResourceAllowanceService.get().createResource(this.newResource).$promise
                     .then((data:any)=> {
                         data.highlight = true;
-                        //this.newResource.identifier -= 1;
+                        data.identifier -= 1;
                         this.liveActions.push(data);
+
                         this.newResource = <App.Models.ILiveAction>{
                             blockedIP: "",
                             blockedDomain: "",
