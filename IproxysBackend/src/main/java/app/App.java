@@ -1,15 +1,12 @@
 package app;
 
-import InetDataCollector.Sniffer;
 import PersistenceData.User;
 import api.*;
 import api.common.OAuthController;
-import externalDependencies.EjecutarIPtable;
 import models.Bandwidth;
 import models.BandwidthScale;
 import models.Config;
 import models.UserRoles;
-import performblock.timers.TimerInitializer;
 import persistence.dao.ConfigDao;
 import persistence.dao.UserDao;
 import services.UserService;
@@ -84,10 +81,10 @@ public class App {
         new ResourceAllowanceController();
 
         AuthorizationFilters.setFilters();
-        Sniffer.getInstance().select();
+//        Sniffer.getInstance().select();
 
-        EjecutarIPtable.iptableEjecutar();
-        TimerInitializer.initialize();
+//        EjecutarIPtable.iptableEjecutar();
+//        TimerInitializer.initialize();
     }
 
 
