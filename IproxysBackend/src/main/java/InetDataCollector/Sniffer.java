@@ -120,14 +120,11 @@ public class Sniffer extends Thread {
                 doCalculateDB_Temp();
                 calculateMaxBWAllowance();
 
-                if (TempIPPDUs.size() > 0) {
+                if (TempIPPDUs.size() > 0 && TempIPPortPDUs.size() > 0 && TempPortPDUs.size() >0) {
                     jess.addList(TempIPPDUs.toArray());
-                }
-                if (TempIPPortPDUs.size() > 0) {
                     jess.addList(TempIPPortPDUs.toArray());
-                }
-                if (TempPortPDUs.size() > 0) {
                     jess.addList(TempPortPDUs.toArray());
+
                 }
 
                 List<UnblockableEntity> unblockableEntities = UnblockableEntityDao.findByAll();
