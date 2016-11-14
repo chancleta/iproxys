@@ -48,7 +48,7 @@ public class SquidController {
             raf = new RandomAccessFile(filename, "rw");
             return true;
         } catch (Exception ex) {
-            System.err.println(ex.getMessage());
+            System.err.println(ex.getStackTrace());
             return false;
         }
 
