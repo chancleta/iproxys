@@ -106,19 +106,17 @@ public class SummaryIP_BandWidth implements Serializable, Comparable<SummaryIP_B
     }
 
     public void calculateMaxBWAllowance(){
-        maxBWAllowance = availableBandwidth/maxBandwidthPerUser <= userAmount? maxBandwidthPerUser/availableBandwidth : 1.0/userAmount;
-        maxBWAllowance = maxBWAllowance*100;
-//        System.out.println("----------------");
-//        System.out.println(availableBandwidth/maxBandwidthPerUser);
+
+        if(userAmount > 0) {
+            maxBWAllowance = availableBandwidth / maxBandwidthPerUser <= userAmount ? maxBandwidthPerUser / availableBandwidth : 1.0 / userAmount;
+            maxBWAllowance = maxBWAllowance * 100;
+        }else{
+            maxBWAllowance = 100;
+        }
+
         System.out.println("userAmount:"+userAmount);
         System.out.println("maxUsage:"+maxBWAllowance);
-                System.out.println("----------------");
-
-
-//
-//        System.out.println(1.0/userAmount);
-////        System.out.println(bdusage);
-//        System.out.println("----------------");
+        System.out.println("----------------");
     }
 
     private double maxBWAllowance;

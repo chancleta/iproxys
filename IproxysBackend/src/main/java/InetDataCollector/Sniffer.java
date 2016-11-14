@@ -220,6 +220,10 @@ public class Sniffer extends Thread {
                 userAmount -= 1;
             }
         }
+        if(userAmount <= 0){
+            userAmount = 0;
+        }
+
         for (SummaryIP_BandWidth summaryIP_bandWidth : TempIPPDUs) {
             summaryIP_bandWidth.userAmount = userAmount;
             summaryIP_bandWidth.availableBandwidth = GeneralConfiguration.getAvailableBandwidth();

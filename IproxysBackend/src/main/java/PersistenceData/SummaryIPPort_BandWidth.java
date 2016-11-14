@@ -141,8 +141,12 @@ public class SummaryIPPort_BandWidth implements Serializable{
     }
 
     public void calculateMaxBWAllowance(){
-        maxBWAllowance = availableBandwidth/maxBandwidthPerUser <= userAmount? maxBandwidthPerUser/availableBandwidth : 1.0/userAmount;
-        maxBWAllowance = maxBWAllowance*100;
+        if(userAmount > 0) {
+            maxBWAllowance = availableBandwidth / maxBandwidthPerUser <= userAmount ? maxBandwidthPerUser / availableBandwidth : 1.0 / userAmount;
+            maxBWAllowance = maxBWAllowance * 100;
+        }else{
+            maxBWAllowance = 100;
+        }
     }
 
     private double maxBWAllowance;
