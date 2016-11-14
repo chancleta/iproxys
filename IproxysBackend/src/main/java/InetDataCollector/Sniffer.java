@@ -7,9 +7,7 @@ package InetDataCollector;
 import JsonParser.CustomGson;
 import PersistenceData.*;
 import api.LiveActionsWebSocketController;
-import api.LiveMonitorController;
 import app.ResponseManager;
-import com.google.gson.Gson;
 import dns.DnsHelper;
 import externalDependencies.GeneralConfiguration;
 import jess.JessSuggestions;
@@ -28,7 +26,10 @@ import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Timer;
 
 /**
  * @author root
@@ -74,7 +75,7 @@ public class Sniffer extends Thread {
 
         } catch (Exception ex) {
 
-            System.err.println(ex);
+            ex.printStackTrace();
         }
 
     }
@@ -87,6 +88,7 @@ public class Sniffer extends Thread {
             ip = InetAddress.getByName(ip_re);
             mascara = InetAddress.getByName(mask);
         } catch (UnknownHostException ex) {
+
             return Sniffer.DEFAULT_IP_ADDRESS;
         }
 
@@ -118,16 +120,18 @@ public class Sniffer extends Thread {
                 doCalculateDB_Temp();
                 calculateMaxBWAllowance();
 
-//                System.out.println(TempIPPDUs.get(0).userAmount);
-                jess.addList(TempIPPDUs.toArray());
-                jess.addList(TempIPPortPDUs.toArray());
-                jess.addList(TempPortPDUs.toArray());
+                if (!TempIPPDUs.isEmpty())
+                    jess.addList(TempIPPDUs.toArray());
+                if (!TempIPPortPDUs.isEmpty())
+                    jess.addList(TempIPPortPDUs.toArray());
+                if (!TempPortPDUs.isEmpty())
+                    jess.addList(TempPortPDUs.toArray());
                 List<UnblockableEntity> unblockableEntities = UnblockableEntityDao.findByAll();
 
 
                 for (JessSuggestions sug : jess.GetAllSuggestions()) {
                     TemporaryBlockedEntity temporaryBlockedEntity = new TemporaryBlockedEntity();
-                    System.out.println(sug.getAction() + "  tipo:" + sug.getTipo() + "  ipdst:" + sug.getIp_Dst() + "  ipsrc:" + sug.getIp_Src() + "  port:" + sug.getPort() + " protocol:" +sug.getProtocol());
+                    System.out.println(sug.getAction() + "  tipo:" + sug.getTipo() + "  ipdst:" + sug.getIp_Dst() + "  ipsrc:" + sug.getIp_Src() + "  port:" + sug.getPort() + " protocol:" + sug.getProtocol());
 
                     if (!isThisEntityUnblockeable(unblockableEntities, sug)) {
                         switch (sug.getTipo()) {
@@ -168,10 +172,10 @@ public class Sniffer extends Thread {
                         temporaryBlockedEntity.setIdentifier(sug.getTipo());
                         temporaryBlockedEntity.save();
                     } else {
-                        if(sug.getTipo() == TemporaryBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP){
+                        if (sug.getTipo() == TemporaryBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP) {
                             sug.setIp_Src(DnsHelper.getDomainNameFromIp(sug.getIp_Src()));
                         }
-                        System.out.println("Entidad no puede ser bloqueada :" +  CustomGson.Gson().toJson(sug));
+                        System.out.println("Entidad no puede ser bloqueada :" + CustomGson.Gson().toJson(sug));
 
                     }
                 }
@@ -210,25 +214,25 @@ public class Sniffer extends Thread {
     private void calculateMaxBWAllowance() {
 
         int userAmount = TempIPPDUs.size();
-        for(SummaryIP_BandWidth summaryIP_bandWidth: TempIPPDUs) {
-            if(summaryIP_bandWidth.getIp_Dst().equals(Sniffer.interfaceBroadcastIP)){
+        for (SummaryIP_BandWidth summaryIP_bandWidth : TempIPPDUs) {
+            if (summaryIP_bandWidth.getIp_Dst().equals(Sniffer.interfaceBroadcastIP)) {
                 userAmount -= 1;
             }
         }
-        for(SummaryIP_BandWidth summaryIP_bandWidth: TempIPPDUs){
+        for (SummaryIP_BandWidth summaryIP_bandWidth : TempIPPDUs) {
             summaryIP_bandWidth.userAmount = userAmount;
             summaryIP_bandWidth.availableBandwidth = GeneralConfiguration.getAvailableBandwidth();
             summaryIP_bandWidth.maxBandwidthPerUser = GeneralConfiguration.getMaxBandWidthPerUser();
             summaryIP_bandWidth.calculateMaxBWAllowance();
 
         }
-        for(SummaryIPPort_BandWidth summaryIPPort_BandWidth: TempIPPortPDUs){
+        for (SummaryIPPort_BandWidth summaryIPPort_BandWidth : TempIPPortPDUs) {
             summaryIPPort_BandWidth.userAmount = userAmount;
             summaryIPPort_BandWidth.availableBandwidth = GeneralConfiguration.getAvailableBandwidth();
             summaryIPPort_BandWidth.maxBandwidthPerUser = GeneralConfiguration.getMaxBandWidthPerUser();
             summaryIPPort_BandWidth.calculateMaxBWAllowance();
         }
-        for(SummaryPort_BandWidth summaryPort_BandWidth: TempPortPDUs){
+        for (SummaryPort_BandWidth summaryPort_BandWidth : TempPortPDUs) {
             summaryPort_BandWidth.userAmount = userAmount;
             summaryPort_BandWidth.availableBandwidth = GeneralConfiguration.getAvailableBandwidth();
             summaryPort_BandWidth.maxBandwidthPerUser = GeneralConfiguration.getMaxBandWidthPerUser();
@@ -255,7 +259,7 @@ public class Sniffer extends Thread {
                         break;
                     case TemporaryBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP:
 //                        System.out.println( DnsHelper.getDomainNameFromIp(jessSuggestions.getIp_Src()));
-                        isItUnblockable = unblockableEntity.getBlockedIP().equals(jessSuggestions.getIp_Dst()) && unblockableEntity.getBlockedDomain().equals( DnsHelper.getDomainNameFromIp(jessSuggestions.getIp_Src()));
+                        isItUnblockable = unblockableEntity.getBlockedIP().equals(jessSuggestions.getIp_Dst()) && unblockableEntity.getBlockedDomain().equals(DnsHelper.getDomainNameFromIp(jessSuggestions.getIp_Src()));
                         break;
                 }
             }
@@ -323,7 +327,7 @@ public class Sniffer extends Thread {
             // Dividiendo entre la cantidad de segundos que duro el muestreo
             sug.setBdusage(sug.getBdusage() / (TimeTemp / 1000));
             // Obteniendo el porcentaje de utilizacion de ancho 
-            sug.setBdusage((sug.getBdusage()  / GeneralConfiguration.getAvailableBandwidth()) * 100);
+            sug.setBdusage((sug.getBdusage() / GeneralConfiguration.getAvailableBandwidth()) * 100);
         }
     }
 
@@ -332,9 +336,9 @@ public class Sniffer extends Thread {
             // Convirtiendo de B a KiloBytes
 //            sug.setBdusage((sug.getBdusage() * 8) / GeneralConfiguration.Kilobit);
             // Dividiendo entre la cantidad de segundos que duro el muestreo
-            sug.setBdusage(sug.getBdusage()  / (TimeTemp / 1000));
+            sug.setBdusage(sug.getBdusage() / (TimeTemp / 1000));
             // Obteniendo el porcentaje de utilizacion de ancho 
-            sug.setBdusage((sug.getBdusage()  / GeneralConfiguration.getAvailableBandwidth()) * 100);
+            sug.setBdusage((sug.getBdusage() / GeneralConfiguration.getAvailableBandwidth()) * 100);
         }
     }
 
@@ -343,7 +347,7 @@ public class Sniffer extends Thread {
             // Convirtiendo de Bytes a KiloBytes
 //            sug.setBdusage((sug.getBdusage() * 8) / GeneralConfiguration.Kilobit);
             // Dividiendo entre la cantidad de segundos que duro el muestreo
-            sug.setBdusage(sug.getBdusage()  / (TimeTemp / 1000));
+            sug.setBdusage(sug.getBdusage() / (TimeTemp / 1000));
             // Obteniendo el porcentaje de utilizacion de ancho 
             sug.setBdusage((sug.getBdusage() / GeneralConfiguration.getAvailableBandwidth()) * 100);
         }
