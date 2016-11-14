@@ -69,10 +69,9 @@ public class ServiceCore {
         //   marker = engine.mark();
         try {
             //     engine.reset();
-            for (int i = 0; i < o.length; i++)
-                engine.add(o[i]);
+            for (Object anO : o) if(anO != null) engine.add(anO);
             //     marker2 = engine.mark();
-        } catch (JessException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
