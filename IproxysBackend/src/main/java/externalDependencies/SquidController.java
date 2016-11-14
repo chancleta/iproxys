@@ -9,8 +9,8 @@ import java.io.RandomAccessFile;
  * To change this template, choose Tools | Templates and open the template in
  * the editor.
  */
+
 /**
- *
  * @author LuisjPena
  */
 public class SquidController {
@@ -35,10 +35,9 @@ public class SquidController {
         ejecutar.Ejecutar_Comando("service squid3 start");
 
 
-
     }
 
-    private  static void reconfigure(){
+    private static void reconfigure() {
         ejecutar.Ejecutar_Comando("service squid3 reload");
     }
 
@@ -48,7 +47,7 @@ public class SquidController {
             raf = new RandomAccessFile(filename, "rw");
             return true;
         } catch (Exception ex) {
-            System.err.println(ex.getStackTrace());
+            ex.printStackTrace();
             return false;
         }
 
@@ -68,7 +67,7 @@ public class SquidController {
             raf.writeBytes("\ndelay_access 1 allow " + aclIPName + " " + aclDomainName);
             reiniciarSquid();
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
             return false;
         }
         return true;

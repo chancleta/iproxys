@@ -38,7 +38,7 @@ public class EjecutarComando {
             input.close();
             return result;
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
             return null;
         }
     }

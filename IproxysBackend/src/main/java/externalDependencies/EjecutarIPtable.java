@@ -34,7 +34,6 @@ public class EjecutarIPtable {
 
     public static void iptableEjecutar() {
         flushIPtables();
-        System.err.println("Desde Iptables: ejecutar" + ejecutar.toString());
         natIPtables();
     }
 }
