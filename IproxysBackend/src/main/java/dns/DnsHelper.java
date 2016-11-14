@@ -50,13 +50,13 @@ public class DnsHelper {
     }
 
     public static String getDomainNameFromIp(String ipAddress) {
-//        String ipHostName = getHostName(ipAddress);
+        String ipHostName = getHostName(ipAddress);
 //        if(ipHostName.equals(ipAddress)){
 //            return ipAddress;
 //        }
 //        String domainName = getTopLevelDomain(ipHostName);
 //        return isDomainReachable(domainName)?"."+domainName:ipAddress;
-        return getHostName(ipAddress);
+        return ipHostName.equals(ipAddress)? ipAddress: getTopLevelDomain(ipHostName);
     }
 
     public static String getTopLevelDomain(String uri) {
