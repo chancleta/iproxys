@@ -24,6 +24,7 @@ public class PerformIPPortBlock implements PerformBlock {
 
     @Override
     public void block() {
+        System.out.println("iptables -I FORWARD -s "+temporaryBlockedEntity.getBlockedIP()+" -p "+protocolName+" --dport "+temporaryBlockedEntity.getBlockedPort()+" -j DROP");
         ejecutarComando.Ejecutar_Comando("iptables -I FORWARD -s "+temporaryBlockedEntity.getBlockedIP()+" -p "+protocolName+" --dport "+temporaryBlockedEntity.getBlockedPort()+" -j DROP");
     }
 

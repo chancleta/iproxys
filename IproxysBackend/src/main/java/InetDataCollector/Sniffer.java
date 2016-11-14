@@ -161,8 +161,12 @@ public class Sniffer extends Thread {
                                 // ARREGLAR DOMINIO
                                 temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
                                 temporaryBlockedEntity.setBlockedDomain(DnsHelper.getDomainNameFromIp(sug.getIp_Src()));
-//                                temporaryBlockedEntity.setBlockedDomain(sug.getIp_Src());
 
+                                temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
+                                temporaryBlockedEntity.setBlockedPort(sug.getPort());
+                                temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
+
+                                temporaryBlockedEntity.setProtocol(sug.getProtocol());
                                 PerformHttpBlock performHttpBlock = new PerformHttpBlock(temporaryBlockedEntity);
                                 performHttpBlock.block();
                                 break;
