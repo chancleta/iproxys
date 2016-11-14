@@ -23,8 +23,15 @@ public class ServiceCore {
     private static WorkingMemoryMarker marker2;
     private static WorkingMemoryMarker eraseData;
     private static ServiceCore servicecore = null;
-
+    private  Path myFolderPath;
     private ServiceCore() throws JessException, FileNotFoundException, IOException, URISyntaxException {
+
+        final URI uri = getClass().getResource("/jess_rules.clp").toURI();
+        Map<String, String> env = new HashMap<>();
+        env.put("create", "true");
+        FileSystem zipfs = FileSystems.newFileSystem(uri, env);
+        myFolderPath  = Paths.get(uri);
+
         Configure();
 
     }
@@ -49,11 +56,7 @@ public class ServiceCore {
         engine = new Rete();
         //engine.reset();
         try {
-            final URI uri = getClass().getResource("/jess_rules.clp").toURI();
-            Map<String, String> env = new HashMap<>();
-            env.put("create", "true");
-            FileSystem zipfs = FileSystems.newFileSystem(uri, env);
-            Path myFolderPath = Paths.get(uri);
+
             engine.batch(myFolderPath.toFile().getAbsolutePath());
 //        System.out.println((Paths.get(ServiceCore.class.getClass().getResource("/jess_rules.clp").toURI()).toFile().getAbsolutePath()));
 //        marker = engine.mark();//para volver a este punto facilmente check point
