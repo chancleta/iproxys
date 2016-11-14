@@ -112,23 +112,25 @@ public class Sniffer extends Thread {
 
 
         while (true) {
-            //Capturar paquetes hasta que pasen TimeTemp Milisegundos    
+            //Capturar paquetes hasta que pasen TimeTemp Milisegundos
             capture.processPacket(-1, new RecievePackets());
             if ((new Date().getTime() - TimeTempRef.getTime()) >= TimeTemp) {
-                Sniffer.TimeTempRef = new Date();
                 jess.ServiceCore jess = ServiceCore.getInstance();
                 doCalculateDB_Temp();
                 calculateMaxBWAllowance();
 
+                System.out.println("TempIPPDUs:"+TempIPPDUs.size() + " TempIPPortPDUs:" +TempIPPortPDUs.size() + " TempPortPDUs:"  + TempPortPDUs.size());
                 if (TempIPPDUs.size() > 0 && TempIPPortPDUs.size() > 0 && TempPortPDUs.size() >0) {
+                    System.out.println("1");
                     jess.addList(TempIPPDUs.toArray());
+                    System.out.println("2");
                     jess.addList(TempIPPortPDUs.toArray());
+                    System.out.println("3");
                     jess.addList(TempPortPDUs.toArray());
-
                 }
-
+                System.out.println("4");
                 List<UnblockableEntity> unblockableEntities = UnblockableEntityDao.findByAll();
-
+                System.out.println("5");
 
                 for (JessSuggestions sug : jess.GetAllSuggestions()) {
                     TemporaryBlockedEntity temporaryBlockedEntity = new TemporaryBlockedEntity();
@@ -208,6 +210,9 @@ public class Sniffer extends Thread {
                         e.printStackTrace();
                     }
                 });
+
+                Sniffer.TimeTempRef = new Date();
+
             }
         }
     }
