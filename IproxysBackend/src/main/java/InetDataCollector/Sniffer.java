@@ -119,21 +119,14 @@ public class Sniffer extends Thread {
                 doCalculateDB_Temp();
                 calculateMaxBWAllowance();
 
-                System.out.println("TempIPPDUs:"+TempIPPDUs.size() + " TempIPPortPDUs:" +TempIPPortPDUs.size() + " TempPortPDUs:"  + TempPortPDUs.size());
-                if (TempIPPDUs.size() > 0 && TempIPPortPDUs.size() > 0 && TempPortPDUs.size() >0) {
-                    System.out.println("1");
-                    for (SummaryIP_BandWidth anO : TempIPPDUs) System.out.println(anO);
+                if (!TempIPPDUs.isEmpty() && !TempIPPortPDUs.isEmpty() && !TempPortPDUs.isEmpty()) {
+                    for (SummaryIP_BandWidth anO : TempIPPDUs) System.out.println(anO.getIp_Dst());
                     jess.addList(TempIPPDUs.toArray());
-                    System.out.println("2");
-                    for (SummaryIPPort_BandWidth anO : TempIPPortPDUs) System.out.println(anO);
                     jess.addList(TempIPPortPDUs.toArray());
-                    System.out.println("3");
-                    for (SummaryPort_BandWidth anO : TempPortPDUs) System.out.println(anO);
                     jess.addList(TempPortPDUs.toArray());
                 }
-                System.out.println("4");
+
                 List<UnblockableEntity> unblockableEntities = UnblockableEntityDao.findByAll();
-                System.out.println("5");
 
                 for (JessSuggestions sug : jess.GetAllSuggestions()) {
                     TemporaryBlockedEntity temporaryBlockedEntity = new TemporaryBlockedEntity();

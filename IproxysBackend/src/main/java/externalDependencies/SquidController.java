@@ -1,6 +1,7 @@
 package externalDependencies;
 
 import PersistenceData.TemporaryBlockedEntity;
+import performblock.PerformIPPortBlock;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -65,7 +66,12 @@ public class SquidController {
             raf.writeBytes("\n\nacl " + aclIPName + " src " + ipClient);
             raf.writeBytes("\nacl " + aclDomainName + " dstdomain " + domain);
             raf.writeBytes("\ndelay_access 1 allow " + aclIPName + " " + aclDomainName);
-            reiniciarSquid();
+
+
+            PerformIPPortBlock performIPPortBlock = new PerformIPPortBlock(temporaryBlockedEntity);
+            performIPPortBlock.block();
+            reconfigure();
+            performIPPortBlock.unBlock();
         } catch (IOException ex) {
             ex.printStackTrace();
             return false;

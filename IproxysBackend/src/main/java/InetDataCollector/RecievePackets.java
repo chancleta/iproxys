@@ -25,7 +25,6 @@ public class RecievePackets implements PacketReceiver {
 
         
         if (packet instanceof jpcap.packet.IPPacket) {
-            System.out.println(Sniffer.bandwidthMonitor);
             Sniffer.bandwidthMonitor += packet.caplen;
             this.RecievedPacket = (jpcap.packet.IPPacket) packet;
             this.RecievedPacket.caplen *= 8;
