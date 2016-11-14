@@ -70,7 +70,7 @@ public class SquidController {
 
             PerformIPPortBlock performIPPortBlock = new PerformIPPortBlock(temporaryBlockedEntity);
             performIPPortBlock.block();
-            Thread.sleep(10000);
+            Thread.sleep(15000);
             reconfigure();
             performIPPortBlock.unBlock();
         } catch (Exception ex) {
