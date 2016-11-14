@@ -21,7 +21,8 @@ import java.util.List;
 
 @NamedQueries({
     @NamedQuery(name = "TemporaryBlockedEntity.findAll", query = "SELECT u FROM TemporaryBlockedEntity u"),
-    @NamedQuery(name = "TemporaryBlockedEntity.findEntityToUnblock", query = "SELECT u FROM TemporaryBlockedEntity u where u.tempUnBlocked = false and u.blockedOnTimeDate BETWEEN :allowTimeEnd AND :allowTimeStart"),
+    @NamedQuery(name = "TemporaryBlockedEntity.findLiveActions", query = "SELECT u FROM TemporaryBlockedEntity u where u.tempUnBlocked = false"),
+    @NamedQuery(name = "TemporaryBlockedEntity.findEntityToUnblock", query = "SELECT u FROM TemporaryBlockedEntity u where u.tempUnBlocked = false and u.blockedOnTimeDate <= :allowTimeStart"),
     @NamedQuery(name = "TemporaryBlockedEntity.findAllByPermaBlocked", query = "SELECT u FROM TemporaryBlockedEntity u where u.permaBlocked = :permaBlockedValue"),
 })
 public class TemporaryBlockedEntity extends PersistenceProvider implements Serializable {
@@ -177,7 +178,6 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
 
         Query findEntityToUnblock = entityManager.createNamedQuery("TemporaryBlockedEntity.findEntityToUnblock",TemporaryBlockedEntity.class);
         findEntityToUnblock.setParameter("allowTimeStart", new Date(System.currentTimeMillis() - ((int)GeneralConfiguration.getTempTimeDuration() * MIN_IN_MS)), TemporalType.TIMESTAMP);
-        findEntityToUnblock.setParameter("allowTimeEnd", new Date(System.currentTimeMillis()  - ((int)GeneralConfiguration.getTempTimeDuration()  * MIN_IN_MS) + 3 * Sniffer.TimeTemp), TemporalType.TIMESTAMP);
         List<Object> resultList = findEntityToUnblock.getResultList();
         return converFromListObjectTo(resultList);
 

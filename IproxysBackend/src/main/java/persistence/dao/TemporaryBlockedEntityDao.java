@@ -5,9 +5,7 @@ import PersistenceData.PersistenceProvider;
 import PersistenceData.TemporaryBlockedEntity;
 
 import javax.persistence.Query;
-import javax.persistence.TemporalType;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,9 +27,7 @@ public class TemporaryBlockedEntityDao extends PersistenceProvider {
 
     public static List<TemporaryBlockedEntity> findTemporaryBlockedEntities(){
 
-        @SuppressWarnings("JpaQueryApiInspection") Query query = EntityManagerProvider.getInstance().getEntityManager().createNamedQuery("TemporaryBlockedEntity.findEntityToUnblock",TemporaryBlockedEntity.class);
-        query.setParameter("allowTimeStart", new Date(System.currentTimeMillis() ), TemporalType.TIMESTAMP);
-        query.setParameter("allowTimeEnd", new Date(System.currentTimeMillis()  - (10 * TemporaryBlockedEntity.MIN_IN_MS)), TemporalType.TIMESTAMP);
+        @SuppressWarnings("JpaQueryApiInspection") Query query = EntityManagerProvider.getInstance().getEntityManager().createNamedQuery("TemporaryBlockedEntity.findLiveActions",TemporaryBlockedEntity.class);
         try {
             return (List<TemporaryBlockedEntity>) query.getResultList();
         } catch (Exception e) {
