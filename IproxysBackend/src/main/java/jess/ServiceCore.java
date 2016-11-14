@@ -21,7 +21,8 @@ public class ServiceCore {
     private static WorkingMemoryMarker marker2;
     private static WorkingMemoryMarker eraseData;
     private static ServiceCore servicecore = null;
-    private  String ruleFilePath;
+    private String ruleFilePath;
+
     private ServiceCore() throws JessException, FileNotFoundException, IOException, URISyntaxException {
 
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
@@ -101,16 +102,15 @@ public class ServiceCore {
         try {
             engine.run();
             Iterator sugestions = engine.getObjects(new Filter.ByClass(JessSuggestions.class));//saca del buffer puntero al buffer de ese tipo
-
-            for (Iterator<JessSuggestions> iter = sugestions; iter.hasNext(); ) {
-                sugestionList.add(iter.next());
-            }
+            if (sugestions != null)
+                for (; sugestions.hasNext(); ) {
+                    sugestionList.add((JessSuggestions) sugestions.next());
+                }
         } catch (Exception ex) {
             ex.printStackTrace();
 
-        } finally {
-            return sugestionList;
         }
+        return sugestionList;
 
 
     }

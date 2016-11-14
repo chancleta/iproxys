@@ -120,12 +120,16 @@ public class Sniffer extends Thread {
                 doCalculateDB_Temp();
                 calculateMaxBWAllowance();
 
-                if (!TempIPPDUs.isEmpty())
+                if (TempIPPDUs.size() > 0) {
                     jess.addList(TempIPPDUs.toArray());
-                if (!TempIPPortPDUs.isEmpty())
+                }
+                if (TempIPPortPDUs.size() > 0) {
                     jess.addList(TempIPPortPDUs.toArray());
-                if (!TempPortPDUs.isEmpty())
+                }
+                if (TempPortPDUs.size() > 0) {
                     jess.addList(TempPortPDUs.toArray());
+                }
+
                 List<UnblockableEntity> unblockableEntities = UnblockableEntityDao.findByAll();
 
 
@@ -180,9 +184,9 @@ public class Sniffer extends Thread {
                     }
                 }
                 jess.eraseData();
-                Sniffer.TempPortPDUs.clear();
-                Sniffer.TempIPPDUs.clear();
-                Sniffer.TempIPPortPDUs.clear();
+                Sniffer.TempPortPDUs = new ArrayList<>();
+                Sniffer.TempIPPDUs = new ArrayList<>();
+                Sniffer.TempIPPortPDUs = new ArrayList<>();
 
                 /**
                  * THIS NEEDS TO BE HANDLED IN ANOTHER FILE AND JUST MAKE A CALL TO UPDATE THE WEBSOCKET WITH
