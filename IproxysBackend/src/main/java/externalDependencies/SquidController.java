@@ -4,7 +4,6 @@ import PersistenceData.TemporaryBlockedEntity;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.file.Paths;
 
 /*
  * To change this template, choose Tools | Templates and open the template in
@@ -17,7 +16,7 @@ import java.nio.file.Paths;
 public class SquidController {
 
     private static SquidController squidcontroller = null;
-    private static final String filename = "/home/luis/iproxys/IproxysBackend/src/main/resources/squid_float.conf";
+    private static final String filename = "/home/pi/iproxys/squid_float.conf";
     private static RandomAccessFile raf;
     private static EjecutarComando ejecutar = EjecutarComando.getInstance();
 
@@ -32,15 +31,15 @@ public class SquidController {
 
     private static void reiniciarSquid() {
 
-        ejecutar.Ejecutar_Comando("service squid stop");
-        ejecutar.Ejecutar_Comando("service squid start");
+        ejecutar.Ejecutar_Comando("service squid3 stop");
+        ejecutar.Ejecutar_Comando("service squid3 start");
 
 
 
     }
 
     private  static void reconfigure(){
-        ejecutar.Ejecutar_Comando("/usr/sbin/squid -k reconfigure");
+        ejecutar.Ejecutar_Comando("service squid3 reload");
     }
 
     private static boolean openSquidConfFile() {
