@@ -184,8 +184,8 @@ namespace App {
         //TODO: Load from Config FIle
         public static values:any = {
             //url: "http://69.28.92.208:4000",
-            url: "http://localhost:4000",
-            webSocketsUrl: "ws://localhost:4000",
+            url: "http://192.168.0.110:4000",
+            webSocketsUrl: "ws://192.168.0.110:4000",
             webSockets: {
                 liveMonitor: "/liveMonitor",
                 liveAction: "/live-actions-socket"
