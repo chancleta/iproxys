@@ -140,10 +140,10 @@ public class User extends PersistenceProvider implements Serializable {
             User users = (User) o;
             user = users;
         } catch (Exception err) {
-            System.out.println(err.getMessage());
-        } finally {
-            return user;
+            err.printStackTrace();
         }
+        return user;
+
 
         // createNamedQuery.setParameter("username", username);
 

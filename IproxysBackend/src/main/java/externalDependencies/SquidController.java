@@ -94,7 +94,7 @@ public class SquidController {
             raf.setLength(newFileContent.getBytes().length);
             reconfigure();
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
             return false;
         }
         return true;

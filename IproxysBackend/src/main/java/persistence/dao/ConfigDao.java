@@ -18,7 +18,7 @@ public class ConfigDao {
         try {
             return (Config) query.getSingleResult();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
@@ -34,7 +34,7 @@ public class ConfigDao {
             dataconf.save();
             return dataconf;
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }

@@ -25,7 +25,7 @@ public class ActiveTokenDao extends PersistenceProvider {
         try {
             return (ActiveToken) query.getSingleResult();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
@@ -38,7 +38,7 @@ public class ActiveTokenDao extends PersistenceProvider {
         try {
             return (ActiveToken) query.getSingleResult();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
@@ -49,7 +49,7 @@ public class ActiveTokenDao extends PersistenceProvider {
         try {
             return (ActiveToken) query.getSingleResult();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }

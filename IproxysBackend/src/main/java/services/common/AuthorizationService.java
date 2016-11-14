@@ -93,7 +93,7 @@ public class AuthorizationService {
                     Jwts.parser().setSigningKey(KEY).parseClaimsJws(autorizationHeader.substring("Bearer".length()).trim());
             return jwtClaims;
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
         return jwtClaims;
 
@@ -106,7 +106,7 @@ public class AuthorizationService {
                     Jwts.parser().setSigningKey(KEY).parseClaimsJws(autorizationToken);
             return jwtClaims;
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
         return jwtClaims;
 

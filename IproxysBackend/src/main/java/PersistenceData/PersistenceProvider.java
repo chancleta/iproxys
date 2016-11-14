@@ -30,7 +30,7 @@ public abstract class PersistenceProvider extends ValiatableObject implements Se
             currentTransaction.commit();
             return true;
         } catch (Exception err) {
-            System.err.println(err.getMessage());
+            err.printStackTrace();
             return false;
         }
     }
@@ -63,7 +63,7 @@ public abstract class PersistenceProvider extends ValiatableObject implements Se
             currentTransaction.commit();
             return true;
         } catch (Exception err) {
-            System.err.println(err.getMessage());
+            err.printStackTrace();
             return false;
         }
     }
