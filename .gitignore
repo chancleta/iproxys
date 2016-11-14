@@ -32,7 +32,7 @@ IproxysFrontend/app/typescripts/*.js
 IproxysFrontend/app/typescripts/*.map
 IproxysFrontend/app/js/**/*
 IproxysFrontend/app/styles/**/*
-
+IproxysBackend/src/main/resources/public/**/*
 
 
 

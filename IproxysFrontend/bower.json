@@ -34,5 +34,8 @@
     "getmdl-select": {
       "ignore": false
     }
+  },
+  "resolutions":{
+  	"angular":"1.5"
   }
 }

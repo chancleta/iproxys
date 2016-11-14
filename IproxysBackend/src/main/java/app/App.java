@@ -1,14 +1,17 @@
 package app;
 
 import InetDataCollector.Sniffer;
+import PersistenceData.User;
 import api.*;
 import api.common.OAuthController;
 import externalDependencies.EjecutarIPtable;
 import models.Bandwidth;
 import models.BandwidthScale;
 import models.Config;
+import models.UserRoles;
 import performblock.timers.TimerInitializer;
 import persistence.dao.ConfigDao;
+import persistence.dao.UserDao;
 import services.UserService;
 import services.common.AuthorizationService;
 import spark.Spark;
@@ -23,11 +26,11 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         Spark.port(4000);
+        Spark.staticFileLocation("/public");
 
         webSocket("/liveMonitor", LiveMonitorController.class);
         webSocket("/live-actions-socket", LiveActionsWebSocketController.class);
 
-//        Spark.staticFileLocation("/public");
 
 //        User u = new User();
 //        u.setUsername("chan");
@@ -40,20 +43,33 @@ public class App {
 //        Mongo.getDataStore().save(u);
 
 
-//          Config conf = new Config();
-//        Bandwidth bw = new Bandwidth();
-//          bw.setBandwidth(5);
-//        bw.setBandwidthScale(BandwidthScale.MegaBit);
-//        conf.setBandwidth(bw);
-//
-//        Bandwidth bw1 = new Bandwidth();
-//
-//        bw1.setBandwidth(500);
-//        bw1.setBandwidthScale(BandwidthScale.KiloBit);
-//        conf.setMaxBandwidthPerUser(bw1);
-//
-//        conf.setTempTimeDuration(3);
-//        conf.save();
+        if (ConfigDao.get() == null) {
+            Config conf = new Config();
+            Bandwidth bw = new Bandwidth();
+            bw.setBandwidth(5);
+            bw.setBandwidthScale(BandwidthScale.MegaBit);
+            conf.setBandwidth(bw);
+
+            Bandwidth bw1 = new Bandwidth();
+
+            bw1.setBandwidth(500);
+            bw1.setBandwidthScale(BandwidthScale.KiloBit);
+            conf.setMaxBandwidthPerUser(bw1);
+
+            conf.setTempTimeDuration(3);
+            conf.save();
+        }
+
+        if(UserDao.findUserByCredentials("chancleta","123456") == null){
+            User us = new User();
+            us.setUsername("chancleta");
+            us.setEmail("ljpenaurena@gmail.com");
+            us.setPassword("123456");
+            us.setLastName("Pena");
+            us.setFirstName("Luis");
+            us.setRole(UserRoles.Admin);
+            us.save();
+        }
 
 //
 //
