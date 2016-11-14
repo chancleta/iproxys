@@ -120,7 +120,6 @@ public class Sniffer extends Thread {
                 calculateMaxBWAllowance();
 
                 if (!TempIPPDUs.isEmpty() && !TempIPPortPDUs.isEmpty() && !TempPortPDUs.isEmpty()) {
-                    for (SummaryIP_BandWidth anO : TempIPPDUs) System.out.println(anO.getIp_Dst());
                     jess.addList(TempIPPDUs.toArray());
                     jess.addList(TempIPPortPDUs.toArray());
                     jess.addList(TempPortPDUs.toArray());
@@ -217,7 +216,7 @@ public class Sniffer extends Thread {
 
         int userAmount = TempIPPDUs.size();
         for (SummaryIP_BandWidth summaryIP_bandWidth : TempIPPDUs) {
-            if (summaryIP_bandWidth.getIp_Dst().equals(Sniffer.interfaceBroadcastIP)) {
+            if (summaryIP_bandWidth.getIp_Dst().equals(Sniffer.interfaceBroadcastIP) || summaryIP_bandWidth.getIp_Dst().equals(Sniffer.InterfaceIP) ) {
                 userAmount -= 1;
             }
         }
