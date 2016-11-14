@@ -69,16 +69,16 @@ public class SquidController {
 
             temporaryBlockedEntity.setBlockedPort(3128);
             PerformIPPortBlock performIPPortBlock = new PerformIPPortBlock(temporaryBlockedEntity);
-            
+
             Thread blockPort = new Thread(() -> {
-                performIPPortBlock.block();
+                performIPPortBlock.blockSquid();
                 try {
-                    Thread.sleep(25000);
+                    Thread.sleep(60000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 reconfigure();
-                performIPPortBlock.unBlock();
+                performIPPortBlock.unBlockSquid();
             });
             blockPort.start();
         } catch (Exception ex) {

@@ -49,6 +49,9 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
     @Column(nullable = false)
     private boolean tempUnBlocked = false;
 
+    @Column
+    private String blockedIPDest;
+
     public static final int BLOCK_IP = 1;
     public static final int BLOCK_IP_AND_PORT = 2;
     public static final int BLOCK_PORT = 3;
@@ -296,5 +299,13 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
         findAllByPermaBlocked.setParameter("permaBlockedValue", permaBlockedValue);
         List<Object> resultList = findAllByPermaBlocked.getResultList();
         return converFromListObjectTo(resultList);
+    }
+
+    public String getBlockedIPDest() {
+        return blockedIPDest;
+    }
+
+    public void setBlockedIPDest(String blockedIPDest) {
+        this.blockedIPDest = blockedIPDest;
     }
 }

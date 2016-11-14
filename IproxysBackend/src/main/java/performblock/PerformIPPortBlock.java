@@ -31,4 +31,15 @@ public class PerformIPPortBlock implements PerformBlock {
     public void unBlock() {
         ejecutarComando.Ejecutar_Comando("iptables -D INPUT -s "+temporaryBlockedEntity.getBlockedIP()+" -p "+protocolName+" --dport "+temporaryBlockedEntity.getBlockedPort()+" -j REJECT");
     }
+
+
+    public void blockSquid() {
+        ejecutarComando.Ejecutar_Comando("iptables -A INPUT -s "+temporaryBlockedEntity.getBlockedIP()+" -p "+protocolName+" --dport "+temporaryBlockedEntity.getBlockedPort()+" -d "+ temporaryBlockedEntity.getBlockedIPDest() +"-j REJECT");
+    }
+
+    public void unBlockSquid() {
+        ejecutarComando.Ejecutar_Comando("iptables -D INPUT -s "+temporaryBlockedEntity.getBlockedIP()+" -p "+protocolName+" --dport "+temporaryBlockedEntity.getBlockedPort()+" -d "+ temporaryBlockedEntity.getBlockedIPDest() +" -j REJECT");
+    }
+
+
 }
