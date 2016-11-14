@@ -47,6 +47,7 @@ public class ServiceCore {
         engine = new Rete();
         //engine.reset();
         try {
+            System.out.println("URL:"+ServiceCore.class.getClass().getResource("/jess_rules.clp"));
             engine.batch(Paths.get(ServiceCore.class.getClass().getResource("/jess_rules.clp").toURI()).toFile().getAbsolutePath());
 //        System.out.println((Paths.get(ServiceCore.class.getClass().getResource("/jess_rules.clp").toURI()).toFile().getAbsolutePath()));
 //        marker = engine.mark();//para volver a este punto facilmente check point
