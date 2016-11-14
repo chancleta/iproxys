@@ -9,7 +9,7 @@ import static spark.Spark.options;
  * Created by Luis Pena on 8/19/2016.
  */
 public class Cors {
-    private static final HashMap<String, String> corsHeaders = new HashMap<String, String>();
+    private static final HashMap<String, String> corsHeaders = new HashMap<>();
 
     static {
         corsHeaders.put("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");

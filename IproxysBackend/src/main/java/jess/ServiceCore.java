@@ -4,9 +4,8 @@
  */
 package jess;
 
-import spark.utils.IOUtils;
-
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,11 +24,6 @@ public class ServiceCore {
 
     private ServiceCore() throws JessException, FileNotFoundException, IOException, URISyntaxException {
 
-        File tempDir = new File(System.getProperty("java.io.tmpdir"));
-        File temporaryFile = new File(tempDir, "templateCopy.dot");
-        InputStream templateStream = getClass().getResourceAsStream("myTemplate.dot");
-        IOUtils.copy(templateStream, new FileOutputStream(temporaryFile));
-        ruleFilePath = temporaryFile.getAbsolutePath();
 
         Configure();
 
@@ -56,7 +50,7 @@ public class ServiceCore {
         //engine.reset();
         try {
 
-            engine.batch(ruleFilePath);
+            engine.batch("/home/pi/iproxys/jess_rules.clp");
 //        System.out.println((Paths.get(ServiceCore.class.getClass().getResource("/jess_rules.clp").toURI()).toFile().getAbsolutePath()));
 //        marker = engine.mark();//para volver a este punto facilmente check point
             //eraseData = engine.mark();
