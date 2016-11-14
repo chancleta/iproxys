@@ -9,9 +9,7 @@ import PersistenceData.SummaryIP_BandWidth;
 import PersistenceData.SummaryPort_BandWidth;
 import jpcap.PacketReceiver;
 import jpcap.packet.Packet;
-import jpcap.packet.TCPPacket;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -82,16 +80,16 @@ public class RecievePackets implements PacketReceiver {
                 newsumipport.setPort(((jpcap.packet.TCPPacket) RecievedPacket).src_port);
                 controlInterno = true;
 
-                byte[] data = ((TCPPacket) RecievedPacket).data;
+//                byte[] data = ((TCPPacket) RecievedPacket).data;
 
-                String isoData = null;
-                try {
-                    if(newsumipport.getPort() == 80 || newsumipport.getPort() == 8080)
-                    isoData = new String(data, "ISO-8859-1");
-                    System.out.println("DATA: \n"+isoData);
-                } catch (UnsupportedEncodingException e) {
-//                    e.printStackTrace();
-                }
+//                String isoData = null;
+//                try {
+//                    if(newsumipport.getPort() == 80 || newsumipport.getPort() == 8080)
+//                    isoData = new String(data, "ISO-8859-1");
+//                    System.out.println("DATA: \n"+isoData);
+//                } catch (UnsupportedEncodingException e) {
+////                    e.printStackTrace();
+//                }
 
             } else if (RecievedPacket instanceof jpcap.packet.UDPPacket) {
 

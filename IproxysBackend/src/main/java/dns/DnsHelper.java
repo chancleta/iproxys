@@ -35,6 +35,7 @@ public class DnsHelper {
         boolean isDomainReachable = false;
         try {
             socket = new Socket(domain, 80);
+            socket = new Socket(domain, 8080);
             isDomainReachable = true;
         } catch (IOException ex) {
         } finally {
@@ -49,12 +50,13 @@ public class DnsHelper {
     }
 
     public static String getDomainNameFromIp(String ipAddress) {
-        String ipHostName = getHostName(ipAddress);
-        if(ipHostName.equals(ipAddress)){
-            return ipAddress;
-        }
-        String domainName = getTopLevelDomain(ipHostName);
-        return isDomainReachable(domainName)?"."+domainName:ipAddress;
+//        String ipHostName = getHostName(ipAddress);
+//        if(ipHostName.equals(ipAddress)){
+//            return ipAddress;
+//        }
+//        String domainName = getTopLevelDomain(ipHostName);
+//        return isDomainReachable(domainName)?"."+domainName:ipAddress;
+        return getHostName(ipAddress);
     }
 
     public static String getTopLevelDomain(String uri) {
@@ -104,10 +106,7 @@ public class DnsHelper {
         }
         return retVal;
     }
-    public static void main(String as[]){
-        
-        System.out.println(getDomainNameFromIp("174.36.200.208"));
-    }
+    
     
  
 }
