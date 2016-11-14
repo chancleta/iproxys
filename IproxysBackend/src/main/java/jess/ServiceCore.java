@@ -6,11 +6,13 @@ package jess;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author root
@@ -47,8 +49,12 @@ public class ServiceCore {
         engine = new Rete();
         //engine.reset();
         try {
-            System.out.println("URL:"+ServiceCore.class.getClass().getResource("/jess_rules.clp"));
-            engine.batch(Paths.get(ServiceCore.class.getClass().getResource("/jess_rules.clp").toURI()).toFile().getAbsolutePath());
+            final URI uri = getClass().getResource("/jess_rules.clp").toURI();
+            Map<String, String> env = new HashMap<>();
+            env.put("create", "true");
+            FileSystem zipfs = FileSystems.newFileSystem(uri, env);
+            Path myFolderPath = Paths.get(uri);
+            engine.batch(myFolderPath.toFile().getAbsolutePath());
 //        System.out.println((Paths.get(ServiceCore.class.getClass().getResource("/jess_rules.clp").toURI()).toFile().getAbsolutePath()));
 //        marker = engine.mark();//para volver a este punto facilmente check point
             //eraseData = engine.mark();
