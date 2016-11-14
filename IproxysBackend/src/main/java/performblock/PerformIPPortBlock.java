@@ -24,11 +24,11 @@ public class PerformIPPortBlock implements PerformBlock {
 
     @Override
     public void block() {
-        ejecutarComando.Ejecutar_Comando("iptables -A OUTPUT -s "+temporaryBlockedEntity.getBlockedIP()+" -p "+protocolName+" --dport "+temporaryBlockedEntity.getBlockedPort()+" -j DROP");
+        ejecutarComando.Ejecutar_Comando("iptables -A OUTPUT -s "+temporaryBlockedEntity.getBlockedIP()+" -p "+protocolName+" --dport "+temporaryBlockedEntity.getBlockedPort()+" -j REJECT");
     }
 
     @Override
     public void unBlock() {
-        ejecutarComando.Ejecutar_Comando("iptables -D INPUT -s "+temporaryBlockedEntity.getBlockedIP()+" -p "+protocolName+" --dport "+temporaryBlockedEntity.getBlockedPort()+" -j DROP");
+        ejecutarComando.Ejecutar_Comando("iptables -D INPUT -s "+temporaryBlockedEntity.getBlockedIP()+" -p "+protocolName+" --dport "+temporaryBlockedEntity.getBlockedPort()+" -j REJECT");
     }
 }
