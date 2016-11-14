@@ -4,15 +4,13 @@
  */
 package jess;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URI;
+import spark.utils.IOUtils;
+
+import java.io.*;
 import java.net.URISyntaxException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author root
@@ -23,14 +21,14 @@ public class ServiceCore {
     private static WorkingMemoryMarker marker2;
     private static WorkingMemoryMarker eraseData;
     private static ServiceCore servicecore = null;
-    private  Path myFolderPath;
+    private  String ruleFilePath;
     private ServiceCore() throws JessException, FileNotFoundException, IOException, URISyntaxException {
 
-        final URI uri = getClass().getResource("/jess_rules.clp").toURI();
-        Map<String, String> env = new HashMap<>();
-        env.put("create", "true");
-        FileSystem zipfs = FileSystems.newFileSystem(uri, env);
-        myFolderPath  = Paths.get(uri);
+        File tempDir = new File(System.getProperty("java.io.tmpdir"));
+        File temporaryFile = new File(tempDir, "templateCopy.dot");
+        InputStream templateStream = getClass().getResourceAsStream("myTemplate.dot");
+        IOUtils.copy(templateStream, new FileOutputStream(temporaryFile));
+        ruleFilePath = temporaryFile.getAbsolutePath();
 
         Configure();
 
@@ -57,7 +55,7 @@ public class ServiceCore {
         //engine.reset();
         try {
 
-            engine.batch(myFolderPath.toFile().getAbsolutePath());
+            engine.batch(ruleFilePath);
 //        System.out.println((Paths.get(ServiceCore.class.getClass().getResource("/jess_rules.clp").toURI()).toFile().getAbsolutePath()));
 //        marker = engine.mark();//para volver a este punto facilmente check point
             //eraseData = engine.mark();
