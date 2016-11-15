@@ -56,7 +56,7 @@ public class DnsHelper {
 //        }
 //        String domainName = getTopLevelDomain(ipHostName);
 //        return isDomainReachable(domainName)?"."+domainName:ipAddress;
-        return ipHostName.equals(ipAddress)? ipAddress: getTopLevelDomain(ipHostName);
+        return ipHostName.equals(ipAddress)? ipAddress: ipHostName;
     }
 
     public static String getTopLevelDomain(String uri) {
