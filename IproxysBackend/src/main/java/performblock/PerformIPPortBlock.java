@@ -40,7 +40,7 @@ public class PerformIPPortBlock implements PerformBlock {
             results = ejecutarComando.Ejecutar_Comando("conntrack -D -p tcp --dport " + temporaryBlockedEntity.getBlockedPort() + " --src " + temporaryBlockedEntity.getBlockedIP() +" --dst  "+ temporaryBlockedEntity.getBlockedIPDest());
             results = results == null ? "" : results;
 
-            System.out.println("results");
+            System.out.println(results);
         }while (!results.contains("0 flow entries have been deleted"));
     }
 
