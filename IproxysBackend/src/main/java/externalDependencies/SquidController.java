@@ -67,18 +67,16 @@ public class SquidController {
             raf.writeBytes("\nacl " + aclDomainName + " dstdomain " + domain);
             raf.writeBytes("\ndelay_access 1 allow " + aclIPName + " " + aclDomainName);
 
-            temporaryBlockedEntity.setBlockedPort(3128);
             PerformIPPortBlock performIPPortBlock = new PerformIPPortBlock(temporaryBlockedEntity);
 
             Thread blockPort = new Thread(() -> {
                 performIPPortBlock.blockSquid();
                 try {
-                    Thread.sleep(60000);
+                    Thread.sleep(15000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 reconfigure();
-                performIPPortBlock.unBlockSquid();
             });
             blockPort.start();
         } catch (Exception ex) {
