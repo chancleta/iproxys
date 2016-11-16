@@ -148,7 +148,7 @@ public class ResourceAllowanceController extends BaseJsonController {
 
         });
 
-        put("/resource-allowance", (request, response) -> {
+        put("/resource-allowance/:id", (request, response) -> {
 
             String revicedID = request.params(":id");
 
