@@ -5,9 +5,9 @@ namespace App.Models {
         blockedIP:string;
         blockedDomain:string;
         blockedOnTimeDate:string;
-        blockedPort:number;
+        blockedPort:number|string;
         identifier:Identifier;
-        protocol:number;
+        protocol:number|string;
         id:number;
 
     }

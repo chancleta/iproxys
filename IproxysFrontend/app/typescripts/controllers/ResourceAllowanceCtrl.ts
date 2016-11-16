@@ -11,7 +11,7 @@ module App.Controllers {
         public liveActions:Array<App.Models.ILiveAction>;
         public newResource:App.Models.ILiveAction;
         public updateResource:App.Models.ILiveAction;
-        public IdentifierNames = ["bps","Kbps","Mbps"];
+        public IdentifierNames = [];
         private resourceCreationDialog:Element = document.querySelector('dialog.createResourceDialog');
         private resourceUpdateDialog:Element = document.querySelector('dialog.updateResourceDialog');
 
@@ -27,10 +27,10 @@ module App.Controllers {
             };
 
             let identifierEnum = App.Models.Identifier;
-            //
-            //for (var n in identifierEnum) {
-            //    if (typeof identifierEnum[n] === 'number') this.IdentifierNames.push(n);
-            //}
+
+            for (var n in identifierEnum) {
+                if (typeof identifierEnum[n] === 'number') this.IdentifierNames.push(n);
+            }
 
             this.ResourceAllowanceService.get().getResources().$promise.then((data)=> {
                 this.liveActions = data;
@@ -74,8 +74,13 @@ module App.Controllers {
         }
 
         public openUpdateResource(resource:App.Models.ILiveAction) {
-            this.updateResource = resource;
+            this.updateResource = angular.copy(resource);
+
+            this.updateResource.blockedPort = this.updateResource.blockedPort == 0 ?  "" :  this.updateResource.blockedPort;
+            this.updateResource.protocol = this.updateResource.protocol == 0 ?  "" :  this.updateResource.protocol;
+
             this.resourceUpdateDialog.showModal();
+
             this.$timeout(()=> {
                 componentHandler.downgradeElements(document.querySelectorAll(".mdl-textfield"));
                 componentHandler.upgradeElements(document.querySelectorAll(".mdl-textfield"));
@@ -158,6 +163,25 @@ module App.Controllers {
 
         public  updateResourceAction():void {
             this.requestInProgress = true;
+
+            this.updateResource.identifier = 1;
+
+            if (this.updateResource.blockedDomain != "")
+                this.updateResource.identifier = 4;
+            else if (this.updateResource.blockedPort != "" && this.updateResource.blockedPort != "" && this.updateResource.blockedIP)
+                this.updateResource.identifier = 2;
+            else if (this.updateResource.blockedPort != "" && this.updateResource.blockedPort != "") {
+                this.updateResource.identifier = 3;
+            }
+            let protocol = this.updateResource.protocol;
+
+            if (this.updateResource.protocol == "UDP")
+                this.updateResource.protocol = 17;
+            else
+                this.updateResource.protocol = 6;
+
+            if (this.updateResource.blockedPort == "")
+                this.updateResource.blockedPort = 0;
 
             this.ResourceAllowanceService.get().updateResource({id: this.updateResource.id},this.updateResource).$promise.then(()=> {
                 document.querySelector(ResourceAllowanceCtrl._snackbarSelector).MaterialSnackbar.showSnackbar({
