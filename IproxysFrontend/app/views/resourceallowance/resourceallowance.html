@@ -31,7 +31,7 @@
                             <tbody>
 
                             <!--class="is-selected"  -->
-                            <tr ng-repeat="liveAction in vm.liveActions" ng-class="{'highlight':user.highlight}" >
+                            <tr ng-repeat="liveAction in vm.liveActions track by $index" ng-class="{'highlight':user.highlight}" >
                                 <!--<td >-->
                                     <!--<label for="checkbox-{{$index}}" class="mdl-checkbox mdl-js-checkbox">-->
                                         <!--<input type="checkbox" id="checkbox-{{$index}}" class="mdl-checkbox__input">-->

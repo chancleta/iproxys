@@ -163,27 +163,35 @@ module App.Controllers {
 
         public  updateResourceAction():void {
             this.requestInProgress = true;
-
             this.updateResource.identifier = 1;
-
-            if (this.updateResource.blockedDomain != "")
-                this.updateResource.identifier = 4;
-            else if (this.updateResource.blockedPort != "" && this.updateResource.blockedPort != "" && this.updateResource.blockedIP)
-                this.updateResource.identifier = 2;
-            else if (this.updateResource.blockedPort != "" && this.updateResource.blockedPort != "") {
-                this.updateResource.identifier = 3;
+            let toUpdate = angular.copy(this.updateResource);
+            if ( typeof toUpdate.blockedDomain != "undefined" && toUpdate.blockedDomain != ""  )
+                toUpdate.identifier = 4;
+            else if (toUpdate.blockedPort != "" && toUpdate.blockedPort != "" && toUpdate.blockedIP)
+                toUpdate.identifier = 2;
+            else if (toUpdate.blockedPort != "" && toUpdate.blockedPort != "") {
+                toUpdate.identifier = 3;
             }
-            let protocol = this.updateResource.protocol;
 
-            if (this.updateResource.protocol == "UDP")
-                this.updateResource.protocol = 17;
+            if (toUpdate.protocol == "UDP")
+                toUpdate.protocol = 17;
             else
-                this.updateResource.protocol = 6;
+                toUpdate.protocol = 6;
 
-            if (this.updateResource.blockedPort == "")
-                this.updateResource.blockedPort = 0;
+            if (toUpdate.blockedPort == "")
+                toUpdate.blockedPort = 0;
 
-            this.ResourceAllowanceService.get().updateResource({id: this.updateResource.id},this.updateResource).$promise.then(()=> {
+            this.ResourceAllowanceService.get().updateResource({id: toUpdate.id},toUpdate).$promise.then((data:any)=> {
+                data.highlight = true;
+                data.identifier -= 1;
+
+
+                this.liveActions.forEach((resourceItem,index)=>{
+                   if(resourceItem.id == data.id)
+                        this.liveActions[index] = data;
+                });
+                this.closeDialog();
+
                 document.querySelector(ResourceAllowanceCtrl._snackbarSelector).MaterialSnackbar.showSnackbar({
                     message: "Recurso actualizado correctamente",
                     timeout: 7000,

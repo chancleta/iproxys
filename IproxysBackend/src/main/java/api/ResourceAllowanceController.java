@@ -181,6 +181,9 @@ public class ResourceAllowanceController extends BaseJsonController {
                     }
                     unblockableEntity.setIdentifier(resourceAllowance.getIdentifier());
                     unblockableEntity.setBlockedIP(resourceAllowance.getBlockedIP());
+                    unblockableEntity.setBlockedDomain("");
+                    unblockableEntity.setBlockedPort(0);
+                    unblockableEntity.setProtocol(0);
                     unblockableEntity.update();
                     break;
                 case TemporaryBlockedEntity.BLOCK_IP_AND_PORT:
@@ -200,6 +203,7 @@ public class ResourceAllowanceController extends BaseJsonController {
                     unblockableEntity.setBlockedIP(resourceAllowance.getBlockedIP());
                     unblockableEntity.setBlockedPort(resourceAllowance.getBlockedPort());
                     unblockableEntity.setProtocol(resourceAllowance.getProtocol());
+                    unblockableEntity.setBlockedDomain("");
                     unblockableEntity.update();
                     break;
                 case TemporaryBlockedEntity.BLOCK_PORT:
@@ -213,6 +217,9 @@ public class ResourceAllowanceController extends BaseJsonController {
                     unblockableEntity.setIdentifier(resourceAllowance.getIdentifier());
                     unblockableEntity.setBlockedPort(resourceAllowance.getBlockedPort());
                     unblockableEntity.setProtocol(resourceAllowance.getProtocol());
+                    unblockableEntity.setBlockedIP("");
+                    unblockableEntity.setBlockedDomain("");
+
                     unblockableEntity.update();
                     break;
                 case TemporaryBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP:
@@ -226,6 +233,8 @@ public class ResourceAllowanceController extends BaseJsonController {
                     unblockableEntity.setBlockedDomain(resourceAllowance.getBlockedDomain());
                     unblockableEntity.setIdentifier(resourceAllowance.getIdentifier());
                     unblockableEntity.setBlockedIP(resourceAllowance.getBlockedIP());
+                    unblockableEntity.setBlockedPort(0);
+                    unblockableEntity.setProtocol(0);
                     unblockableEntity.update();
                     break;
                 default:
