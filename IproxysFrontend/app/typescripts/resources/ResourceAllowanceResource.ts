@@ -4,6 +4,8 @@ namespace App.Resources {
         getResources() : Array<App.Models.ILiveAction>;
         createResource(resource:App.Models.ILiveAction) : App.Models.ILiveAction;
         deleteResource(id:{id:number}) : void
+        updateResource(id:{id:number},resource:App.Models.ILiveAction) : App.Models.ILiveAction;
+
     }
 
 }

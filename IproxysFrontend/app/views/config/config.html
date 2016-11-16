@@ -1,7 +1,7 @@
-<div class="mdl-grid mdl-grid--no-spacing user-management" ng-cloak="">
+<div class="mdl-grid user-management" ng-cloak="">
 
-    <div class="mdl-grid mdl-cell mdl-cell--9-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-cell--top ">
-        <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-shadow--2dp">
+    <div class="mdl-grid mdl-cell mdl-cell--12-col ">
+        <div class="mdl-cell mdl-cell--4-col mdl-shadow--2dp  user-management--config">
             <div class="mdl-card mdl-shadow--2dp employer-form">
                 <div class="mdl-card__title">
                     <h2>Configuración</h2>
@@ -17,22 +17,26 @@
                             <!--<h3>Personal data</h3>-->
 
                             <div class="mdl-grid">
-                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
+                                <div class="mdl-cell mdl-cell--9-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                     <input class="mdl-textfield__input" type="number" id="bandwidth" step="0.01"
                                            required min="0" ng-model="vm.configuration.bandwidth.bandwidth"/>
                                     <label class="mdl-textfield__label" for="bandwidth">Ancho de banda</label>
                                 </div>
 
-                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select" >
-                                    <input class="mdl-textfield__input" ng-model="vm.configuration.bandwidth.bandwidthScale" type="text" id="measurement"
+                                <div class="mdl-cell mdl-cell--3-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select--measurement">
+                                    <input class="mdl-textfield__input"
+                                           ng-model="vm.configuration.bandwidth.bandwidthScale" type="text"
+                                           id="measurement"
                                            readonly
                                            tabIndex="-1" required/>
 
-                                    <label class="mdl-textfield__label" for="measurement">Unidad de medida</label>
+                                    <label class="mdl-textfield__label" for="measurement"></label>
 
                                     <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu dark_dropdown"
                                         for="measurement">
-                                        <li ng-repeat="scale in vm.dataScales" class="mdl-menu__item" ng-click="vm.closeMenu()">{{scale}}</li>
+                                        <li ng-repeat="scale in vm.dataScales" class="mdl-menu__item"
+                                            ng-click="vm.closeMenu()">{{scale}}
+                                        </li>
                                     </ul>
 
                                     <label for="measurement">
@@ -42,22 +46,28 @@
                             </div>
 
                             <div class="mdl-grid">
-                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
-                                    <input class="mdl-textfield__input" type="number" id="maxBandwidthPerUser" step="0.01"
+                                <div class="mdl-cell mdl-cell--9-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="number" id="maxBandwidthPerUser"
+                                           step="0.01"
                                            required min="0" ng-model="vm.configuration.maxBandwidthPerUser.bandwidth"/>
-                                    <label class="mdl-textfield__label" for="maxBandwidthPerUser">Ancho banda min por usuario</label>
+                                    <label class="mdl-textfield__label" for="maxBandwidthPerUser">Ancho banda minimo /
+                                        usuario</label>
                                 </div>
 
-                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select" >
-                                    <input class="mdl-textfield__input" ng-model="vm.configuration.maxBandwidthPerUser.bandwidthScale" type="text" id="measurementMBPU"
+                                <div class="mdl-cell mdl-cell--3-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select--measurement">
+                                    <input class="mdl-textfield__input"
+                                           ng-model="vm.configuration.maxBandwidthPerUser.bandwidthScale" type="text"
+                                           id="measurementMBPU"
                                            readonly
                                            tabIndex="-1" required/>
 
-                                    <label class="mdl-textfield__label" for="measurementMBPU">Unidad de medida</label>
+                                    <label class="mdl-textfield__label" for="measurementMBPU"></label>
 
                                     <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu dark_dropdown"
                                         for="measurementMBPU">
-                                        <li ng-repeat="scale in vm.dataScales" class="mdl-menu__item" ng-click="vm.closeMenu()">{{scale}}</li>
+                                        <li ng-repeat="scale in vm.dataScales" class="mdl-menu__item"
+                                            ng-click="vm.closeMenu()">{{scale}}
+                                        </li>
                                     </ul>
 
                                     <label for="measurementMBPU">
@@ -66,21 +76,25 @@
                                 </div>
                             </div>
                             <div class="mdl-grid">
-                                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
+                                <div class="mdl-cell mdl-cell--9-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                     <input class="mdl-textfield__input" type="number" id="tempDurationTime" step="1"
                                            required min="1" ng-model="vm.configuration.tempTimeDuration"/>
-                                    <label class="mdl-textfield__label" for="tempDurationTime">Duracion de limitaciones/bloqueos (min)</label>
+                                    <label class="mdl-textfield__label" for="tempDurationTime">Duracion
+                                        limitaciones/bloqueos (min)</label>
+                                </div>
+                                <div class="mdl-cell mdl-cell--1-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select--measurement">
                                 </div>
                             </div>
 
 
-                            </div>
+                        </div>
 
                     </div>
 
 
                     <div class="mdl-dialog__actions">
-                        <button type="button" class="mdl-button background-color--cerulean" ng-click="vm.updateConfig(updateConfigForm)"
+                        <button type="button" class="mdl-button background-color--cerulean"
+                                ng-click="vm.updateConfig(updateConfigForm)"
                                 ng-click="" ng-disabled="updateConfigForm.$invalid || vm.requestInProgress">Actualizar
                         </button>
 

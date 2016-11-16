@@ -3,16 +3,19 @@
 module App.Controllers {
     'use strict';
     export class ResourceAllowanceCtrl {
-        public static $inject = ["ResourceAllowanceService","$timeout","$scope"];
+        public static $inject = ["ResourceAllowanceService", "$timeout", "$scope"];
         private static _snackbarSelector = "#snackbar";
         private static _createResourceForm = "dialog.createResourceDialog form";
+
         public requestInProgress:boolean = false;
         public liveActions:Array<App.Models.ILiveAction>;
         public newResource:App.Models.ILiveAction;
-        public IdentifierNames = [];
+        public updateResource:App.Models.ILiveAction;
+        public IdentifierNames = ["bps","Kbps","Mbps"];
         private resourceCreationDialog:Element = document.querySelector('dialog.createResourceDialog');
+        private resourceUpdateDialog:Element = document.querySelector('dialog.updateResourceDialog');
 
-        constructor(public ResourceAllowanceService:App.Services.IResourceAllowanceService,public $timeout:angular.ITimeoutService, public $scope:angular.IScope) {
+        constructor(public ResourceAllowanceService:App.Services.IResourceAllowanceService, public $timeout:angular.ITimeoutService, public $scope:angular.IScope) {
             this.$scope.$emit("setActiveDashboardLink", document.querySelector(".dashboard-menu__link--resourceAllowance"));
 
             this.newResource = <App.Models.ILiveAction>{
@@ -24,10 +27,10 @@ module App.Controllers {
             };
 
             let identifierEnum = App.Models.Identifier;
-
-            for (var n in identifierEnum) {
-                if (typeof identifierEnum[n] === 'number') this.IdentifierNames.push(n);
-            }
+            //
+            //for (var n in identifierEnum) {
+            //    if (typeof identifierEnum[n] === 'number') this.IdentifierNames.push(n);
+            //}
 
             this.ResourceAllowanceService.get().getResources().$promise.then((data)=> {
                 this.liveActions = data;
@@ -47,7 +50,6 @@ module App.Controllers {
         }
 
         public closeDialog():void {
-            //console.log(this.newResource);
             this.newResource = <App.Models.ILiveAction>{
                 blockedIP: "",
                 blockedDomain: "",
@@ -55,7 +57,31 @@ module App.Controllers {
                 identifier: "",
                 protocol: ""
             };
-            this.resourceCreationDialog.close();
+            this.updateResource = <App.Models.ILiveAction>{
+                blockedIP: "",
+                blockedDomain: "",
+                blockedPort: "",
+                identifier: "",
+                protocol: ""
+            };
+            if (this.resourceCreationDialog.hasAttribute("open")) {
+                this.resourceCreationDialog.close();
+            }
+            if (this.resourceUpdateDialog.hasAttribute("open")) {
+                this.resourceUpdateDialog.close();
+            }
+
+        }
+
+        public openUpdateResource(resource:App.Models.ILiveAction) {
+            this.updateResource = resource;
+            this.resourceUpdateDialog.showModal();
+            this.$timeout(()=> {
+                componentHandler.downgradeElements(document.querySelectorAll(".mdl-textfield"));
+                componentHandler.upgradeElements(document.querySelectorAll(".mdl-textfield"));
+                getmdlSelect.init(".getmdl-select");
+
+            }, 100);
         }
 
         public createResource(createResourceForm:IFormControllerExt):void {
@@ -67,17 +93,17 @@ module App.Controllers {
                     this.newResource.identifier = 4;
                 else if (this.newResource.blockedPort != "" && this.newResource.blockedPort != "" && this.newResource.blockedIP)
                     this.newResource.identifier = 2;
-                else if(this.newResource.blockedPort != "" && this.newResource.blockedPort != ""){
+                else if (this.newResource.blockedPort != "" && this.newResource.blockedPort != "") {
                     this.newResource.identifier = 3;
                 }
                 let protocol = this.newResource.protocol;
 
-                if(this.newResource.protocol == "UDP")
+                if (this.newResource.protocol == "UDP")
                     this.newResource.protocol = 17;
                 else
                     this.newResource.protocol = 6;
 
-                if(this.newResource.blockedPort == "")
+                if (this.newResource.blockedPort == "")
                     this.newResource.blockedPort = 0;
 
                 this.ResourceAllowanceService.get().createResource(this.newResource).$promise
@@ -95,11 +121,15 @@ module App.Controllers {
                         };
                         this.closeDialog();
                         document.querySelector(ResourceAllowanceCtrl._createResourceForm).reset();
+                        document.querySelector(ResourceAllowanceCtrl._snackbarSelector).MaterialSnackbar.showSnackbar({
+                            message: "Recurso creado correctamente",
+                            timeout: 7000,
+                        });
                     })
                     .catch((data)=> {
                         this.newResource.protocol = protocol;
                         let message = data.data != null && typeof data.data.message != 'undefined' ? data.data.message : "Ocurrio un error, favor intente mas tarde";
-                          document.querySelector(ResourceAllowanceCtrl._snackbarSelector).MaterialSnackbar.showSnackbar({
+                        document.querySelector(ResourceAllowanceCtrl._snackbarSelector).MaterialSnackbar.showSnackbar({
                             message: message,
                             timeout: 7000,
                         });
@@ -108,13 +138,33 @@ module App.Controllers {
             }
         }
 
-        public deleteResource(resource:App.Models.ILiveAction){
+        public deleteResource(resource:App.Models.ILiveAction):void {
             this.requestInProgress = true;
 
-            this.ResourceAllowanceService.get().deleteResource({id:resource.id}).$promise.then(()=>{
+            this.ResourceAllowanceService.get().deleteResource({id: resource.id}).$promise.then(()=> {
                 this.liveActions.splice(this.liveActions.indexOf(resource), 1);
+                document.querySelector(ResourceAllowanceCtrl._snackbarSelector).MaterialSnackbar.showSnackbar({
+                    message: "Recurso eliminado correctamente",
+                    timeout: 7000,
+                });
+            }).catch((data)=> {
+                let message = data.data != null && typeof data.data.message != 'undefined' ? data.data.message : "Ocurrio un error, favor intente mas tarde";
+                document.querySelector(ResourceAllowanceCtrl._snackbarSelector).MaterialSnackbar.showSnackbar({
+                    message: message,
+                    timeout: 7000,
+                });
+            }).finally(()=>this.requestInProgress = false);
+        }
 
-            }).catch((data)=>{
+        public  updateResourceAction():void {
+            this.requestInProgress = true;
+
+            this.ResourceAllowanceService.get().updateResource({id: this.updateResource.id},this.updateResource).$promise.then(()=> {
+                document.querySelector(ResourceAllowanceCtrl._snackbarSelector).MaterialSnackbar.showSnackbar({
+                    message: "Recurso actualizado correctamente",
+                    timeout: 7000,
+                });
+            }).catch((data)=> {
                 let message = data.data != null && typeof data.data.message != 'undefined' ? data.data.message : "Ocurrio un error, favor intente mas tarde";
                 document.querySelector(ResourceAllowanceCtrl._snackbarSelector).MaterialSnackbar.showSnackbar({
                     message: message,

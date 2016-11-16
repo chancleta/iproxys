@@ -22,6 +22,7 @@ namespace App.Services {
             isArray: false,
         };
 
+
         constructor(public $resource:angular.resource.IResourceService, public API:any) {
         }
 
@@ -34,6 +35,12 @@ namespace App.Services {
                     method: 'DELETE',
                     isArray: false,
                     url: this.API.url + this.API.endPoints.getResourceAllowance + "/:id"
+                },
+                updateResource:{
+                    method: 'PUT',
+                    isArray: false,
+                    url: this.API.url + this.API.endPoints.getResourceAllowance + "/:id"
+
                 }
             });
         }

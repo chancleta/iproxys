@@ -220,11 +220,11 @@ public class Sniffer extends Thread {
 
         int userAmount = TempIPPDUs.size();
         for (SummaryIP_BandWidth summaryIP_bandWidth : TempIPPDUs) {
-            if (summaryIP_bandWidth.getIp_Dst().equals(Sniffer.interfaceBroadcastIP) || summaryIP_bandWidth.getIp_Dst().equals(Sniffer.InterfaceIP) ) {
+            if (summaryIP_bandWidth.getIp_Dst().equals(Sniffer.interfaceBroadcastIP) || summaryIP_bandWidth.getIp_Dst().equals(Sniffer.InterfaceIP)) {
                 userAmount -= 1;
             }
         }
-        if(userAmount <= 0){
+        if (userAmount <= 0) {
             userAmount = 0;
         }
 

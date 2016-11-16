@@ -1,15 +1,12 @@
 package app;
 
-import InetDataCollector.Sniffer;
 import PersistenceData.User;
 import api.*;
 import api.common.OAuthController;
-import externalDependencies.EjecutarIPtable;
 import models.Bandwidth;
 import models.BandwidthScale;
 import models.Config;
 import models.UserRoles;
-import performblock.timers.TimerInitializer;
 import persistence.dao.ConfigDao;
 import persistence.dao.UserDao;
 import services.UserService;
@@ -26,7 +23,7 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         Spark.port(4000);
-        Spark.staticFileLocation("/public");
+//        Spark.staticFileLocation("/public");
 
         webSocket("/liveMonitor", LiveMonitorController.class);
         webSocket("/live-actions-socket", LiveActionsWebSocketController.class);
@@ -47,13 +44,13 @@ public class App {
             Config conf = new Config();
             Bandwidth bw = new Bandwidth();
             bw.setBandwidth(5);
-            bw.setBandwidthScale(BandwidthScale.MegaBit);
+            bw.setBandwidthScale(BandwidthScale.Mbps);
             conf.setBandwidth(bw);
 
             Bandwidth bw1 = new Bandwidth();
 
             bw1.setBandwidth(500);
-            bw1.setBandwidthScale(BandwidthScale.KiloBit);
+            bw1.setBandwidthScale(BandwidthScale.Kbps);
             conf.setMaxBandwidthPerUser(bw1);
 
             conf.setTempTimeDuration(3);
@@ -82,12 +79,12 @@ public class App {
         new ConfigController();
         new LiveActionsController();
         new ResourceAllowanceController();
-
-        AuthorizationFilters.setFilters();
-        Sniffer.getInstance().select();
-
-        EjecutarIPtable.iptableEjecutar();
-        TimerInitializer.initialize();
+//
+//        AuthorizationFilters.setFilters();
+//        Sniffer.getInstance().select();
+//
+//        EjecutarIPtable.iptableEjecutar();
+//        TimerInitializer.initialize();
     }
 
 

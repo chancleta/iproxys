@@ -14,7 +14,7 @@ namespace App.Models {
     }
 
     export enum  BandwidthScale{
-        MegaBit,KiloBit, Bit,
+        Mbps,Kbps, bps,
     }
 
 
