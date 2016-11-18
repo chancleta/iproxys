@@ -77,7 +77,7 @@ module App.Controllers {
             this.updateResource = angular.copy(resource);
 
             this.updateResource.blockedPort = this.updateResource.blockedPort == 0 ?  "" :  this.updateResource.blockedPort;
-            this.updateResource.protocol = this.updateResource.protocol == 0 ?  "" :  this.updateResource.protocol;
+            this.updateResource.protocol = this.updateResource.protocol == 0 ?  "" :  this.updateResource.protocol == 6 ? "TCP" : "UDP";
 
             this.resourceUpdateDialog.showModal();
 

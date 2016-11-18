@@ -48,7 +48,7 @@
                                     </span>
                                 </td>
                                 <td class="mdl-data-table__cell--non-numeric">
-                                    {{liveAction.protocol == 0 ? "" : liveAction.protocol}}
+                                    {{liveAction.protocol == 0 ? "" : liveAction.protocol == 6 ? "TCP" : "UDP"}}
                                 </td>
                                 <td class="mdl-data-table__cell--non-numeric">
                                     <button class="mdl-button mdl-js-button mdl-button--icon text-color--primary" ng-click="vm.openUpdateResource(liveAction)">
