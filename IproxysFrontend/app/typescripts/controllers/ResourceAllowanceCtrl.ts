@@ -115,6 +115,17 @@ module App.Controllers {
                     .then((data:any)=> {
                         data.highlight = true;
                         data.identifier -= 1;
+
+                        if (data.protocol == 17)
+                            data.protocol = "UDP";
+                        else if(data.protocol == 6)
+                            data.protocol = "TCP";
+                        else
+                            data.protocol = "";
+
+                        if (this.newResource.blockedPort == 0)
+                            this.newResource.blockedPort = "";
+
                         this.liveActions.push(data);
 
                         this.newResource = <App.Models.ILiveAction>{
