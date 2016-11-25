@@ -23,7 +23,7 @@ public class TimerInitializer {
     public static void initialize() {
         if (!initialized) {
             TimerInitializer.initUnblockTemporalEntitiesTimer();
-//            TimerInitializer.initBlockPermanentEntitiesTimer();
+            TimerInitializer.initBlockPermanentEntitiesTimer();
             initialized = true;
         }
     }

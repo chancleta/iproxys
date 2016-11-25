@@ -39,10 +39,10 @@ public class PermanentBlockedEntity extends PersistenceProvider implements Seria
     private int protocol;
     @Column
     private boolean alreadyUnblocked = false;
-    private static int BLOCK_IP = 1;
-    private static int BLOCK_IP_AND_PORT = 2;
-    private static int BLOCK_PORT = 3;
-    private static int BLOCK_HTTP_DOMAIN_TO_IP = 4;
+    public static int BLOCK_IP = 1;
+    public static int BLOCK_IP_AND_PORT = 2;
+    public static int BLOCK_PORT = 3;
+    public static int BLOCK_HTTP_DOMAIN_TO_IP = 4;
     public PermanentBlockedEntity(){
         super();
     }

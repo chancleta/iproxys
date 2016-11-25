@@ -24,13 +24,13 @@ import java.util.Properties;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 /**
- *
  * @author Luis
  */
 public class DnsHelper {
 
-   public static boolean isDomainReachable(String domain) {
+    public static boolean isDomainReachable(String domain) {
         Socket socket = null;
         boolean isDomainReachable = false;
         try {
@@ -51,12 +51,11 @@ public class DnsHelper {
 
     public static String getDomainNameFromIp(String ipAddress) {
         String ipHostName = getHostName(ipAddress);
-//        if(ipHostName.equals(ipAddress)){
-//            return ipAddress;
-//        }
-//        String domainName = getTopLevelDomain(ipHostName);
-//        return isDomainReachable(domainName)?"."+domainName:ipAddress;
-        return ipHostName.equals(ipAddress)? ipAddress: ipHostName;
+        if (ipHostName.equals(ipAddress)) {
+            return ipAddress;
+        }
+        String domainName = getTopLevelDomain(ipHostName);
+        return isDomainReachable(domainName) ? "." + domainName : ipAddress;
     }
 
     public static String getTopLevelDomain(String uri) {
@@ -74,11 +73,11 @@ public class DnsHelper {
                 DirContext ctx = new InitialDirContext(env);
                 String reverseDnsDomain = bytes[3] + "." + bytes[2] + "." + bytes[1] + "." + bytes[0] + ".in-addr.arpa";
                 Attributes attrs = ctx.getAttributes(reverseDnsDomain, new String[]{
-                    "PTR",});
-                for (NamingEnumeration<? extends Attribute> ae = attrs.getAll(); ae.hasMoreElements();) {
+                        "PTR",});
+                for (NamingEnumeration<? extends Attribute> ae = attrs.getAll(); ae.hasMoreElements(); ) {
                     Attribute attr = ae.next();
                     String attrId = attr.getID();
-                    for (Enumeration<?> vals = attr.getAll(); vals.hasMoreElements();) {
+                    for (Enumeration<?> vals = attr.getAll(); vals.hasMoreElements(); ) {
                         String value = vals.nextElement().toString();
                         // System.out.println(attrId + ": " + value);
 
@@ -107,6 +106,5 @@ public class DnsHelper {
         return retVal;
     }
 
-    
- 
+
 }
