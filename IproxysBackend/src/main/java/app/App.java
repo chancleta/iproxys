@@ -87,7 +87,7 @@ public class App {
 
         e.setBlockedOnTimeDate(new Date(System.currentTimeMillis() - (DAY_IN_MS) ));
 
-        e.save();
+//        e.save();
 
 
         e = new TemporaryBlockedEntity();
@@ -100,7 +100,7 @@ public class App {
 
         e.setBlockedOnTimeDate(new Date(System.currentTimeMillis() - (2*DAY_IN_MS) ));
 
-        e.save();
+//        e.save();
 
 //
 //
