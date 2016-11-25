@@ -2,6 +2,7 @@ package app;
 
 import InetDataCollector.Sniffer;
 import PersistenceData.PermanentBlockedEntity;
+import PersistenceData.TemporaryBlockedEntity;
 import PersistenceData.User;
 import api.*;
 import api.common.OAuthController;
@@ -76,11 +77,11 @@ public class App {
 
         long DAY_IN_MS = 1000 * 60 * 60 * 24;
 
-        PermanentBlockedEntity  e = new PermanentBlockedEntity();
+        TemporaryBlockedEntity e = new TemporaryBlockedEntity();
         e.setBlockedDomain(".ttias.be");
         e.setBlockedPort(80);
         e.setBlockedIP("192.168.0.121");
-        e.setAlreadyUnblocked(false);
+        e.setPermaBlocked(false);
         e.setIdentifier(PermanentBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP);
         e.setProtocol(6);
 
@@ -89,11 +90,11 @@ public class App {
         e.save();
 
 
-        e = new PermanentBlockedEntity();
+        e = new TemporaryBlockedEntity();
         e.setBlockedDomain(".ttias.be");
         e.setBlockedPort(80);
         e.setBlockedIP("192.168.0.121");
-        e.setAlreadyUnblocked(false);
+        e.setPermaBlocked(false);
         e.setIdentifier(PermanentBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP);
         e.setProtocol(6);
 
