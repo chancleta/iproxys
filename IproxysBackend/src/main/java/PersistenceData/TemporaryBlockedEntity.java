@@ -218,18 +218,17 @@ public class TemporaryBlockedEntity extends PersistenceProvider implements Seria
                 if (temporaryBlockedEntity.getId() != temporaryBlockedEntitySecond.getId()) {
 
                     if (areTheseEntitiesEquals(temporaryBlockedEntity, temporaryBlockedEntitySecond)) {
-                        System.out.println("found a match");
-                        System.out.println(isThereADayBetweenTheseDates(parentDate, temporaryBlockedEntitySecond.getBlockedOnTimeDate()));
-
-                        if (!firstDayHaveBeenFound && isThereADayBetweenTheseDates(parentDate, temporaryBlockedEntitySecond.getBlockedOnTimeDate())) {
+                        if (isThereADayBetweenTheseDates(parentDate, temporaryBlockedEntitySecond.getBlockedOnTimeDate())) {
                             firstDayHaveBeenFound = true;
-                            index = 0;
-                            concurrentBlockedEntity.add(temporaryBlockedEntitySecond);
-                        } else if (firstDayHaveBeenFound && isThereTwoDaysBetweenTheseDates(parentDate, temporaryBlockedEntitySecond.getBlockedOnTimeDate())) {
+//                            index = 0;
                             concurrentBlockedEntity.add(temporaryBlockedEntitySecond);
                             foundEntityToBlock = true;
-                            break;
                         }
+//                        } else if (firstDayHaveBeenFound && isThereTwoDaysBetweenTheseDates(parentDate, temporaryBlockedEntitySecond.getBlockedOnTimeDate())) {
+//                            concurrentBlockedEntity.add(temporaryBlockedEntitySecond);
+//                            foundEntityToBlock = true;
+//                            break;
+//                        }
                     }
                 }
 
