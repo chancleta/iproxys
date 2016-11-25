@@ -87,7 +87,7 @@ public class App {
 
         e.setBlockedOnTimeDate(new Date(System.currentTimeMillis() - (DAY_IN_MS) ));
 
-//        e.save();
+        e.save();
 
 
         e = new TemporaryBlockedEntity();
@@ -98,9 +98,9 @@ public class App {
         e.setIdentifier(PermanentBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP);
         e.setProtocol(6);
 
-        e.setBlockedOnTimeDate(new Date(System.currentTimeMillis() - (2*DAY_IN_MS) ));
+        e.setBlockedOnTimeDate(new Date(System.currentTimeMillis() - (3*DAY_IN_MS) ));
 
-//        e.save();
+        e.save();
 
 //
 //
