@@ -22,7 +22,7 @@ import java.util.List;
 public class PermanentBlockedEntity extends PersistenceProvider implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column
     private int identifier;
