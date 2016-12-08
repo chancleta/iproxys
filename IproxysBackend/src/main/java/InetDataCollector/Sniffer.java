@@ -6,6 +6,7 @@ package InetDataCollector;
 
 import JsonParser.CustomGson;
 import PersistenceData.*;
+import api.DetailedStatusController;
 import api.LiveActionsWebSocketController;
 import app.ResponseManager;
 import dns.DnsHelper;
@@ -14,6 +15,7 @@ import jess.JessSuggestions;
 import jess.ServiceCore;
 import jpcap.NetworkInterface;
 import jpcap.NetworkInterfaceAddress;
+import models.DetailedStatus;
 import models.LiveAction;
 import performblock.PerformHttpBlock;
 import performblock.PerformIPPortBlock;
@@ -181,6 +183,43 @@ public class Sniffer extends Thread {
 
                     }
                 }
+
+
+                List<DetailedStatus> detailedStatuses = new ArrayList<>();
+                for (SummaryPort_BandWidth temp : Sniffer.TempPortPDUs) {
+                    DetailedStatus detailedStatus = new DetailedStatus();
+                    detailedStatus.setProtocol(temp.getProtocol());
+                    detailedStatus.setPort(temp.getPort());
+                    detailedStatus.setBdusage(temp.getBdusage());
+                    detailedStatus.setIndetifier(0);
+                    detailedStatuses.add(detailedStatus);
+                }
+                for (SummaryIP_BandWidth temp : Sniffer.TempIPPDUs) {
+                    DetailedStatus detailedStatus = new DetailedStatus();
+                    detailedStatus.setBdusage(temp.getBdusage());
+                    detailedStatus.setIndetifier(1);
+                    detailedStatus.setIp(temp.getIp_Dst());
+                    detailedStatuses.add(detailedStatus);
+                }
+                for (SummaryIPPort_BandWidth temp : Sniffer.TempIPPortPDUs) {
+                    DetailedStatus detailedStatus = new DetailedStatus();
+                    detailedStatus.setProtocol(temp.getProtocol());
+                    detailedStatus.setPort(temp.getPort());
+                    detailedStatus.setBdusage(temp.getBdusage());
+                    detailedStatus.setIndetifier(2);
+                    detailedStatus.setIp(temp.getIp_Dst());
+                    detailedStatuses.add(detailedStatus);
+                }
+
+                DetailedStatusController.sessions.stream().forEach(session -> {
+                    try {
+                        session.getRemote().sendString(ResponseManager.toJson(detailedStatuses));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+
                 jess.eraseData();
                 Sniffer.TempPortPDUs = new ArrayList<>();
                 Sniffer.TempIPPDUs = new ArrayList<>();
@@ -212,7 +251,9 @@ public class Sniffer extends Thread {
 
                 Sniffer.TimeTempRef = new Date();
 
+
             }
+
         }
     }
 

@@ -101,6 +101,7 @@ namespace App {
                 .state('admin.configuration', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.ConfigurationCtrl))
                 .state('admin.liveactions', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.LiveActionsCtrl))
                 .state('admin.resourceallowance', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.ResourceAllowanceCtrl))
+                .state('admin.detailedstatus', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.DetailedStatusCtrl))
 
                 .state('login', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.LoginCtrl))
                 //.state('frontpage', App.Factories.RouteFactory.getInstance().getRoute(App.Controllers.FrontPageCtrl))
@@ -181,14 +182,20 @@ namespace App {
 
     class API {
         public static named:string = 'API';
+
+        public static url = window.location.href;
+        public static arr = API.url.split("/");
+        public static result = API.arr[0] + "//" + API.arr[2]
+
         //TODO: Load from Config FIle
         public static values:any = {
             //url: "http://69.28.92.208:4000",
-            url: "http://192.168.0.110:4000",
-            webSocketsUrl: "ws://192.168.0.110:4000",
+            url: API.result,
+            webSocketsUrl: "ws://" + API.arr[2],
             webSockets: {
                 liveMonitor: "/liveMonitor",
-                liveAction: "/live-actions-socket"
+                liveAction: "/live-actions-socket",
+                detailedStatus:  "/detailed-status",
             },
             endPoints: {
                 getToken: "/oauth/token",
@@ -202,6 +209,8 @@ namespace App {
         };
 
     }
+
+
 
     export class EncryptionHelper {
         //TODO: make key be configurable from env or file
@@ -300,11 +309,11 @@ module App.Factories {
                     route.controller = controllerType;
                     route.templateUrl = "views/config/config.html";
                     break;
-                //case  App.Controllers.FrontPageCtrl.toString():
-                //    route.url = "/";
-                //    route.controller = controllerType;
-                //    route.templateUrl = "views/frontpage/frontpage.html";
-                //    break;
+                case  App.Controllers.DetailedStatusCtrl.toString():
+                    route.url = "/detailed-status";
+                    route.controller = controllerType;
+                    route.templateUrl = "views/detailedstatus/detailedstatus.html";
+                    break;
                 default:
                     throw "Argument is not a controller type";
             }

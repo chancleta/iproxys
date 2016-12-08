@@ -34,6 +34,7 @@ public class App {
 
         webSocket("/liveMonitor", LiveMonitorController.class);
         webSocket("/live-actions-socket", LiveActionsWebSocketController.class);
+        webSocket("/detailed-status", DetailedStatusController.class);
 
 
 //        User u = new User();
