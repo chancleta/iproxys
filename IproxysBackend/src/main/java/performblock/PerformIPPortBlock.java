@@ -32,14 +32,12 @@ public class PerformIPPortBlock implements PerformBlock {
         ejecutarComando.Ejecutar_Comando("iptables -D INPUT -s "+temporaryBlockedEntity.getBlockedIP()+" -p "+protocolName+" --dport "+temporaryBlockedEntity.getBlockedPort()+" -j DROP");
     }
 
-
     public void blockSquid() {
         String results = "";
-        System.out.println("conntrack -D -p tcp --dport " + temporaryBlockedEntity.getBlockedPort() + " --src " + temporaryBlockedEntity.getBlockedIP() +" --dst  "+ temporaryBlockedEntity.getBlockedIPDest());
         do {
             results = ejecutarComando.Ejecutar_Comando("conntrack -D -p tcp --dport " + temporaryBlockedEntity.getBlockedPort() + " --src " + temporaryBlockedEntity.getBlockedIP() +" --dst  "+ temporaryBlockedEntity.getBlockedIPDest());
             results = results == null ? "" : results;
-
+            System.out.println(results);
         }while (!results.isEmpty());
     }
 
