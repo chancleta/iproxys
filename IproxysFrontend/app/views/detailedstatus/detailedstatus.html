@@ -35,7 +35,7 @@
                                 <td class="mdl-data-table__cell--non-numeric">{{liveAction.ipDest}}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{liveAction.port == 0 ? "" : liveAction.port}}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{liveAction.protocol == 17 ? "UDP" : "TCP"}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.bdusage}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{parseFloat(liveAction.bdusage).toFixed(3)}}</td>
                             </tr>
                         </tbody>
                         </table>
