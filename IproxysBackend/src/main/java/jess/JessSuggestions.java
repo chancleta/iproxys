@@ -67,6 +67,20 @@ public class JessSuggestions {
         this.db = bd;
     }
 
+
+    public JessSuggestions(int puerto, String action, int protocol, String ip_Dest, String ip_Src, Date timeref, double bd,int tipo) {
+        //matchingPort puerto 80
+
+        this.tipo = tipo;
+        ip_Dst = ip_Dest;
+        this.action = action;
+        port = puerto;
+        this.protocol = protocol;
+        this.timeref = timeref;
+        this.ip_Src = ip_Src;
+        this.db = bd;
+    }
+
     /**
      * @return the action
      */
