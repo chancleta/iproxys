@@ -4,7 +4,7 @@
         <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-shadow--2dp ">
             <div class="mdl-card ">
                 <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text">Acciones en tiempo real</h2>
+                    <h2 class="mdl-card__title-text">Detalles del Tráfico</h2>
                     <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" ng-show="vm.requestInProgress"></div>
 
                 </div>
@@ -20,11 +20,9 @@
 
                                 <!--</th>-->
                                 <th class="mdl-data-table__cell--non-numeric">IP</th>
-                                <th class="mdl-data-table__cell--non-numeric">Dominio</th>
-                                <th class="mdl-data-table__cell--non-numeric">Fecha</th>
                                 <th class="mdl-data-table__cell--non-numeric">Puerto</th>
-                                <th class="mdl-data-table__cell--non-numeric">Identificador</th>
                                 <th class="mdl-data-table__cell--non-numeric">Protocolo</th>
+                                <th class="mdl-data-table__cell--non-numeric">Porcentaje Uso</th>
 
                             </tr>
                             </thead>
@@ -32,29 +30,12 @@
 
                             <!--class="is-selected"  -->
                             <tr ng-repeat="liveAction in vm.liveActions" ng-class="{'highlight':user.highlight}" >
-                                <!--<td >-->
-                                    <!--<label for="checkbox-{{$index}}" class="mdl-checkbox mdl-js-checkbox">-->
-                                        <!--<input type="checkbox" id="checkbox-{{$index}}" class="mdl-checkbox__input">-->
-                                        <!--<span class="mdl-checkbox__label"></span>-->
-                                    <!--</label>-->
-
-                                <!--</td>-->
-                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.blockedIP}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.blockedDomain}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.blockedOnTimeDate}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.blockedPort == 0? "" : liveAction.blockedPort}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">
-                                    <span class="label label--mini {{liveAction.identifier == 0 ? 'background-color--primary' : liveAction.identifier == 1 ? ' background-color--mint' : liveAction.identifier == 2 ? 'background-color--cerulean' : 'background-color--baby-blue'}}">
-                                        {{vm.IdentifierNames[liveAction.identifier]}}
-                                    </span>
-                                </td>
-                                <td class="mdl-data-table__cell--non-numeric">
-                                    {{liveAction.protocol == 0 ? "" : liveAction.protocol}}
-                                </td>
-
+                               <td class="mdl-data-table__cell--non-numeric">{{liveAction.ip}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.port}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.protocol == 17 ? "UDP" : "TCP"}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.bdusage}}</td>
                             </tr>
-
-                            </tbody>
+                        </tbody>
                         </table>
                     </div>
                 </div>
