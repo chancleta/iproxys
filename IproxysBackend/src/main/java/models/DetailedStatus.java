@@ -10,7 +10,7 @@ public class DetailedStatus {
     private int protocol;
     private double bdusage;
     private int indetifier;
-
+    private String ipDest;
     public double getBdusage() {
         return bdusage;
     }
@@ -49,5 +49,13 @@ public class DetailedStatus {
 
     public void setIndetifier(int indetifier) {
         this.indetifier = indetifier;
+    }
+
+    public String getIpDest() {
+        return ipDest;
+    }
+
+    public void setIpDest(String ipDest) {
+        this.ipDest = ipDest;
     }
 }

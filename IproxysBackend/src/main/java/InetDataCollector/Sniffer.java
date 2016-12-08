@@ -186,14 +186,7 @@ public class Sniffer extends Thread {
 
 
                 List<DetailedStatus> detailedStatuses = new ArrayList<>();
-                for (SummaryPort_BandWidth temp : Sniffer.TempPortPDUs) {
-                    DetailedStatus detailedStatus = new DetailedStatus();
-                    detailedStatus.setProtocol(temp.getProtocol());
-                    detailedStatus.setPort(temp.getPort());
-                    detailedStatus.setBdusage(temp.getBdusage());
-                    detailedStatus.setIndetifier(0);
-                    detailedStatuses.add(detailedStatus);
-                }
+
                 for (SummaryIP_BandWidth temp : Sniffer.TempIPPDUs) {
                     DetailedStatus detailedStatus = new DetailedStatus();
                     detailedStatus.setBdusage(temp.getBdusage());
@@ -208,6 +201,16 @@ public class Sniffer extends Thread {
                     detailedStatus.setBdusage(temp.getBdusage());
                     detailedStatus.setIndetifier(2);
                     detailedStatus.setIp(temp.getIp_Dst());
+                    detailedStatus.setIpDest(temp.getIp_Src());
+                    detailedStatuses.add(detailedStatus);
+                }
+
+                for (SummaryPort_BandWidth temp : Sniffer.TempPortPDUs) {
+                    DetailedStatus detailedStatus = new DetailedStatus();
+                    detailedStatus.setProtocol(temp.getProtocol());
+                    detailedStatus.setPort(temp.getPort());
+                    detailedStatus.setBdusage(temp.getBdusage());
+                    detailedStatus.setIndetifier(0);
                     detailedStatuses.add(detailedStatus);
                 }
 

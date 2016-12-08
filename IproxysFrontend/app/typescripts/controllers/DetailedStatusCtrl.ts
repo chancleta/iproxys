@@ -23,7 +23,7 @@ module App.Controllers {
                 console.log("LIVEACTIONSCONTROLLER->$stateChangeStart:event");
                 this.dataStream.close();
             });
-            $scope.$emit("setActiveDashboardLink", document.querySelector(".dashboard-menu__link--liveActions"));
+            $scope.$emit("setActiveDashboardLink", document.querySelector(".dashboard-menu__link--detailedStatus"));
 
         }
 

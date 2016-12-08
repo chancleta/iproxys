@@ -20,6 +20,7 @@
 
                                 <!--</th>-->
                                 <th class="mdl-data-table__cell--non-numeric">IP</th>
+                                <th class="mdl-data-table__cell--non-numeric">IP Destino</th>
                                 <th class="mdl-data-table__cell--non-numeric">Puerto</th>
                                 <th class="mdl-data-table__cell--non-numeric">Protocolo</th>
                                 <th class="mdl-data-table__cell--non-numeric">Porcentaje Uso</th>
@@ -31,7 +32,8 @@
                             <!--class="is-selected"  -->
                             <tr ng-repeat="liveAction in vm.liveActions" ng-class="{'highlight':user.highlight}" >
                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.ip}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.port}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.ipDest}}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{liveAction.port == 0 ? "" : liveAction.port}}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{liveAction.protocol == 17 ? "UDP" : "TCP"}}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{liveAction.bdusage}}</td>
                             </tr>
