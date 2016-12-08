@@ -22,7 +22,7 @@
     "Compara si HTTP esta consumiendo mas de 80 porciento
     de ancho de banda"
     (SummaryIPPort_BandWidth
-        {bdusage >= maxBWAllowance && (port == 80 || port == 8080 || port == 443 )}
+        {bdusage >= maxBWAllowance && (port == 80 || port == 8080)}
         (port ?Port)
         (protocol ?Protocol)
         (bdusage ?Bdusage)
@@ -38,7 +38,7 @@
    "Compara si algun Socket esta  consumiendo mas de 80 porciento
    de ancho de bando por algun puerto en especifico"
    (SummaryIPPort_BandWidth
-       {bdusage > maxBWAllowance && port != 80 && port != 8080 && port != 443}
+       {bdusage > maxBWAllowance && port != 80 && port != 8080}
        (port ?Port)
        (ip_Dst ?IP)
        (timeref ?Timeref)

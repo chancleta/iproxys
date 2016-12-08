@@ -148,7 +148,7 @@ public class Sniffer extends Thread {
 
                                 temporaryBlockedEntity.setProtocol(sug.getProtocol());
                                 PerformIPPortBlock performIPPortBlock = new PerformIPPortBlock(temporaryBlockedEntity);
-//                                performIPPortBlock.block();
+                                performIPPortBlock.block();
                                 break;
                             case TemporaryBlockedEntity.BLOCK_PORT:
                                 temporaryBlockedEntity.setBlockedPort(sug.getPort());
