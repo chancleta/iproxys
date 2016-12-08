@@ -143,12 +143,12 @@ public class Sniffer extends Thread {
                                 break;
                             case TemporaryBlockedEntity.BLOCK_IP_AND_PORT:
                                 temporaryBlockedEntity.setBlockedIP(sug.getIp_Dst());
-                                temporaryBlockedEntity.setBlockedDomain(sug.getIp_Src());
                                 temporaryBlockedEntity.setBlockedPort(sug.getPort() == 443 ? 3129 : sug.getPort());
                                 temporaryBlockedEntity.setBlockedOnTimeDate(new Date());
 
                                 temporaryBlockedEntity.setProtocol(sug.getProtocol());
                                 PerformIPPortBlock performIPPortBlock = new PerformIPPortBlock(temporaryBlockedEntity);
+
                                 performIPPortBlock.block();
                                 break;
                             case TemporaryBlockedEntity.BLOCK_PORT:

@@ -38,16 +38,14 @@
    "Compara si algun Socket esta  consumiendo mas de 80 porciento
    de ancho de bando por algun puerto en especifico"
    (SummaryIPPort_BandWidth
-        {bdusage > maxBWAllowance && port != 80 && port != 8080}
-        (port ?Port)
-        (protocol ?Protocol)
-        (bdusage ?Bdusage)
-        (ip_Dst ?Ip_Dst)
-        (ip_Src ?Ip_Src)
-        (timeref ?Timeref)
+       {bdusage > maxBWAllowance && port != 80 && port != 8080}
+       (port ?Port)
+       (ip_Dst ?IP)
+       (timeref ?Timeref)
+       (protocol ?Protocol)
    )
    =>
-    (add (new JessSuggestions ?Port ?*Block* ?Protocol ?Ip_Dst ?Ip_Src ?Timeref ?Bdusage 2)))
+   (add (new JessSuggestions ?IP ?*Block* ?Port ?Timeref ?Protocol)))
 
 ;(defrule matchingBandwidthIP
 ;    "Compara si alguna IP esta consumiendo mas de un 50 porciento
