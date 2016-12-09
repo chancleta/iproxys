@@ -51,6 +51,10 @@ public class DnsHelper {
 
     public static String getDomainNameFromIp(String ipAddress) {
         String ipHostName = getHostName(ipAddress);
+
+        if(ipHostName.equals("31.193.180.217"))
+            return ".ttias.be";
+
         if (ipHostName.equals(ipAddress)) {
             return ipAddress;
         }
