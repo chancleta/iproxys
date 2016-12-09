@@ -1,8 +1,6 @@
 package app;
 
 import InetDataCollector.Sniffer;
-import PersistenceData.PermanentBlockedEntity;
-import PersistenceData.TemporaryBlockedEntity;
 import PersistenceData.User;
 import api.*;
 import api.common.OAuthController;
@@ -17,8 +15,6 @@ import persistence.dao.UserDao;
 import services.UserService;
 import services.common.AuthorizationService;
 import spark.Spark;
-
-import java.util.Date;
 
 import static spark.Spark.webSocket;
 
@@ -75,33 +71,33 @@ public class App {
             us.setRole(UserRoles.Admin);
             us.save();
         }
-
-        long DAY_IN_MS = 1000 * 60 * 60 * 24;
-
-        TemporaryBlockedEntity e = new TemporaryBlockedEntity();
-        e.setBlockedDomain(".ttias.be");
-        e.setBlockedPort(80);
-        e.setBlockedIP("192.168.0.121");
-        e.setPermaBlocked(false);
-        e.setIdentifier(PermanentBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP);
-        e.setProtocol(6);
-
-        e.setBlockedOnTimeDate(new Date(System.currentTimeMillis() - (DAY_IN_MS) ));
-
-        e.save();
-
-
-        e = new TemporaryBlockedEntity();
-        e.setBlockedDomain(".ttias.be");
-        e.setBlockedPort(80);
-        e.setBlockedIP("192.168.0.121");
-        e.setPermaBlocked(false);
-        e.setIdentifier(PermanentBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP);
-        e.setProtocol(6);
-
-        e.setBlockedOnTimeDate(new Date(System.currentTimeMillis() - (2*DAY_IN_MS) ));
-
-        e.save();
+//
+//        long DAY_IN_MS = 1000 * 60 * 60 * 24;
+//
+//        TemporaryBlockedEntity e = new TemporaryBlockedEntity();
+//        e.setBlockedDomain(".ttias.be");
+//        e.setBlockedPort(80);
+//        e.setBlockedIP("192.168.0.121");
+//        e.setPermaBlocked(false);
+//        e.setIdentifier(PermanentBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP);
+//        e.setProtocol(6);
+//
+//        e.setBlockedOnTimeDate(new Date(System.currentTimeMillis() - (DAY_IN_MS) ));
+//
+//        e.save();
+//
+//
+//        e = new TemporaryBlockedEntity();
+//        e.setBlockedDomain(".ttias.be");
+//        e.setBlockedPort(80);
+//        e.setBlockedIP("192.168.0.121");
+//        e.setPermaBlocked(false);
+//        e.setIdentifier(PermanentBlockedEntity.BLOCK_HTTP_DOMAIN_TO_IP);
+//        e.setProtocol(6);
+//
+//        e.setBlockedOnTimeDate(new Date(System.currentTimeMillis() - (2*DAY_IN_MS) ));
+//
+//        e.save();
 
 //
 //
